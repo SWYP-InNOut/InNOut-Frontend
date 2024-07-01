@@ -38,7 +38,7 @@ jobs:
       
       # 빌드 수행
       - name: react build
-        run: yarn run build
+        run: yarn build
       
       # aws에 접근하기 위한 권한을 받아옴
       - name: Configure AWS credentials
