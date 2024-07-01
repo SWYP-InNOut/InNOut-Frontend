@@ -1,66 +1,50 @@
-on:
-  # trigger가 되길 바라는 action (push / pull request가 있다)
-  push:
-    branches:          
-      # push가 되면 actions를 실행시킬 브랜치 설정
-      - main
-  
+name: CI
+
+on: [push, pull_request]
+
 jobs:
   build:
-    name: react build & deploy
-    # runner가 실행될 환경을 지정
-    runs-on: ubuntu-latest       
-    
-    # name은 단계별로 실행되는 액션들의 설명을 담은 것으로, 나중에 github action에서 workflow에 표시됨
-    # uses 키워드로 Action을 불러옴
-    # 레포지토리에 접근하여 CI서버로 코드를 내려받는 과정
+    runs-on: ubuntu-latest
+
     steps:
-      - name: checkout Github Action
-        uses: actions/checkout@v3
-      
-      # workflow가 실행될 때 필요한 파일 중에서 거의 바뀌지 않는 파일들을 GitHub의 캐시에 올려놓고 CI 서버로 내려받음.
-      # 프로젝트에서 자주 바뀌지 않는 수많은 패키지를 매번 다운받아 올리면 시간도 오래걸리고 네트워크 대역폭을 많이 사용하게 되기 때문
-      - name: Get npm cache directory
-        id: npm-cache-dir
-        run: |
-          echo "::set-output name=dir::$(npm config get cache)"
-      - uses: actions/cache@v3
-        id: npm-cache
-        with:
-          path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      
-      # package.json 에 포함된 의존성 패키지들 설치
-      - name: install npm dependencies
-        run: npm install
-      
-      # 빌드 수행
-      - name: react build
-        run: npm run build
-      
-      # aws에 접근하기 위한 권한을 받아옴
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
-      
-      # S3에 build 파일을 올림
-      - name: Upload to S3
-        env:
-          BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
-        run: |
-          aws s3 sync \
-            ./build s3://$BUCKET_NAME
-      
-      # cloudfront로 배포되는 파일은 기본설정 상 24시간동안 캐시가 유지됨
-      # 배포 후 S3에는 최신 정적리소스가 올라가있지만 엣지로케이션엔 이전 파일이 올라가있는 상태라는 의미
-      # 바로 변화가 반영되길 바란다면 invalidation을 해주면 된다.
-      # 해당 부분은 과금될 수 있으니 확인 후 사용
-      - name: CloudFront Invalidation
-        env:
-          CLOUD_FRONT_ID: ${{ secrets.AWS_CLOUDFRONT_ID }}
-        run: aws cloudfront create-invalidation --distribution-id $CLOUD_FRONT_ID --paths "/*"
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Node 18.16.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18.16.x'
+        cache: 'yarn'
+
+    - name: Set Yarn Version
+      id: set-version
+      run: |
+        yarn set version 3.6.4
+        echo "YARN_VERSION=$(yarn -v)" >> $GITHUB_OUTPUT
+
+    - name: Get cache dir path
+      id: yarn-cache-dir-path
+      run: echo "CACHE_DIR=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+
+    - name: Yarn cache
+      uses: actions/cache@v2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.CACHE_DIR }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-${{ steps.set-version.outputs.YARN_VERSION }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-
+
+    - name: Install dependencies
+      run: |
+        CACHE_HIT="${{ steps.yarn-cache.outputs.cache-hit }}"
+        NODE_MODULES_EXISTS=$(test -d "node_modules" && echo "true" || echo "false")
+        if [[ "$CACHE_HIT" != 'true' || "$NODE_MODULES_EXISTS" == 'false' ]]; then
+          yarn install
+        fi
+
+    - name: Run build
+      run: yarn build
+
+    - name: Run tests
+      run: yarn test
