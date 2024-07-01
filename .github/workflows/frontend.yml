@@ -3,7 +3,7 @@ on:
   push:
     branches:          
       # push가 되면 actions를 실행시킬 브랜치 설정
-      - dev
+      - main
   
 jobs:
   build:
