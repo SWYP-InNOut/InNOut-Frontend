@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import icon from './assets/pic.svg';
-interface ImgBoxProps {
-  borderRadius: string;
-}
-
+import { Global } from '@emotion/react';
+import { globalStyles } from './assets/styles/\bglobalStyles';
+import Router from './routers';
 function App() {
-  return <div></div>;
+  return (
+    <div>
+      <Global styles={globalStyles} />
+      <Router />
+    </div>
+  );
 }
 
 export default App;
