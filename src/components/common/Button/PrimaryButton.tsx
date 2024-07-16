@@ -2,6 +2,7 @@
 import { css } from '@emotion/react';
 import React from 'react'; // React import for JSX
 import { colors } from '@styles/theme';
+import Txt from '../Text/Txt';
 
 // Props 타입 정의
 interface PrimaryButtonProps {
@@ -18,7 +19,9 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
 }) => {
   return (
     <button onClick={onClick} disabled={disabled} css={buttonStyle(disabled)} {...rest}>
-      {title}
+      <Txt variant="t16" color={colors.white}>
+        {title}
+      </Txt>
     </button>
   );
 };
@@ -28,11 +31,10 @@ const buttonStyle = (disabled: boolean) => css`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 52px;
-  color: ${colors.white};
+  height: 48px;
   cursor: ${disabled ? 'default' : 'pointer'};
-  background-color: ${disabled ? colors.lightGray : colors.black};
-  border-radius: 10px;
+  background-color: ${disabled ? colors.gray300 : colors.black};
+  border-radius: 999px;
 `;
 
 export default PrimaryButton;
