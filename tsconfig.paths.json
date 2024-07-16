@@ -13,7 +13,8 @@
       "@fonts/*": ["src/assets/fonts/*"],
       "@hooks/*": ["src/hooks/*"],
       "@apis/*": ["src/apis/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@assets/*": ["src/assets/*"]
     }
   }
 }

@@ -1,16 +1,12 @@
 import React from 'react';
 import { css } from '@emotion/css';
+import Txt from '@components/common/Text/Txt';
 
 const index = () => {
   return (
-    <div
-      className={css`
-        font-family: 'LINE Seed Sans KR';
-        font-size: large;
-      `}
-    >
-      Routeddd
-    </div>
+    <Txt variant="h32" color="red" align="center">
+      하이
+    </Txt>
   );
 };
 
