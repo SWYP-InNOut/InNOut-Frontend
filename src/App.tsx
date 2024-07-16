@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import icon from './assets/pic.svg';
 import { Global } from '@emotion/react';
-import { globalStyles } from './assets/styles/\bglobalStyles';
+import { globalStyles } from '@styles/globalStyles';
 import Router from './routers';
 function App() {
   return (
