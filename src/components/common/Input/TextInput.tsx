@@ -1,12 +1,12 @@
-/** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
 import { colors } from '@styles/theme';
 import { InputType } from '@constants/form';
-import { RegisterOptions, useFormContext } from 'react-hook-form';
+import { RegisterOptions, set, useFormContext } from 'react-hook-form';
+import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 
 // Props 타입 정의
 interface TextInputProps {
-  id?: InputType;
+  id: InputType;
   options?: RegisterOptions;
   placeholder?: string;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -16,22 +16,30 @@ const TextInput = (props: TextInputProps) => {
   const { id, options, placeholder, onKeyDown, ...rest } = props;
   const { register, watch } = useFormContext();
   const value = watch(id);
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    if (value) {
+      setIsFocused(true);
+    } else {
+      setIsFocused(false);
+    }
+  });
 
   return (
-    <div css={inputContainerStyle}>
-      <input
-        css={inputStyle}
+    <InputContainer isFocused={isFocused}>
+      <StyledInput
         type="text"
         autoComplete="off"
         placeholder={placeholder}
         {...register(id, options)}
         onKeyDown={onKeyDown}
       />
-    </div>
+    </InputContainer>
   );
 };
 
-const inputStyle = css`
+const StyledInput = styled.input`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,14 +65,14 @@ const inputStyle = css`
   }
 `;
 
-const inputContainerStyle = css`
+const InputContainer = styled.div<{ isFocused: Boolean }>`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 12px 16px;
   border-radius: 4px;
-  background-color: ${colors.gray100};
+  background-color: ${({ isFocused }) => (isFocused ? colors.yellow300 : colors.gray100)};
 `;
 
 export default TextInput;

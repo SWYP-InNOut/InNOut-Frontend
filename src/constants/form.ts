@@ -2,6 +2,7 @@ import { RegisterOptions } from 'react-hook-form';
 
 interface ConfigField {
   options: RegisterOptions;
+  errorMessages?: string[];
 }
 
 export const INPUT_TYPE = {
@@ -19,19 +20,20 @@ export const CONFIG: Record<ConfigKeys, ConfigField> = {
     options: {
       required: {
         value: true,
-        message: '이메일을 입력해주세요.',
+        message: '이메일 형식이 아닙니다',
       },
       pattern: {
         value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
         message: '이메일 형식이 아닙니다',
       },
     },
+    errorMessages: ['이메일 형식이 아닙니다', '이미 가입된 이메일입니다'],
   },
   PASSWORD: {
     options: {
       required: {
         value: true,
-        message: '비밀번호를 입력해주세요.',
+        message: '8자 이상 20자 이하',
       },
       pattern: {
         value:
@@ -47,20 +49,22 @@ export const CONFIG: Record<ConfigKeys, ConfigField> = {
         message: '8자 이상 20자 이하',
       },
     },
+    errorMessages: ['영문/숫자/특수문자 중 2가지 이상 포함', '8자 이상 20자 이하'],
   },
   CONFIRMPASSWORD: {
     options: {
       required: {
         value: true,
-        message: '비밀번호를 입력해주세요.',
+        message: '비밀번호가 일치하지 않습니다.',
       },
     },
+    errorMessages: ['비밀번호가 일치하지 않습니다.'],
   },
   NICKNAME: {
     options: {
       required: {
         value: true,
-        message: '닉네임을 입력해주세요.',
+        message: '공백 포함 2자이상 10자이하',
       },
       pattern: {
         value: /^[가-힣a-zA-Z0-9]+$/,
