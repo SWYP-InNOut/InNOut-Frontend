@@ -1,8 +1,6 @@
-import styled from '@emotion/styled';
-import icon from './assets/pic.svg';
 import { Global } from '@emotion/react';
 import { globalStyles } from '@styles/globalStyles';
-import Router from './routers';
+import Router from '@routers/index';
 function App() {
   return (
     <div>

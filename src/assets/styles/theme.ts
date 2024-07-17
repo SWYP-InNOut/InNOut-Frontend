@@ -1,4 +1,11 @@
-const colors = {
+export const colors = {
+  black: '#000000',
+  white: '#FFFFFF',
+  lightGray: '#B4B4B4',
+  errRed: '#F38142',
+  socialKakao: '#FEE500',
+  socialGoogle: '#F2F2F2',
+
   gray100: '#F2F2F1',
   gray200: '#DFDFDF',
   gray300: '#B4B4B4',

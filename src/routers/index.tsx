@@ -1,13 +1,22 @@
-import React from 'react';
-import { css } from '@emotion/css';
-import Txt from '@components/common/Text/Txt';
+import {
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from 'react-router-dom';
+import Signup from '@routers/Auth/signup/Signup';
 
-const index = () => {
-  return (
-    <Txt variant="h32" color="red" align="center">
-      하이
-    </Txt>
+const Router = () => {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <>
+        <Route index element={<div />} />
+        <Route path="signup" element={<Signup />} />
+      </>
+    )
   );
+
+  return <RouterProvider router={router} />;
 };
 
-export default index;
+export default Router;
