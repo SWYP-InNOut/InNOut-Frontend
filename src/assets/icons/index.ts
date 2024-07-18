@@ -1,3 +1,3 @@
-import Logo_32 from '@icons/logo_32.svg';
+import LogoIcon from '@icons/logo.svg?react';
 
-export { Logo_32 };
+export { LogoIcon };
