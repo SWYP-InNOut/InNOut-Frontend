@@ -1,8 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import inject from '@rollup/plugin-inject';
-
+import svgr from 'vite-plugin-svgr';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -13,14 +12,9 @@ export default defineConfig({
       },
     }),
     tsconfigPaths(),
+    svgr(),
   ],
   server: {
     port: 5174,
-  },
-  define: {
-    'process.env': {
-      NODE_ENV: '"development"',
-    },
-    'process.version': '"v20.10.0"',
   },
 });
