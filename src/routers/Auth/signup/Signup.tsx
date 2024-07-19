@@ -6,7 +6,7 @@ import { CONFIG, INPUT_TYPE } from '@constants/form';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Col } from '@components/common/Flex/Flex';
 import { LogoIcon } from '@icons/index';
-import Layout from '@components/common/Layout/Header';
+import Layout from '@components/common/Layout/Layout';
 
 interface SignUpRequestDTO {
   email: string;
