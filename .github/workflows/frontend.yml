@@ -2,7 +2,7 @@ on:
   # trigger가 되길 바라는 action (push / pull request가 있다)
   push:
     branches:          
-      # push가 되면 actions를 실행시킬 브랜치 설정
+      # push가 되면 actions를 실행시킬 브랜치
       - main
   
 jobs:
