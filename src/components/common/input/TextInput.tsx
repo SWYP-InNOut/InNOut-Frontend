@@ -9,12 +9,13 @@ interface TextInputProps {
   id: InputType;
   options?: RegisterOptions;
   placeholder?: string;
+  content?: string;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const TextInput = (props: TextInputProps) => {
-  const { id, options, placeholder, onKeyDown, ...rest } = props;
-  const { register, watch } = useFormContext();
+  const { id, options, placeholder, onKeyDown, content, ...rest } = props;
+  const { register, watch, setValue } = useFormContext();
   const value = watch(id);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -24,7 +25,11 @@ const TextInput = (props: TextInputProps) => {
     } else {
       setIsFocused(false);
     }
-  });
+    if (content) {
+      setValue(id, content);
+      setIsFocused(true);
+    }
+  }, [value, content]);
 
   return (
     <InputContainer isFocused={isFocused}>
@@ -40,6 +45,7 @@ const TextInput = (props: TextInputProps) => {
 };
 
 const StyledInput = styled.input`
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;

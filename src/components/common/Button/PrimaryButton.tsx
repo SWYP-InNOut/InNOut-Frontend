@@ -1,6 +1,6 @@
 import React from 'react'; // React import for JSX
 import { colors } from '@styles/theme';
-import Txt from '../Text/Txt';
+import Txt from '../text/Txt';
 import styled from '@emotion/styled';
 
 // Props 타입 정의
