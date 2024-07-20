@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import Txt from '@components/common/Text/Txt';
 import PrimaryButton from '@components/common/Button/PrimaryButton';
-import TextInput from '@components/common/\bInput/TextInput';
+import TextInput from '@components/common/Input/TextInput';
 import { CONFIG, INPUT_TYPE } from '@constants/form';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Col } from '@components/common/Flex/Flex';
