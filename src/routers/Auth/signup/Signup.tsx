@@ -22,19 +22,41 @@ const Signup = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = methods;
 
-  const renderError = (id: keyof typeof INPUT_TYPE): React.ReactNode => {
-    console.log(errors[INPUT_TYPE[id]]?.types?.pattern?.toString);
-    const errorMessages = CONFIG[id].errorMessages?.map((message) => (
-      <ErrorMessage
-        content={message}
-        isError={errors[INPUT_TYPE[id]]?.types?.pattern === message}
-      />
-    ));
+  const isConfirmPasswordError =
+    !watch(INPUT_TYPE.CONFIRMPASSWORD) ||
+    watch(INPUT_TYPE.PASSWORD) !== watch(INPUT_TYPE.CONFIRMPASSWORD);
 
-    return errorMessages || null;
+  const handleCheckError = (id: InputType, regex: RegExp) => {
+    const value = watch(id);
+    return !regex.test(value);
+  };
+
+  const renderError = (id: keyof typeof INPUT_TYPE): React.ReactNode => {
+    const errorComponents = CONFIG[id].pattern?.map((regex, index) => {
+      const message = CONFIG[id].errorMessages[index] || '유효하지 않은 입력입니다.';
+      return INPUT_TYPE[id] === 'email' ? (
+        handleCheckError(INPUT_TYPE[id], regex) && (
+          <ErrorMessage
+            key={index}
+            content={message}
+            isError={handleCheckError(INPUT_TYPE[id], regex)}
+          />
+        )
+      ) : (
+        <ErrorMessage
+          key={index}
+          content={message}
+          isError={handleCheckError(INPUT_TYPE[id], regex)}
+        />
+      );
+    });
+
+    // null 값을 제거하고, 에러 메시지 컴포넌트 배열을 반환합니다.
+    return errorComponents?.filter(Boolean) || null;
   };
 
   return (
@@ -65,7 +87,7 @@ const Signup = () => {
               </Txt>
               <TextInput
                 id={INPUT_TYPE.EMAIL}
-                options={CONFIG.EMAIL.options}
+                options={CONFIG.EMAIL.option}
                 placeholder="example@gmail.com"
               />
               {renderError('EMAIL')}
@@ -76,7 +98,7 @@ const Signup = () => {
               </Txt>
               <TextInput
                 id={INPUT_TYPE.PASSWORD}
-                options={CONFIG.PASSWORD.options}
+                options={CONFIG.PASSWORD.option}
                 placeholder="비밀번호 입력"
               />
               {renderError('PASSWORD')}
@@ -85,12 +107,14 @@ const Signup = () => {
               <Txt variant="t20" color={colors.darkGray}>
                 비밀번호 확인
               </Txt>
-              <TextInput
-                id={INPUT_TYPE.CONFIRMPASSWORD}
-                options={CONFIG.CONFIRMPASSWORD.options}
-                placeholder="비밀번호 재입력"
-              />
-              {renderError('CONFIRMPASSWORD')}
+              <TextInput id={INPUT_TYPE.CONFIRMPASSWORD} placeholder="비밀번호 재입력" />
+
+              {isConfirmPasswordError && (
+                <ErrorMessage
+                  content="비밀번호가 일치하지 않습니다"
+                  isError={isConfirmPasswordError}
+                />
+              )}
             </Col>
             <Col padding={'32px 0 0'} gap={8}>
               <Col>
@@ -103,14 +127,18 @@ const Signup = () => {
               </Col>
               <TextInput
                 id={INPUT_TYPE.NICKNAME}
-                options={CONFIG.EMAIL.options}
+                options={CONFIG.NICKNAME.option}
                 content="산책하는 미미"
               />
               {renderError('NICKNAME')}
             </Col>
           </Col>
           <Col padding={'0 16px'}>
-            <PrimaryButton title="가입" onClick={() => console.log(errors[INPUT_TYPE.EMAIL])} />
+            <PrimaryButton
+              title="가입"
+              disabled={!methods.formState.isValid || isConfirmPasswordError}
+              onClick={() => console.log(methods.formState)}
+            />
           </Col>
         </Col>
       </FormProvider>

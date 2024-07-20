@@ -14,7 +14,7 @@ interface TextInputProps {
 }
 
 const TextInput = (props: TextInputProps) => {
-  const { id, options, placeholder, onKeyDown, content, ...rest } = props;
+  const { id, placeholder, onKeyDown, content, options, ...rest } = props;
   const { register, watch, setValue } = useFormContext();
   const value = watch(id);
   const [isFocused, setIsFocused] = useState(false);
