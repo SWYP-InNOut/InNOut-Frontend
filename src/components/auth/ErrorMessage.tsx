@@ -28,7 +28,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({
       `}
     >
       {isError ? <ErrorIcon /> : <CheckIcon />}
-      <Txt lineHeight="16px" variant="c14" color={isError ? colors.errRed : colors.gray500}>
+      <Txt lineHeight="16px" variant="c14" color={isError ? colors.errRed : colors.gray300}>
         {content}
       </Txt>
     </Row>
