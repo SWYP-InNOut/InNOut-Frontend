@@ -17,7 +17,10 @@ jobs:
     steps:
       - name: checkout Github Action
         uses: actions/checkout@v3
-      
+
+      # Git 설정 변경: 대소문자 구분 설정
+      - name: Set Git to be case-sensitive
+        run: git config core.ignorecase false
       # workflow가 실행될 때 필요한 파일 중에서 거의 바뀌지 않는 파일들을 GitHub의 캐시에 올려놓고 CI 서버로 내려받음.
       # 프로젝트에서 자주 바뀌지 않는 수많은 패키지를 매번 다운받아 올리면 시간도 오래걸리고 네트워크 대역폭을 많이 사용하게 되기 때문
       - name: Get npm cache directory
