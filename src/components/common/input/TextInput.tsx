@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 
 // Props 타입 정의
 interface TextInputProps {
+  type?: string;
   id: InputType;
   options?: RegisterOptions;
   placeholder?: string;
@@ -14,7 +15,7 @@ interface TextInputProps {
 }
 
 const TextInput = (props: TextInputProps) => {
-  const { id, placeholder, onKeyDown, content, options, ...rest } = props;
+  const { id, placeholder, onKeyDown, content, options, type = 'text', ...rest } = props;
   const { register, watch, setValue } = useFormContext();
   const value = watch(id);
   const [isFocused, setIsFocused] = useState(false);
@@ -29,12 +30,12 @@ const TextInput = (props: TextInputProps) => {
       setValue(id, content);
       setIsFocused(true);
     }
-  }, [value, content]);
+  }, [content]);
 
   return (
     <InputContainer isFocused={isFocused}>
       <StyledInput
-        type="text"
+        type={type}
         autoComplete="off"
         placeholder={placeholder}
         {...register(id, options)}

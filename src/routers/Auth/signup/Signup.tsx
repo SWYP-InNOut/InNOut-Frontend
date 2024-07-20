@@ -3,28 +3,37 @@ import Txt from '@components/common/text/Txt';
 import PrimaryButton from '@components/common/button/PrimaryButton';
 import TextInput from '@components/common/input/TextInput';
 import { CONFIG, INPUT_TYPE, InputType } from '@constants/form';
-import { FieldErrors, FormProvider, useForm, useFormContext } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { Col } from '@components/common/flex/Flex';
 import { LogoIcon } from '@icons/index';
 import Layout from '@components/common/layout/Layout';
 import { colors } from '@styles/theme';
 import ErrorMessage from '@components/auth/ErrorMessage';
-
-interface SignUpRequestDTO {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  nickName: string;
-}
+import { generateNickname } from '@utils/generateNickname';
+import { useEffect, useState } from 'react';
+import { useMutation } from 'react-query';
+import { signup } from '@apis/auth/auth';
 
 const Signup = () => {
   const methods = useForm<SignUpRequestDTO>({ mode: 'onChange' });
+  const [nickname, setNickname] = useState('');
   const {
-    register,
-    handleSubmit,
     watch,
     formState: { errors },
   } = methods;
+
+  // useMutation 훅을 사용하여 signup 함수를 호출합니다.
+  const { mutate, isLoading, isError, data, error } = useMutation(
+    (signUpRequest: SignUpRequestDTO) => signup(signUpRequest),
+    {
+      onSuccess: (data) => {
+        console.log('회원가입 성공:', data);
+      },
+      onError: (error) => {
+        console.error('회원가입 실패:', error);
+      },
+    }
+  );
 
   const isConfirmPasswordError =
     !watch(INPUT_TYPE.CONFIRMPASSWORD) ||
@@ -33,6 +42,17 @@ const Signup = () => {
   const handleCheckError = (id: InputType, regex: RegExp) => {
     const value = watch(id);
     return !regex.test(value);
+  };
+
+  const handleSignup = () => {
+    const signUpRequest: SignUpRequestDTO = {
+      nickName: watch(INPUT_TYPE.NICKNAME),
+      email: watch(INPUT_TYPE.EMAIL),
+      password: watch(INPUT_TYPE.PASSWORD),
+      confirmPassword: watch(INPUT_TYPE.CONFIRMPASSWORD),
+    };
+
+    mutate(signUpRequest);
   };
 
   const renderError = (id: keyof typeof INPUT_TYPE): React.ReactNode => {
@@ -54,10 +74,12 @@ const Signup = () => {
         />
       );
     });
-
-    // null 값을 제거하고, 에러 메시지 컴포넌트 배열을 반환합니다.
     return errorComponents?.filter(Boolean) || null;
   };
+
+  useEffect(() => {
+    setNickname(generateNickname());
+  }, []);
 
   return (
     <Layout hasHeader={false}>
@@ -99,6 +121,7 @@ const Signup = () => {
               <TextInput
                 id={INPUT_TYPE.PASSWORD}
                 options={CONFIG.PASSWORD.option}
+                type="password"
                 placeholder="비밀번호 입력"
               />
               {renderError('PASSWORD')}
@@ -107,7 +130,11 @@ const Signup = () => {
               <Txt variant="t20" color={colors.darkGray}>
                 비밀번호 확인
               </Txt>
-              <TextInput id={INPUT_TYPE.CONFIRMPASSWORD} placeholder="비밀번호 재입력" />
+              <TextInput
+                id={INPUT_TYPE.CONFIRMPASSWORD}
+                type="password"
+                placeholder="비밀번호 재입력"
+              />
 
               {isConfirmPasswordError && (
                 <ErrorMessage
@@ -128,7 +155,7 @@ const Signup = () => {
               <TextInput
                 id={INPUT_TYPE.NICKNAME}
                 options={CONFIG.NICKNAME.option}
-                content="산책하는 미미"
+                content={nickname}
               />
               {renderError('NICKNAME')}
             </Col>
@@ -137,7 +164,7 @@ const Signup = () => {
             <PrimaryButton
               title="가입"
               disabled={!methods.formState.isValid || isConfirmPasswordError}
-              onClick={() => console.log(methods.formState)}
+              onClick={handleSignup}
             />
           </Col>
         </Col>
