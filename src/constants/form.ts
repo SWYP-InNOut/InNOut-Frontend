@@ -52,7 +52,7 @@ export const CONFIG: Record<ConfigKeys, ConfigField> = {
   },
   NICKNAME: {
     pattern: [/^[가-힣a-zA-Z0-9\s]+$/, /^.{2,10}$/],
-    errorMessages: ['한글(모음,자음 단독 사용불가)/영어/숫자', '2자 이상 10자 이하'],
+    errorMessages: ['한글(모음,자음 단독 사용불가)/영어/숫자', '공백 포함 2자 이상 10자 이하'],
     option: {
       required: true,
       pattern: {
