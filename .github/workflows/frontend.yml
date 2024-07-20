@@ -24,6 +24,10 @@ jobs:
         id: yarn-cache-dir
         run: |
           echo "::set-output name=dir::$(npm config get cache)"
+      # 캐시 설정을 무효화
+      - name: Clean yarn cache
+        run: yarn cache clean
+        
       - uses: actions/cache@v3
         id: yarn-cache
         with:
