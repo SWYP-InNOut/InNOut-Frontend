@@ -1,6 +1,6 @@
 import React from 'react'; // React import for JSX
 import { colors } from '@styles/theme';
-import { Row } from '@components/common/flexx/Flex';
+import { Row } from '@components/common/flex/Flex';
 import { css } from '@emotion/react';
 import Txt from '@components/common/text/Txt';
 import { CheckIcon, ErrorIcon } from '@icons/index';
