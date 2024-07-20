@@ -9,6 +9,8 @@ import { LogoIcon } from '@icons/index';
 import Layout from '@components/common/layout/Layout';
 import { colors } from '@styles/theme';
 import ErrorMessage from '@components/auth/ErrorMessage';
+import { generateNickname } from '@utils/generateNickname';
+import { useEffect, useState } from 'react';
 
 interface SignUpRequestDTO {
   email: string;
@@ -19,6 +21,7 @@ interface SignUpRequestDTO {
 
 const Signup = () => {
   const methods = useForm<SignUpRequestDTO>({ mode: 'onChange' });
+  const [nickname, setNickname] = useState('');
   const {
     register,
     handleSubmit,
@@ -58,6 +61,11 @@ const Signup = () => {
     // null 값을 제거하고, 에러 메시지 컴포넌트 배열을 반환합니다.
     return errorComponents?.filter(Boolean) || null;
   };
+
+  useEffect(() => {
+    const generatedNickname = generateNickname();
+    setNickname(generatedNickname);
+  }, []);
 
   return (
     <Layout hasHeader={false}>
@@ -99,6 +107,7 @@ const Signup = () => {
               <TextInput
                 id={INPUT_TYPE.PASSWORD}
                 options={CONFIG.PASSWORD.option}
+                type="password"
                 placeholder="비밀번호 입력"
               />
               {renderError('PASSWORD')}
@@ -107,7 +116,11 @@ const Signup = () => {
               <Txt variant="t20" color={colors.darkGray}>
                 비밀번호 확인
               </Txt>
-              <TextInput id={INPUT_TYPE.CONFIRMPASSWORD} placeholder="비밀번호 재입력" />
+              <TextInput
+                id={INPUT_TYPE.CONFIRMPASSWORD}
+                type="password"
+                placeholder="비밀번호 재입력"
+              />
 
               {isConfirmPasswordError && (
                 <ErrorMessage
@@ -128,7 +141,7 @@ const Signup = () => {
               <TextInput
                 id={INPUT_TYPE.NICKNAME}
                 options={CONFIG.NICKNAME.option}
-                content="산책하는 미미"
+                content={nickname}
               />
               {renderError('NICKNAME')}
             </Col>
