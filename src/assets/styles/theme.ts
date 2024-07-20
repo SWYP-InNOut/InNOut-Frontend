@@ -1,6 +1,7 @@
 export const colors = {
   black: '#000000',
   white: '#FFFFFF',
+  darkGray: '#303030',
   lightGray: '#B4B4B4',
   errRed: '#F38142',
   socialKakao: '#FEE500',
@@ -45,6 +46,7 @@ interface FontStyle {
   fontWeight: string;
   lineHeight: string;
   fontFamily: string;
+  letterSpacing?: string;
 }
 
 export const fontStyles: Record<string, FontStyle> = {
@@ -74,6 +76,7 @@ export const fontStyles: Record<string, FontStyle> = {
     fontWeight: '700',
     lineHeight: '30px',
     fontFamily: 'Spoqa Han Sans Neo',
+    letterSpacing: '-0.4px',
   },
   t18: {
     fontSize: '1.8rem',
