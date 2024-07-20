@@ -18,37 +18,21 @@ jobs:
       - name: checkout Github Action
         uses: actions/checkout@v3
 
-      # Git 설정 변경: 대소문자 구분 설정
-      - name: Set Git to be case-sensitive
-        run: git config core.ignorecase false
-      # workflow가 실행될 때 필요한 파일 중에서 거의 바뀌지 않는 파일들을 GitHub의 캐시에 올려놓고 CI 서버로 내려받음.
-      # 프로젝트에서 자주 바뀌지 않는 수많은 패키지를 매번 다운받아 올리면 시간도 오래걸리고 네트워크 대역폭을 많이 사용하게 되기 때문
       - name: Get npm cache directory
-        id: yarn-cache-dir
+        id: npm-cache-dir
         run: |
           echo "::set-output name=dir::$(npm config get cache)"
-      # 캐시 설정을 무효화
-      - name: Clean yarn cache
-        run: yarn cache clean
-        
       - uses: actions/cache@v3
-        id: yarn-cache
+        id: npm-cache
         with:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
       
-      # package.json 에 포함된 의존성 패키지들 설치
-      - name: install npm dependencies
+      - name: install yarn dependencies
         run: yarn install
-      
-      # 빌드 수행
+        
       - name: react build
         run: yarn run build
       
