@@ -21,7 +21,6 @@ const Signup = () => {
     watch,
     formState: { errors },
   } = methods;
-
   // useMutation 훅을 사용하여 signup 함수를 호출합니다.
   const { mutate, isLoading, isError, data, error } = useMutation(
     (signUpRequest: SignUpRequestDTO) => signup(signUpRequest),
@@ -43,7 +42,6 @@ const Signup = () => {
     const value = watch(id);
     return !regex.test(value);
   };
-
   const handleSignup = () => {
     const signUpRequest: SignUpRequestDTO = {
       nickName: watch(INPUT_TYPE.NICKNAME),
@@ -54,7 +52,6 @@ const Signup = () => {
 
     mutate(signUpRequest);
   };
-
   const renderError = (id: keyof typeof INPUT_TYPE): React.ReactNode => {
     const errorComponents = CONFIG[id].pattern?.map((regex, index) => {
       const message = CONFIG[id].errorMessages[index] || '유효하지 않은 입력입니다.';
@@ -80,7 +77,6 @@ const Signup = () => {
   useEffect(() => {
     setNickname(generateNickname());
   }, []);
-
   return (
     <Layout hasHeader={false}>
       <FormProvider {...methods}>
@@ -129,7 +125,7 @@ const Signup = () => {
             <Col padding={'32px 0 0'} gap={8}>
               <Txt variant="t20" color={colors.darkGray}>
                 비밀번호 확인
-              </Txt>
+                </Txt>
               <TextInput
                 id={INPUT_TYPE.CONFIRMPASSWORD}
                 type="password"
