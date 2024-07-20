@@ -1,7 +1,8 @@
 import { css } from '@emotion/react';
 import Txt from '@components/common/Text/Txt';
 import PrimaryButton from '@components/common/Button/PrimaryButton';
-import TextInput from '@components/common/\bInput/TextInput';
+import TextInput from '@components/common/Input/TextInput';
+import AlertMessage from '@components/common/AlertMessage/AlertMessage';
 import { CONFIG, INPUT_TYPE } from '@constants/form';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Col } from '@components/common/Flex/Flex';
@@ -67,6 +68,8 @@ const Signup = () => {
             안녕하세요
           </Txt>
         </Col>
+        <AlertMessage title="영문/숫자/특수문자 중 2가지 이상 포함" isError={false} />
+        <AlertMessage title="영문/숫자/특수문자 중 2가지 이상 포함" isError={true} />
       </div>
     </Layout>
   );
