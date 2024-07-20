@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import Txt from '@components/common/text/Txt';
-import PrimaryButton from '@components/common/button/PrimaryButton';
+import PrimaryButton from '@components/common/buttonn/PrimaryButton';
 import TextInput from '@components/common/input/TextInput';
 import { CONFIG, INPUT_TYPE, InputType } from '@constants/form';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Col } from '@components/common/flex/Flex';
+import { Col } from '@components/common/flexx/Flex';
 import { LogoIcon } from '@icons/index';
 import Layout from '@components/common/layout/Layout';
 import { colors } from '@styles/theme';
