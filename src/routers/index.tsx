@@ -5,9 +5,11 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 import Signup from '@routers/auth/signup/Signup';
-import Login from '@routers/Login/Login';
-import PwdSearch from '@routers/PwdSearch/PwdSearch';
+import Login from '@routers/login/Login';
+import PwdSearch from '@routers/pwdSearch/PwdSearch';
+import NickNameSetting from './nickname/NickNameSetting';
 import MyHome from '@routers/home/MyHome';
+
 
 const Router = () => {
   const router = createBrowserRouter(
@@ -17,6 +19,7 @@ const Router = () => {
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />
         <Route path="pwdsearch" element={<PwdSearch />} />
+        <Route path="setting" element={<NickNameSetting />} />
       </>
     )
   );
