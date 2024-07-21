@@ -41,9 +41,6 @@ const SocialLogin = () => {
   );
 };
 
-// width: 71px;
-// height: 1px;
-
 export default SocialLogin;
 
 const Line = styled.div`
