@@ -5,14 +5,14 @@ interface TextProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: keyof typeof fontStyles;
   color?: string;
   align?: string;
-  lineHeight?: string;
+  lineHeight?: number;
 }
 
 const Txt = styled.span<TextProps>`
   font-size: ${({ variant }) => (variant ? fontStyles[variant].fontSize : 'inherit')};
   font-weight: ${({ variant }) => (variant ? fontStyles[variant].fontWeight : 'inherit')};
   line-height: ${({ variant, lineHeight }) =>
-    lineHeight ? lineHeight + 'px' : variant ? fontStyles[variant].lineHeight : 'inherit'};
+    lineHeight ? `${lineHeight}px` : variant ? fontStyles[variant].lineHeight : 'inherit'};
   color: ${({ color }) => color || 'black'};
   text-align: ${({ align }) => align || 'inherit'};
   letter-spacing: ${({ variant }) => (variant ? fontStyles[variant].letterSpacing : 'inherit')};
