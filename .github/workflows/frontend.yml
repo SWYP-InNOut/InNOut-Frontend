@@ -2,13 +2,13 @@ on:
   # trigger가 되길 바라는 action (push / pull request가 있다)
   push:
     branches:          
-      # push가 되면 actions를 실행시킬 브랜치 설정
+      # push가 되면 actions를 실행시킬 브랜치
       - main
   
 jobs:
   build:
     name: react build & deploy
-    # runner가 실행될 환경을 지정
+    # runner가 실행될 환경지정
     runs-on: ubuntu-latest       
     
     # name은 단계별로 실행되는 액션들의 설명을 담은 것으로, 나중에 github action에서 workflow에 표시됨
@@ -17,26 +17,22 @@ jobs:
     steps:
       - name: checkout Github Action
         uses: actions/checkout@v3
-      
-      # workflow가 실행될 때 필요한 파일 중에서 거의 바뀌지 않는 파일들을 GitHub의 캐시에 올려놓고 CI 서버로 내려받음.
-      # 프로젝트에서 자주 바뀌지 않는 수많은 패키지를 매번 다운받아 올리면 시간도 오래걸리고 네트워크 대역폭을 많이 사용하게 되기 때문
+
       - name: Get npm cache directory
-        id: yarn-cache-dir
+        id: npm-cache-dir
         run: |
           echo "::set-output name=dir::$(npm config get cache)"
       - uses: actions/cache@v3
-        id: yarn-cache
+        id: npm-cache
         with:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-node-
       
-      # package.json 에 포함된 의존성 패키지들 설치
-      - name: install npm dependencies
+      - name: install yarn dependencies
         run: yarn install
-      
-      # 빌드 수행
+        
       - name: react build
         run: yarn run build
       
