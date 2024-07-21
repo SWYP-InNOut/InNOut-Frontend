@@ -125,7 +125,7 @@ const Signup = () => {
             <Col padding={'32px 0 0'} gap={8}>
               <Txt variant="t20" color={colors.darkGray}>
                 비밀번호 확인
-                </Txt>
+              </Txt>
               <TextInput
                 id={INPUT_TYPE.CONFIRMPASSWORD}
                 type="password"
