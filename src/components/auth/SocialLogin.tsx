@@ -6,11 +6,14 @@ import { colors } from '@styles/theme';
 import styled from '@emotion/styled';
 import Txt from '@components/common/text/Txt';
 
+const KAKAO_REST_API_KEY = import.meta.env.VITE_REACT_APP_KAKAO_REST_API;
+
 const handleKakaoLogin = () => {
-  console.log('Kakao 로그인');
+  window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}`;
+  // api 나오고 예외 처리 추가
 };
 const handleGoogleLogin = () => {
-  console.log('Google 로그인');
+  alert('Google 로그인 준비중');
 };
 
 const SocialLogin = () => {
