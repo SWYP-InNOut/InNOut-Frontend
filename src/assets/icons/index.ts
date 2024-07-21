@@ -7,6 +7,9 @@ import KakaoIcon from '@icons/kakao.svg?react';
 import RightArrowIcon from '@icons/rightarrow.svg?react';
 import SendEmailIcon from '@icons/sendEmail.svg?react';
 import SendPwdIcon from '@icons/sendPwd.svg?react';
+import MenuIcon from '@icons/hamburger.svg?react';
+import CloseIcon from '@icons/close.svg?react';
+import SearchIcon from '@icons/search.svg?react';
 
 export {
   LogoIcon,
