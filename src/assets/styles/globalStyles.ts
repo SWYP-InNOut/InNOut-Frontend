@@ -8,7 +8,7 @@ export const globalStyles = css`
 
   html {
     box-sizing: border-box;
-    font-family: 'SpoqaHanSansNeo-Bold', 'LINE Seed Sans', sans-serif;
+    font-family: 'LINE Seed Sans', 'SpoqaHanSansNeo-Bold', sans-serif;
     font-size: 62.5%;
   }
 
