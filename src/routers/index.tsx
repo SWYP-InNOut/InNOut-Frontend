@@ -5,9 +5,8 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 import Signup from '@routers/auth/signup/Signup';
-import Login from './Login/Login';
-import PwdSearch from './PwdSearch/PwdSearch';
 import Login from '@routers/Login/Login';
+import PwdSearch from '@routers/PwdSearch/PwdSearch';
 import MyHome from '@routers/home/MyHome';
 
 const Router = () => {
