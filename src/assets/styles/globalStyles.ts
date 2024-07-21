@@ -16,7 +16,8 @@ export const globalStyles = css`
   #root {
     width: 100vw;
     max-width: 512px;
-    height: calc(var(--vh, 1vh) * 100);
+    height: auto;
+    min-height: 100vh;
     margin: 0 auto;
 
     -webkit-overflow-scrolling: touch !important;
