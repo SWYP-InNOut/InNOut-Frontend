@@ -9,3 +9,7 @@ interface LoginRequestDTO {
   email: string;
   password: string;
 }
+
+interface PwdSearchRequestDTO {
+  email: string;
+}

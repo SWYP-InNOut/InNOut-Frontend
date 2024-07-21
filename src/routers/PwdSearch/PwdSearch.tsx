@@ -70,7 +70,11 @@ const PwdSearch = () => {
               </div>
               <Col gap={'16'}>
                 <PrimaryButton title={'임시 비밀번호 전송'} onClick={handlePwdSend} />
-                <PrimaryButton title={'로그인 화면으로'} onClick={handleGoToLogin} />
+                <PrimaryButton
+                  title={'로그인 화면으로'}
+                  onClick={handleGoToLogin}
+                  color={colors.lightGray}
+                />
               </Col>
             </Col>
           </>

@@ -9,9 +9,10 @@ interface SocialButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   onClick: () => void;
 }
 
-const SocialButton: React.FC<SocialButton> = ({ title, icon, color, onClick }) => {
+const SocialButton = (props: SocialButton) => {
+  const { title, icon, color, onClick } = props;
   return (
-    <Button color={color}>
+    <Button onClick={onClick} color={color}>
       {icon}
       <Txt variant="social">{title}</Txt>
     </Button>

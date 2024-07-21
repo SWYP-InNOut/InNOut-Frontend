@@ -35,7 +35,7 @@ const SendEmail = ({ type }: SendEmailProps) => {
         <Txt
           variant="b16"
           color={colors.lightGray}
-          styles={{ height: '48px', marginBottom: '31px', whiteSpace: 'pre-wrap' }}
+          style={{ height: '48px', marginBottom: '31px', whiteSpace: 'pre-wrap' }}
         >
           {content?.subtitle}
         </Txt>

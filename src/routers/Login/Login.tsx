@@ -15,13 +15,11 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { login } from '@apis/auth/auth';
 import ErrorMessage from '@components/auth/ErrorMessage';
-import SendEmail from '@components/common/sendEmail/SendEmail';
 
 const Login = () => {
   const navigate = useNavigate();
   const methods = useForm<LoginRequestDTO>({ mode: 'onChange' });
   const [showError, setShowError] = useState(false);
-  const [isComplete, setIsComplete] = useState(false);
   const {
     watch,
     formState: { isValid },
