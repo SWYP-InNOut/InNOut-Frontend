@@ -120,6 +120,13 @@ export const fontStyles: Record<string, FontStyle> = {
     lineHeight: '16.5px',
     fontFamily: 'LINE Seed Sans KR',
   },
+  //소셜 글꼴 추가
+  social: {
+    fontSize: '1.4rem',
+    fontWeight: '500',
+    lineHeight: '14px',
+    fontFamily: 'Spoqa Han Sans Neo',
+  },
 };
 
 export type FontStylesTypes = typeof fontStyles;
