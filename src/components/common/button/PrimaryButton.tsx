@@ -1,7 +1,7 @@
 import React from 'react'; // React import for JSX
 import { colors } from '@styles/theme';
-import Txt from '@components/common/text/Txt';
 import styled from '@emotion/styled';
+import Txt from '@components/common/text/Txt';
 
 // Props 타입 정의
 interface PrimaryButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
