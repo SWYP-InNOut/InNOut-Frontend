@@ -61,7 +61,7 @@ export const fontStyles: Record<string, FontStyle> = {
     fontSize: '2.8rem',
     fontWeight: '700',
     lineHeight: '47px',
-    fontFamily: 'LINE Seed Sans KR',
+    fontFamily: 'Spoqa Han Sans Neo',
   },
 
   h24: {
