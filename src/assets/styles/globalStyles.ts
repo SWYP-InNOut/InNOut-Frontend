@@ -1,3 +1,4 @@
+import { colors } from '@styles/theme';
 import { css } from '@emotion/react';
 
 export const globalStyles = css`
@@ -7,7 +8,7 @@ export const globalStyles = css`
 
   html {
     box-sizing: border-box;
-    font-family: 'SpoqaHanSansNeo-Regular', 'LINE Seed Sans KR', sans-serif;
+    font-family: 'SpoqaHanSansNeo-Bold', 'LINE Seed Sans', sans-serif;
     font-size: 62.5%;
   }
 
@@ -19,6 +20,7 @@ export const globalStyles = css`
     height: auto;
     min-height: 100vh;
     margin: 0 auto;
+    background-color: ${colors.yellow300};
 
     -webkit-overflow-scrolling: touch !important;
     -ms-overflow-style: none;

@@ -52,7 +52,9 @@ export const Main = styled.main`
   max-width: 512px;
   margin: 0 auto;
   overflow-x: hidden;
-
+  height: auto;
+  min-height: 100vh;
+  background-color: ${colors.white};
   &::-webkit-scrollbar {
     display: none;
   }
