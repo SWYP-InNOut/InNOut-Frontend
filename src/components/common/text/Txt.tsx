@@ -6,11 +6,13 @@ interface TextProps extends React.HTMLAttributes<HTMLDivElement> {
   color?: string;
   align?: string;
   lineHeight?: number;
+  fontFamily?: string;
 }
 
 const Txt = styled.span<TextProps>`
   font-size: ${({ variant }) => (variant ? fontStyles[variant].fontSize : 'inherit')};
   font-weight: ${({ variant }) => (variant ? fontStyles[variant].fontWeight : 'inherit')};
+  font-family: ${({ variant }) => (variant ? fontStyles[variant].fontFamily : 'inherit')};
   line-height: ${({ variant, lineHeight }) =>
     lineHeight ? `${lineHeight}px` : variant ? fontStyles[variant].lineHeight : 'inherit'};
   color: ${({ color }) => color || 'black'};
