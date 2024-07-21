@@ -162,7 +162,7 @@ const HomeMenuSliderContainer = styled.div<{ right: string }>`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   margin: 0 auto;
   overflow-x: hidden;
   transition: 0.5s;
