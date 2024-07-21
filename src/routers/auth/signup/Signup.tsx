@@ -14,12 +14,14 @@ import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { signup } from '@apis/auth/auth';
 import SocialLogin from '@components/auth/SocialLogin';
+import SendEmail from '@components/common/sendEmail/SendEmail';
 
 const Signup = () => {
   const methods = useForm<SignUpRequestDTO>({ mode: 'onChange' });
   const [nickname, setNickname] = useState('');
-  const [isDuplicateEmail, setIsDuplicateEmail] = useState(false);
+  const [isDuplicateEmail, setIsDuplicateEmail] = useState(true);
   const [isDuplicateNickname, setIsDuplicateNickname] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
   const {
     getValues,
     formState: { errors },
@@ -31,6 +33,7 @@ const Signup = () => {
         console.log('회원가입 성공:', data);
         if (data.code === 1000) {
           alert('회원가입에 성공했습니다.');
+          setIsComplete(true);
         } else if (data.code === 5004) {
           setIsDuplicateEmail(true);
           setIsDuplicateNickname(false);
@@ -94,95 +97,105 @@ const Signup = () => {
   }, []);
   return (
     <Layout hasHeader={false}>
-      <FormProvider {...methods}>
-        <Col padding={'54px 0 52px'}>
-          <div
-            css={css`
-              width: 211px;
-            `}
-          >
-            <LogoIcon />
-          </div>
-          <Txt
-            variant="b16"
-            color={colors.lightGray}
-            align="start"
-            css={css`
-              margin-left: 16px;
-            `}
-          >
-            가입하고 친구들과 함께 즐거운 작별을 경험해요.
-          </Txt>
-          <Col gap={8} padding={'0 16px 24px'}>
-            <Col padding={'32px 0 0'} gap={8}>
-              <Txt variant="t20" color={colors.darkGray}>
-                이메일
+      {isComplete ? (
+        <>
+          <Col padding={'0 16px'} margin={'64px 0 0 0'}>
+            <SendEmail type="email" />
+          </Col>
+        </>
+      ) : (
+        <>
+          <FormProvider {...methods}>
+            <Col padding={'54px 0 52px'}>
+              <div
+                css={css`
+                  width: 211px;
+                `}
+              >
+                <LogoIcon />
+              </div>
+              <Txt
+                variant="b16"
+                color={colors.lightGray}
+                align="start"
+                css={css`
+                  margin-left: 16px;
+                `}
+              >
+                가입하고 친구들과 함께 즐거운 작별을 경험해요.
               </Txt>
-              <TextInput
-                id={INPUT_TYPE.EMAIL}
-                options={CONFIG.EMAIL.option}
-                placeholder="example@gmail.com"
-              />
-              {renderError('EMAIL')}
-              {isDuplicateEmail && (
-                <ErrorMessage content={'이미 가입된 이메일입니다'} isError={true} />
-              )}
-            </Col>
-            <Col padding={'32px 0 0'} gap={8}>
-              <Txt variant="t20" color={colors.darkGray}>
-                비밀번호
-              </Txt>
-              <TextInput
-                id={INPUT_TYPE.PASSWORD}
-                options={CONFIG.PASSWORD.option}
-                type="password"
-                placeholder="비밀번호 입력"
-              />
-              {renderError('PASSWORD')}
-            </Col>
-            <Col padding={'32px 0 0'} gap={8}>
-              <Txt variant="t20" color={colors.darkGray}>
-                비밀번호 확인
-              </Txt>
-              <TextInput
-                id={INPUT_TYPE.CONFIRMPASSWORD}
-                type="password"
-                placeholder="비밀번호 재입력"
-              />
+              <Col gap={8} padding={'0 16px 24px'}>
+                <Col padding={'32px 0 0'} gap={8}>
+                  <Txt variant="t20" color={colors.darkGray}>
+                    이메일
+                  </Txt>
+                  <TextInput
+                    id={INPUT_TYPE.EMAIL}
+                    options={CONFIG.EMAIL.option}
+                    placeholder="example@gmail.com"
+                  />
+                  {renderError('EMAIL')}
+                  {isDuplicateEmail && (
+                    <ErrorMessage content={'이미 가입된 이메일입니다'} isError={true} />
+                  )}
+                </Col>
+                <Col padding={'32px 0 0'} gap={8}>
+                  <Txt variant="t20" color={colors.darkGray}>
+                    비밀번호
+                  </Txt>
+                  <TextInput
+                    id={INPUT_TYPE.PASSWORD}
+                    options={CONFIG.PASSWORD.option}
+                    type="password"
+                    placeholder="비밀번호 입력"
+                  />
+                  {renderError('PASSWORD')}
+                </Col>
+                <Col padding={'32px 0 0'} gap={8}>
+                  <Txt variant="t20" color={colors.darkGray}>
+                    비밀번호 확인
+                  </Txt>
+                  <TextInput
+                    id={INPUT_TYPE.CONFIRMPASSWORD}
+                    type="password"
+                    placeholder="비밀번호 재입력"
+                  />
 
-              {isConfirmPasswordError && (
-                <ErrorMessage
-                  content="비밀번호가 일치하지 않습니다"
-                  isError={isConfirmPasswordError}
-                />
-              )}
-            </Col>
-            <Col padding={'32px 0 0'} gap={8}>
-              <Col>
-                <Txt variant="t20" color={colors.darkGray}>
-                  닉네임
-                </Txt>
-                <Txt variant="c14" color={colors.lightGray}>
-                  닉네임은 나중에도 변경할 수 있어요!
-                </Txt>
+                  {isConfirmPasswordError && (
+                    <ErrorMessage
+                      content="비밀번호가 일치하지 않습니다"
+                      isError={isConfirmPasswordError}
+                    />
+                  )}
+                </Col>
+                <Col padding={'32px 0 0'} gap={8}>
+                  <Col>
+                    <Txt variant="t20" color={colors.darkGray}>
+                      닉네임
+                    </Txt>
+                    <Txt variant="c14" color={colors.lightGray}>
+                      닉네임은 나중에도 변경할 수 있어요!
+                    </Txt>
+                  </Col>
+                  <TextInput
+                    id={INPUT_TYPE.NICKNAME}
+                    options={CONFIG.NICKNAME.option}
+                    content={nickname}
+                  />
+                  {renderError('NICKNAME')}
+                  {isDuplicateNickname && (
+                    <ErrorMessage content={'이미 사용 중인 닉네임입니다'} isError={true} />
+                  )}
+                </Col>
               </Col>
-              <TextInput
-                id={INPUT_TYPE.NICKNAME}
-                options={CONFIG.NICKNAME.option}
-                content={nickname}
-              />
-              {renderError('NICKNAME')}
-              {isDuplicateNickname && (
-                <ErrorMessage content={'이미 사용 중인 닉네임입니다'} isError={true} />
-              )}
+              <Col padding={'0 16px'}>
+                <PrimaryButton title="가입" disabled={false} onClick={handleSignup} />
+                <SocialLogin />
+              </Col>
             </Col>
-          </Col>
-          <Col padding={'0 16px'}>
-            <PrimaryButton title="가입" disabled={false} onClick={handleSignup} />
-            <SocialLogin />
-          </Col>
-        </Col>
-      </FormProvider>
+          </FormProvider>
+        </>
+      )}
     </Layout>
   );
 };
