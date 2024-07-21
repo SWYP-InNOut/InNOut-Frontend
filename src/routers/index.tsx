@@ -5,11 +5,10 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 import Signup from '@routers/auth/signup/Signup';
-import Login from '@routers/login/Login';
-import PwdSearch from '@routers/pwdSearch/PwdSearch';
-import NickNameSetting from './nickname/NickNameSetting';
+import Login from '@routers/auth/login/Login';
+import PwdSearch from '@routers/auth/pwdsearch/PwdSearch';
+import NickNameSetting from './auth/nickname/NickNameSetting';
 import MyHome from '@routers/home/MyHome';
-
 
 const Router = () => {
   const router = createBrowserRouter(
