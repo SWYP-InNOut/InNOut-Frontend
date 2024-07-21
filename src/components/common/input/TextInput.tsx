@@ -6,15 +6,17 @@ import { useEffect, useState } from 'react';
 
 // Props 타입 정의
 interface TextInputProps {
+  type?: string;
   id: InputType;
   options?: RegisterOptions;
   placeholder?: string;
+  content?: string;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const TextInput = (props: TextInputProps) => {
-  const { id, options, placeholder, onKeyDown, ...rest } = props;
-  const { register, watch } = useFormContext();
+  const { id, placeholder, onKeyDown, content, options, type = 'text', ...rest } = props;
+  const { register, watch, setValue } = useFormContext();
   const value = watch(id);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -24,12 +26,16 @@ const TextInput = (props: TextInputProps) => {
     } else {
       setIsFocused(false);
     }
-  });
+    if (content != null && content !== '') {
+      setValue(id, content);
+      setIsFocused(true);
+    }
+  }, [content]);
 
   return (
     <InputContainer isFocused={isFocused}>
       <StyledInput
-        type="text"
+        type={type}
         autoComplete="off"
         placeholder={placeholder}
         {...register(id, options)}
@@ -40,11 +46,12 @@ const TextInput = (props: TextInputProps) => {
 };
 
 const StyledInput = styled.input`
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  color: ${colors.black};
+  color: ${colors.darkGray};
   font-size: 1.6rem;
   font-weight: 400;
   line-height: 24px;

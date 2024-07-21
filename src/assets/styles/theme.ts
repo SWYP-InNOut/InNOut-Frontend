@@ -1,6 +1,7 @@
 export const colors = {
   black: '#000000',
   white: '#FFFFFF',
+  darkGray: '#303030',
   lightGray: '#B4B4B4',
   errRed: '#F38142',
   socialKakao: '#FEE500',
@@ -45,6 +46,7 @@ interface FontStyle {
   fontWeight: string;
   lineHeight: string;
   fontFamily: string;
+  letterSpacing?: string;
 }
 
 export const fontStyles: Record<string, FontStyle> = {
@@ -74,6 +76,7 @@ export const fontStyles: Record<string, FontStyle> = {
     fontWeight: '700',
     lineHeight: '30px',
     fontFamily: 'Spoqa Han Sans Neo',
+    letterSpacing: '-0.4px',
   },
   t18: {
     fontSize: '1.8rem',
@@ -116,6 +119,13 @@ export const fontStyles: Record<string, FontStyle> = {
     fontWeight: '400',
     lineHeight: '16.5px',
     fontFamily: 'LINE Seed Sans KR',
+  },
+  //소셜 글꼴 추가
+  social: {
+    fontSize: '1.4rem',
+    fontWeight: '500',
+    lineHeight: '14px',
+    fontFamily: 'Spoqa Han Sans Neo',
   },
 };
 
