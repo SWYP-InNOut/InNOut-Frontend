@@ -4,3 +4,12 @@ interface SignUpRequestDTO {
   confirmPassword: string;
   nickName: string;
 }
+
+interface LoginRequestDTO {
+  email: string;
+  password: string;
+}
+
+interface PwdSearchRequestDTO {
+  email: string;
+}

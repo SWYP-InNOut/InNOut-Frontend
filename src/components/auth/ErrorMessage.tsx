@@ -10,25 +10,28 @@ interface ErrorMessageProps extends React.ButtonHTMLAttributes<HTMLButtonElement
   padding?: string;
   content: string;
   isError: boolean;
+  justifyContent?: string;
 }
 
 const ErrorMessage: React.FC<ErrorMessageProps> = ({
   content,
   isError,
   padding = '0',
+  justifyContent = 'flex-start',
   ...rest
 }) => {
   return (
     <Row
       gap={6}
       alignItems="center"
+      justifyContent={justifyContent}
       padding={padding}
       css={css`
         height: 16px;
       `}
     >
       {isError ? <ErrorIcon /> : <CheckIcon />}
-      <Txt lineHeight="16px" variant="c14" color={isError ? colors.errRed : colors.gray300}>
+      <Txt lineHeight={16} variant="c14" color={isError ? colors.errRed : colors.gray300}>
         {content}
       </Txt>
     </Row>

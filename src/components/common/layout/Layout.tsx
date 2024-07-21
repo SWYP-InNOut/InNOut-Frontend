@@ -50,10 +50,11 @@ const Layout = (props: LayoutProps) => {
 export const Main = styled.main`
   position: relative;
   max-width: 512px;
-  height: calc(var(--vh, 1vh) * 100);
   margin: 0 auto;
   overflow-x: hidden;
-
+  height: auto;
+  min-height: 100vh;
+  background-color: ${colors.white};
   &::-webkit-scrollbar {
     display: none;
   }

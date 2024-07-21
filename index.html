@@ -13,14 +13,37 @@
         font-style: normal;
       }
       @font-face {
-        font-family: 'LINE Seed Sans KR';
+        font-family: 'LINE Seed Sans';
         src: url('./src/assets/fonts/LINESeedKR-Bd.ttf') format('ttf');
+        font-weight: 700;
         font-style: normal;
       }
       @font-face {
-        font-family: 'LINE Seed Sans KR';
+        font-family: 'LINE Seed Sans';
         src: url('./src/assets/fonts/LINESeedKR-Rg.ttf') format('ttf');
+        font-weight: 400;
         font-style: normal;
+      }
+      @font-face {
+        font-family: 'LINE Seed Sans';
+        src: url('./src/assets/fonts/LINESeedSans_A_Bd.ttf') format('ttf');
+        font-weight: 700;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'LINE Seed Sans';
+        src: url('./src/assets/fonts/LINESeedSans_A_Rg.ttf') format('ttf');
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      /* 새로운 언어별 폰트 설정 */
+      html:lang(ko) {
+        font-family: 'LINE Seed Sans', sans-serif; /* 한글 폰트 */
+      }
+
+      html:lang(en) {
+        font-family: 'LINE Seed Sans', sans-serif; /* 영어 폰트 */
       }
     </style>
   </head>

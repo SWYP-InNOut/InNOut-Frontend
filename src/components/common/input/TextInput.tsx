@@ -26,7 +26,7 @@ const TextInput = (props: TextInputProps) => {
     } else {
       setIsFocused(false);
     }
-    if (content) {
+    if (content != null && content !== '') {
       setValue(id, content);
       setIsFocused(true);
     }
@@ -51,11 +51,11 @@ const StyledInput = styled.input`
   align-items: center;
   justify-content: center;
   width: 100%;
-  color: ${colors.black};
+  color: ${colors.darkGray};
   font-size: 1.6rem;
   font-weight: 400;
   line-height: 24px;
-  font-family: 'LINE Seed Sans KR';
+  font-family: 'LINE Seed Sans';
   appearance: none;
   background-color: transparent;
   border: none;
@@ -65,7 +65,7 @@ const StyledInput = styled.input`
   }
 
   &::placeholder {
-    font-family: 'LINE Seed Sans KR';
+    font-family: 'LINE Seed Sans';
     font-size: 1.6rem;
     font-weight: 400;
     color: ${colors.lightGray};

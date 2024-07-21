@@ -1,8 +1,12 @@
 import { RegisterOptions } from 'react-hook-form';
 
+interface ValidationRule {
+  pattern: RegExp;
+  errorMessages: string;
+}
+
 interface ConfigField {
-  pattern: RegExp[];
-  errorMessages: string[];
+  validation: ValidationRule[];
   option: RegisterOptions;
 }
 
@@ -18,8 +22,12 @@ export type InputType = (typeof INPUT_TYPE)[keyof typeof INPUT_TYPE];
 
 export const CONFIG: Record<ConfigKeys, ConfigField> = {
   EMAIL: {
-    pattern: [/^[^s@]+@[^s@]+.[^s@]+$/],
-    errorMessages: ['잘못된 이메일 형식입니다'],
+    validation: [
+      {
+        pattern: /^[^s@]+@[^s@]+.[^s@]+$/,
+        errorMessages: '잘못된 이메일 형식입니다',
+      },
+    ],
     option: {
       required: true,
       pattern: {
@@ -29,11 +37,17 @@ export const CONFIG: Record<ConfigKeys, ConfigField> = {
     },
   },
   PASSWORD: {
-    pattern: [
-      /^(?:(?=.*[A-Za-z])(?=.*\d)|(?=.*[A-Za-z])(?=.*[!@#$%^&*])|(?=.*\d)(?=.*[!@#$%^&*]))[A-Za-z\d!@#$%^&*]+$/,
-      /^.{8,20}$/,
+    validation: [
+      {
+        pattern:
+          /^(?:(?=.*[A-Za-z])(?=.*\d)|(?=.*[A-Za-z])(?=.*[!@#$%^&*])|(?=.*\d)(?=.*[!@#$%^&*]))[A-Za-z\d!@#$%^&*]+$/,
+        errorMessages: '영문/숫자/특수문자 중 2가지 이상 포함',
+      },
+      {
+        pattern: /^.{8,20}$/,
+        errorMessages: '8자 이상 20자 이하',
+      },
     ],
-    errorMessages: ['영문/숫자/특수문자 중 2가지 이상 포함', '8자 이상 20자 이하'],
     option: {
       required: true,
       pattern: {
@@ -44,15 +58,22 @@ export const CONFIG: Record<ConfigKeys, ConfigField> = {
     },
   },
   CONFIRMPASSWORD: {
-    pattern: [],
-    errorMessages: [],
+    validation: [],
     option: {
       required: true,
     },
   },
   NICKNAME: {
-    pattern: [/^[가-힣a-zA-Z0-9\s]+$/, /^.{2,10}$/],
-    errorMessages: ['한글(모음,자음 단독 사용불가)/영어/숫자', '공백 포함 2자 이상 10자 이하'],
+    validation: [
+      {
+        pattern: /^[가-힣a-zA-Z0-9\s]+$/,
+        errorMessages: '한글(모음,자음 단독 사용불가)/영어/숫자',
+      },
+      {
+        pattern: /^.{2,10}$/,
+        errorMessages: '공백 포함 2자 이상 10자 이하',
+      },
+    ],
     option: {
       required: true,
       pattern: {

@@ -61,7 +61,7 @@ export const fontStyles: Record<string, FontStyle> = {
     fontSize: '2.8rem',
     fontWeight: '700',
     lineHeight: '47px',
-    fontFamily: 'LINE Seed Sans KR',
+    fontFamily: 'Spoqa Han Sans Neo',
   },
 
   h24: {
@@ -82,13 +82,13 @@ export const fontStyles: Record<string, FontStyle> = {
     fontSize: '1.8rem',
     fontWeight: '400',
     lineHeight: '27px',
-    fontFamily: 'LINE Seed Sans KR',
+    fontFamily: 'LINE Seed Sans',
   },
   t16: {
     fontSize: '1.6rem',
     fontWeight: '700',
     lineHeight: '24px',
-    fontFamily: 'LINE Seed Sans KR',
+    fontFamily: 'LINE Seed Sans',
   },
   b16: {
     fontSize: '1.6rem',
@@ -100,25 +100,32 @@ export const fontStyles: Record<string, FontStyle> = {
     fontSize: '1.3rem',
     fontWeight: '400',
     lineHeight: '19.5px',
-    fontFamily: 'LINE Seed Sans KR',
+    fontFamily: 'LINE Seed Sans',
   },
   c14: {
     fontSize: '1.4rem',
     fontWeight: '400',
     lineHeight: '21px',
-    fontFamily: 'LINE Seed Sans KR',
+    fontFamily: 'LINE Seed Sans',
   },
   c12: {
     fontSize: '1.2rem',
     fontWeight: '400',
     lineHeight: '18px',
-    fontFamily: 'LINE Seed Sans KR',
+    fontFamily: 'LINE Seed Sans',
   },
   c11: {
     fontSize: '1.1rem',
     fontWeight: '400',
     lineHeight: '16.5px',
-    fontFamily: 'LINE Seed Sans KR',
+    fontFamily: 'LINE Seed Sans',
+  },
+  //소셜 글꼴 추가
+  social: {
+    fontSize: '1.4rem',
+    fontWeight: '500',
+    lineHeight: '14px',
+    fontFamily: 'Spoqa Han Sans Neo',
   },
 };
 
