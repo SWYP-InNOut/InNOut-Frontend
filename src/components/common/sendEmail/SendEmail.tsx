@@ -4,6 +4,7 @@ import Layout from '../layout/Layout';
 import { Col } from '../flex/Flex';
 import Txt from '../text/Txt';
 import { colors } from '@styles/theme';
+import { css } from '@emotion/react';
 
 interface SendEmailProps {
   type: 'email' | 'pwd';
@@ -29,7 +30,12 @@ const SendEmail = ({ type }: SendEmailProps) => {
   return (
     <div>
       <Col gap={'4'}>
-        <Txt variant="h32" styles={{ whiteSpace: 'pre-wrap' }}>
+        <Txt
+          variant="h32"
+          css={css`
+            white-space: pre-wrap;
+          `}
+        >
           {content?.title}
         </Txt>
         <Txt
