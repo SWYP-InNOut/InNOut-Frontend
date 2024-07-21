@@ -7,12 +7,14 @@ import {
 import Signup from '@routers/auth/signup/Signup';
 import Login from './Login/Login';
 import PwdSearch from './PwdSearch/PwdSearch';
+import Login from '@routers/Login/Login';
+import MyHome from '@routers/home/MyHome';
 
 const Router = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route index element={<div />} />
+        <Route index element={<MyHome />} />
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />
         <Route path="pwdsearch" element={<PwdSearch />} />
