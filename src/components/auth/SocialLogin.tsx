@@ -16,7 +16,7 @@ const handleGoogleLogin = () => {
 const SocialLogin = () => {
   return (
     <Col>
-      <Row padding={'68px 0px 12px 0px'} gap={'12'} alignItems="center">
+      <Row padding={'24px 0px 12px 0px'} gap={'12'} alignItems="center">
         <Line />
         <Txt variant="c14" color={colors.gray200} style={{ whiteSpace: 'nowrap' }}>
           또는 간편하게 SNS 계정으로

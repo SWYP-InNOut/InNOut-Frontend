@@ -13,6 +13,7 @@ import { generateNickname } from '@utils/generateNickname';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { signup } from '@apis/auth/auth';
+import SocialLogin from '@components/auth/SocialLogin';
 
 const Signup = () => {
   const methods = useForm<SignUpRequestDTO>({ mode: 'onChange' });
@@ -56,6 +57,8 @@ const Signup = () => {
     return !value || !regex.test(value);
   };
   const handleSignup = () => {
+    if (!methods.formState.isValid || isConfirmPasswordError) return;
+
     const signUpRequest: SignUpRequestDTO = {
       nickName,
       email,
@@ -92,7 +95,7 @@ const Signup = () => {
   return (
     <Layout hasHeader={false}>
       <FormProvider {...methods}>
-        <Col padding={'54px 0 100px'}>
+        <Col padding={'54px 0 52px'}>
           <div
             css={css`
               width: 211px;
@@ -175,11 +178,8 @@ const Signup = () => {
             </Col>
           </Col>
           <Col padding={'0 16px'}>
-            <PrimaryButton
-              title="가입"
-              disabled={!methods.formState.isValid || isConfirmPasswordError}
-              onClick={handleSignup}
-            />
+            <PrimaryButton title="가입" disabled={false} onClick={handleSignup} />
+            <SocialLogin />
           </Col>
         </Col>
       </FormProvider>
