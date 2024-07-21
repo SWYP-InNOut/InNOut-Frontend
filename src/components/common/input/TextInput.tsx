@@ -26,7 +26,7 @@ const TextInput = (props: TextInputProps) => {
     } else {
       setIsFocused(false);
     }
-    if (content) {
+    if (content != null && content !== '') {
       setValue(id, content);
       setIsFocused(true);
     }
@@ -51,7 +51,7 @@ const StyledInput = styled.input`
   align-items: center;
   justify-content: center;
   width: 100%;
-  color: ${colors.black};
+  color: ${colors.darkGray};
   font-size: 1.6rem;
   font-weight: 400;
   line-height: 24px;

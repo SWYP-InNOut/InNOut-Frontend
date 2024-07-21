@@ -3,7 +3,7 @@ import Txt from '@components/common/text/Txt';
 import PrimaryButton from '@components/common/button/PrimaryButton';
 import TextInput from '@components/common/input/TextInput';
 import { CONFIG, INPUT_TYPE, InputType } from '@constants/form';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, set, useForm, useWatch } from 'react-hook-form';
 import { Col } from '@components/common/flex/Flex';
 import { LogoIcon } from '@icons/index';
 import Layout from '@components/common/layout/Layout';
@@ -17,16 +17,26 @@ import { signup } from '@apis/auth/auth';
 const Signup = () => {
   const methods = useForm<SignUpRequestDTO>({ mode: 'onChange' });
   const [nickname, setNickname] = useState('');
+  const [isDuplicateEmail, setIsDuplicateEmail] = useState(false);
+  const [isDuplicateNickname, setIsDuplicateNickname] = useState(false);
   const {
-    watch,
+    getValues,
     formState: { errors },
   } = methods;
-  // useMutation 훅을 사용하여 signup 함수를 호출합니다.
   const { mutate, isLoading, isError, data, error } = useMutation(
     (signUpRequest: SignUpRequestDTO) => signup(signUpRequest),
     {
       onSuccess: (data) => {
         console.log('회원가입 성공:', data);
+        if (data.code === 1000) {
+          alert('회원가입에 성공했습니다.');
+        } else if (data.code === 5004) {
+          setIsDuplicateEmail(true);
+          setIsDuplicateNickname(false);
+        } else if (data.code === 5005) {
+          setIsDuplicateEmail(false);
+          setIsDuplicateNickname(true);
+        }
       },
       onError: (error) => {
         console.error('회원가입 실패:', error);
@@ -34,40 +44,42 @@ const Signup = () => {
     }
   );
 
-  const isConfirmPasswordError =
-    !watch(INPUT_TYPE.CONFIRMPASSWORD) ||
-    watch(INPUT_TYPE.PASSWORD) !== watch(INPUT_TYPE.CONFIRMPASSWORD);
+  const nickName = getValues(INPUT_TYPE.NICKNAME);
+  const email = getValues(INPUT_TYPE.EMAIL);
+  const password = getValues(INPUT_TYPE.PASSWORD);
+  const confirmPassword = getValues(INPUT_TYPE.CONFIRMPASSWORD);
+
+  const isConfirmPasswordError = !confirmPassword || password !== confirmPassword;
 
   const handleCheckError = (id: InputType, regex: RegExp) => {
-    const value = watch(id);
-    return !regex.test(value);
+    const value = getValues(id);
+    return !value || !regex.test(value);
   };
   const handleSignup = () => {
     const signUpRequest: SignUpRequestDTO = {
-      nickName: watch(INPUT_TYPE.NICKNAME),
-      email: watch(INPUT_TYPE.EMAIL),
-      password: watch(INPUT_TYPE.PASSWORD),
-      confirmPassword: watch(INPUT_TYPE.CONFIRMPASSWORD),
+      nickName,
+      email,
+      password,
+      confirmPassword,
     };
-
     mutate(signUpRequest);
   };
   const renderError = (id: keyof typeof INPUT_TYPE): React.ReactNode => {
-    const errorComponents = CONFIG[id].pattern?.map((regex, index) => {
-      const message = CONFIG[id].errorMessages[index] || '유효하지 않은 입력입니다.';
+    const errorComponents = CONFIG[id].validation?.map((validationRule, index) => {
+      const message = validationRule.errorMessages || '유효하지 않은 입력입니다.';
       return INPUT_TYPE[id] === 'email' ? (
-        handleCheckError(INPUT_TYPE[id], regex) && (
+        handleCheckError(INPUT_TYPE[id], validationRule.pattern) && (
           <ErrorMessage
             key={index}
             content={message}
-            isError={handleCheckError(INPUT_TYPE[id], regex)}
+            isError={handleCheckError(INPUT_TYPE[id], validationRule.pattern)}
           />
         )
       ) : (
         <ErrorMessage
           key={index}
           content={message}
-          isError={handleCheckError(INPUT_TYPE[id], regex)}
+          isError={handleCheckError(INPUT_TYPE[id], validationRule.pattern)}
         />
       );
     });
@@ -109,6 +121,9 @@ const Signup = () => {
                 placeholder="example@gmail.com"
               />
               {renderError('EMAIL')}
+              {isDuplicateEmail && (
+                <ErrorMessage content={'이미 가입된 이메일입니다'} isError={true} />
+              )}
             </Col>
             <Col padding={'32px 0 0'} gap={8}>
               <Txt variant="t20" color={colors.darkGray}>
@@ -154,6 +169,9 @@ const Signup = () => {
                 content={nickname}
               />
               {renderError('NICKNAME')}
+              {isDuplicateNickname && (
+                <ErrorMessage content={'이미 사용 중인 닉네임입니다'} isError={true} />
+              )}
             </Col>
           </Col>
           <Col padding={'0 16px'}>
