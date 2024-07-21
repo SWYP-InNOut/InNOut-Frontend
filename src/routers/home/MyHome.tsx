@@ -16,67 +16,57 @@ const MyHome = () => {
   };
 
   return (
-    <div
-      css={css`
-        width: inherit;
-        height: auto;
-        min-height: 100vh;
-        position: relative;
-        overflow-x: hidden;
-      `}
+    <Layout
+      hasHeader={true}
+      HeaderLeft={
+        <button
+          css={css`
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+          `}
+          onClick={toggleMenu}
+        >
+          <MenuIcon />
+        </button>
+      }
+      HeaderCenter={
+        <div
+          css={css`
+            width: 104px;
+          `}
+        >
+          <LogoIcon />
+        </div>
+      }
+      HeaderRight={
+        <button
+          css={css`
+            width: 29px;
+            cursor: pointer;
+          `}
+        >
+          <Txt variant="b16" color={colors.yellow700}>
+            공유
+          </Txt>
+        </button>
+      }
     >
-      <Layout
-        hasHeader={true}
-        HeaderLeft={
-          <button
-            css={css`
-              background-color: transparent;
-              border: none;
-              cursor: pointer;
-            `}
-            onClick={toggleMenu}
-          >
-            <MenuIcon />
-          </button>
-        }
-        HeaderCenter={
-          <div
-            css={css`
-              width: 104px;
-            `}
-          >
-            <LogoIcon />
-          </div>
-        }
-        HeaderRight={
-          <button
-            css={css`
-              width: 29px;
-              cursor: pointer;
-            `}
-          >
-            <Txt variant="b16" color={colors.yellow700}>
-              공유
-            </Txt>
-          </button>
-        }
-      >
-        <Col padding={'24px 28px'}>
-          <Row gap={'4'} justifyContent="start" alignItems="end">
-            <Txt variant="h28" lineHeight={42}>
-              사용자닉네임최대길이
-            </Txt>
-            <Txt variant="t18" color={colors.lightGray}>
-              님의 홈
-            </Txt>
-          </Row>
-        </Col>
-        <Col padding={'0 16px'}>
-          <ChattingBox></ChattingBox>
-        </Col>
-      </Layout>
+      <Col padding={'24px 28px'}>
+        <Row gap={'4'} justifyContent="start" alignItems="end">
+          <Txt variant="h28" lineHeight={42}>
+            사용자닉네임최대길이
+          </Txt>
+          <Txt variant="t18" color={colors.lightGray}>
+            님의 홈
+          </Txt>
+        </Row>
+      </Col>
+      <Col padding={'0 16px'}>
+        <ChattingBox></ChattingBox>
+      </Col>
       <HomeMenuSlider isOpen={isOpen} handleMenu={toggleMenu} />
-    </div>
+    </Layout>
   );
 };
 
