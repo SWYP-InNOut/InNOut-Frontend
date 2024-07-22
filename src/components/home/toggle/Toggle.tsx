@@ -17,6 +17,7 @@ const Container = styled.div<{ on: boolean }>`
   width: 54px;
   height: 32px;
   border-radius: 132px;
+  cursor: pointer;
   background-color: ${({ on }) => (on ? '#84cffa' : colors.gray200)};
 `;
 

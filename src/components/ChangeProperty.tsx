@@ -11,11 +11,12 @@ interface ChangePropertyProps {
   title: string;
   subtitle?: string;
   content?: string;
+  placeholder?: string;
   id: keyof typeof INPUT_TYPE;
 }
 
 const ChangeProperty = (props: ChangePropertyProps) => {
-  const { title, subtitle, content, id } = props;
+  const { title, subtitle, content, id, placeholder } = props;
   const [isDuplicateNickname, setIsDuplicateNickname] = useState(false);
   const methods = useForm({
     mode: 'onChange',
@@ -61,11 +62,7 @@ const ChangeProperty = (props: ChangePropertyProps) => {
             )}
           </Col>
           <FormProvider {...methods}>
-            <TextInput
-              id={INPUT_TYPE.NICKNAME}
-              placeholder="닉네임을 입력해주세요"
-              content={content}
-            />
+            <TextInput id={INPUT_TYPE.NICKNAME} placeholder={placeholder} content={content} />
           </FormProvider>
         </Col>
         <Col gap={'2'}>{renderError()}</Col>
