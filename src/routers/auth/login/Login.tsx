@@ -15,20 +15,25 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { login } from '@apis/auth/auth';
 import ErrorMessage from '@components/auth/ErrorMessage';
+import useAuthStore from '@stores/auth';
+import { BaseResponse } from '@interfaces/api/base';
 
 const Login = () => {
   const navigate = useNavigate();
+  const loginStore = useAuthStore((store) => store.login);
   const methods = useForm<LoginRequestDTO>({ mode: 'onChange' });
   const [showError, setShowError] = useState(false);
   const {
-    watch,
+    getValues,
     formState: { isValid },
   } = methods;
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
       console.log('로그인 성공:', data);
-
-      // 로그인 성공 후 리다이렉트 어디로
+      const accessToken = data.headers['authorization']?.split(' ')[1];
+      const result: BaseResponse<string> = data.data;
+      const userId = result.result;
+      loginStore(accessToken, userId);
       navigate('/home');
     },
     onError: (error) => {
@@ -38,8 +43,8 @@ const Login = () => {
 
   const handleLogin = () => {
     const loginRequest: LoginRequestDTO = {
-      email: watch(INPUT_TYPE.EMAIL),
-      password: watch(INPUT_TYPE.PASSWORD),
+      email: getValues(INPUT_TYPE.EMAIL),
+      password: getValues(INPUT_TYPE.PASSWORD),
     };
 
     loginMutation.mutate(loginRequest);
