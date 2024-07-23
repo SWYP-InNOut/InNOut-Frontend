@@ -6,13 +6,11 @@ import { Col } from '../flex/Flex';
 
 interface AlertModalProps {
   isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
   content: React.ReactNode;
   button: React.ReactNode;
 }
 
-const AlertModal: React.FC<AlertModalProps> = ({ isOpen, onClose, onConfirm, content, button }) => {
+const AlertModal: React.FC<AlertModalProps> = ({ isOpen, content, button }) => {
   if (!isOpen) return null;
 
   return (
