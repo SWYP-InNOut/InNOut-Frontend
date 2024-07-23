@@ -1,3 +1,4 @@
+import { colors } from '@styles/theme';
 import { css } from '@emotion/react';
 
 export const globalStyles = css`
@@ -7,7 +8,7 @@ export const globalStyles = css`
 
   html {
     box-sizing: border-box;
-    font-family: 'SpoqaHanSansNeo-Regular', 'LINE Seed Sans KR', sans-serif;
+    font-family: 'LINE Seed Sans', 'Spoqa Han Sans Neo', sans-serif;
     font-size: 62.5%;
   }
 
@@ -16,9 +17,10 @@ export const globalStyles = css`
   #root {
     width: 100vw;
     max-width: 512px;
-    height: auto;
-    min-height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    overflow-x: hidden;
     margin: 0 auto;
+    background-color: ${colors.white};
 
     -webkit-overflow-scrolling: touch !important;
     -ms-overflow-style: none;

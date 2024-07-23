@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '@components/common/layout/Layout';
 import Txt from '@components/common/text/Txt';
 import { Logo, RightArrowIcon } from '@icons/index';
@@ -19,6 +19,7 @@ import ErrorMessage from '@components/auth/ErrorMessage';
 const Login = () => {
   const navigate = useNavigate();
   const methods = useForm<LoginRequestDTO>({ mode: 'onChange' });
+  const [showError, setShowError] = useState(false);
   const {
     watch,
     formState: { isValid },
@@ -48,6 +49,10 @@ const Login = () => {
     navigate('/signup');
   };
 
+  const handleFindPassword = () => {
+    navigate('/pwdsearch');
+  };
+
   return (
     <Layout hasHeader={false}>
       <Col padding={'0 16px'} margin={'64px 0 0 0'}>
@@ -72,13 +77,25 @@ const Login = () => {
               <TextInput id="password" placeholder="비밀번호(숫자, 영문, 특수문자 8~20자리)" />
             </Col>
             <Col gap={'12'} alignItems="center">
-              <ErrorMessage
-                content={'가입되지 않은 이메일이거나 잘못된 비밀번호입니다'}
-                isError={true}
-                justifyContent={'center'}
-              />
+              <div
+                css={css`
+                  visibility: ${showError ? 'visible' : 'hidden'};
+                `}
+              >
+                <ErrorMessage
+                  content={'가입되지 않은 이메일이거나 잘못된 비밀번호입니다'}
+                  isError={true}
+                  justifyContent={'center'}
+                />
+              </div>
+
               <PrimaryButton title="로그인" onClick={handleLogin} />
-              <Txt variant="t16" align="center">
+              <Txt
+                variant="t16"
+                align="center"
+                onClick={handleFindPassword}
+                style={{ cursor: 'pointer' }}
+              >
                 아이디(이메일)·비밀번호 찾기
               </Txt>
             </Col>

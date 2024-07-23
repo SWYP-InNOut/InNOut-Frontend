@@ -16,7 +16,7 @@ const Layout = (props: LayoutProps) => {
   const { hasHeader = true, HeaderLeft, HeaderCenter, HeaderRight, children } = props;
 
   return (
-    <Main>
+    <Main hasHeader={hasHeader}>
       {hasHeader && (
         <HeaderContainer>
           <div
@@ -47,20 +47,28 @@ const Layout = (props: LayoutProps) => {
   );
 };
 
-export const Main = styled.main`
+export const Main = styled.main<{ hasHeader: boolean }>`
   position: relative;
   max-width: 512px;
   margin: 0 auto;
-  overflow-x: hidden;
+  height: calc(var(--vh, 1vh) * 100);
+  background-color: ${colors.white};
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none;
 
-  &::-webkit-scrollbar {
+  ::-webkit-scrollbar {
     display: none;
+    width: 0; /* Remove scrollbar space */
+    height: 0;
+    background: transparent; /* Optional: just make scrollbar invisible */
+    -webkit-appearance: none;
   }
 `;
 
 export const HeaderContainer = styled.header`
-  background-color: ${colors.white};
   position: sticky;
+  background-color: ${colors.white};
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;

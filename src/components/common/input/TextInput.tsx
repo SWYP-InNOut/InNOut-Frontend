@@ -55,7 +55,7 @@ const StyledInput = styled.input`
   font-size: 1.6rem;
   font-weight: 400;
   line-height: 24px;
-  font-family: 'LINE Seed Sans KR';
+  font-family: 'LINE Seed Sans';
   appearance: none;
   background-color: transparent;
   border: none;
@@ -65,7 +65,7 @@ const StyledInput = styled.input`
   }
 
   &::placeholder {
-    font-family: 'LINE Seed Sans KR';
+    font-family: 'LINE Seed Sans';
     font-size: 1.6rem;
     font-weight: 400;
     color: ${colors.lightGray};

@@ -5,5 +5,33 @@ import Logo from '@icons/logo_32.svg?react'; // 글씨 없는 로고
 import GoogleIcon from '@icons/google.svg?react';
 import KakaoIcon from '@icons/kakao.svg?react';
 import RightArrowIcon from '@icons/rightarrow.svg?react';
+import SendEmailIcon from '@icons/sendEmail.svg?react';
+import SendPwdIcon from '@icons/sendPwd.svg?react';
+import MenuIcon from '@icons/hamburger.svg?react';
+import CloseIcon from '@icons/close.svg?react';
+import SearchIcon from '@icons/search.svg?react';
+import IdCardIcon from '@icons/idcard.svg?react';
+import LockIcon from '@icons/lock.svg?react';
+import PrivateIcon from '@icons/private.svg?react';
+import LogoutIcon from '@icons/power.svg?react';
+import NextIcon from '@icons/next.svg?react';
 
-export { LogoIcon, ErrorIcon, CheckIcon, Logo, KakaoIcon, GoogleIcon, RightArrowIcon };
+export {
+  LogoIcon,
+  ErrorIcon,
+  CheckIcon,
+  Logo,
+  KakaoIcon,
+  GoogleIcon,
+  RightArrowIcon,
+  SendEmailIcon,
+  SendPwdIcon,
+  MenuIcon,
+  CloseIcon,
+  SearchIcon,
+  IdCardIcon,
+  LockIcon,
+  PrivateIcon,
+  LogoutIcon,
+  NextIcon,
+};
