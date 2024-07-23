@@ -5,8 +5,8 @@ import Logo from '@icons/logo_32.svg?react'; // 글씨 없는 로고
 import GoogleIcon from '@icons/google.svg?react';
 import KakaoIcon from '@icons/kakao.svg?react';
 import RightArrowIcon from '@icons/rightarrow.svg?react';
-import SendEmailIcon from '@icons/sendEmail.svg?react';
-import SendPwdIcon from '@icons/sendPwd.svg?react';
+import SendEmailIcon from '@icons/membership.svg?react';
+import SendPwdIcon from '@icons/password.svg?react';
 import MenuIcon from '@icons/hamburger.svg?react';
 import CloseIcon from '@icons/close.svg?react';
 import SearchIcon from '@icons/search.svg?react';
