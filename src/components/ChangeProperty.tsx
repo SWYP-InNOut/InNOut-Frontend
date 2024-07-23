@@ -32,7 +32,9 @@ const ChangeProperty = (props: ChangePropertyProps) => {
 
   const handleCheckError = (id: string, regex: RegExp) => {
     const value = getValues(id);
-    return !value || !regex.test(value);
+    if (!value) return 'default';
+    else if (regex.test(value)) return 'success';
+    else return 'error';
   };
 
   const renderError = (): React.ReactNode => {
@@ -42,7 +44,7 @@ const ChangeProperty = (props: ChangePropertyProps) => {
         <ErrorMessage
           key={index}
           content={message}
-          isError={handleCheckError(INPUT_TYPE[id], validationRule.pattern)}
+          isError={handleCheckError(INPUT_TYPE[id], validationRule.pattern) ? 'error' : 'default'}
         />
       );
     });

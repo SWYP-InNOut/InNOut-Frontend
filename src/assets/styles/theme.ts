@@ -6,6 +6,7 @@ export const colors = {
   errRed: '#F38142',
   socialKakao: '#FEE500',
   socialGoogle: '#F2F2F2',
+  correctGreen: '#54BE71',
 
   gray100: '#F2F2F1',
   gray200: '#DFDFDF',

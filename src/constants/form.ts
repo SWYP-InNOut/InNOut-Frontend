@@ -24,14 +24,14 @@ export const CONFIG: Record<ConfigKeys, ConfigField> = {
   EMAIL: {
     validation: [
       {
-        pattern: /^[^s@]+@[^s@]+.[^s@]+$/,
+        pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
         errorMessages: '잘못된 이메일 형식입니다',
       },
     ],
     option: {
       required: true,
       pattern: {
-        value: /^[^s@]+@[^s@]+.[^s@]+$/,
+        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
         message: '',
       },
     },
@@ -40,7 +40,7 @@ export const CONFIG: Record<ConfigKeys, ConfigField> = {
     validation: [
       {
         pattern:
-          /^(?:(?=.*[A-Za-z])(?=.*\d)|(?=.*[A-Za-z])(?=.*[!@#$%^&*])|(?=.*\d)(?=.*[!@#$%^&*]))[A-Za-z\d!@#$%^&*]+$/,
+          /^(?=(?:.*[A-Za-z]){1,})(?=(?:.*\d){1,}|(?=.*[!@#$%^&*]){1,})(?=(?:.*[!@#$%^&*]){1,}|(?=.*\d){1,})[A-Za-z\d!@#$%^&*]+$/,
         errorMessages: '영문/숫자/특수문자 중 2가지 이상 포함',
       },
       {
@@ -53,14 +53,14 @@ export const CONFIG: Record<ConfigKeys, ConfigField> = {
       pattern: {
         value:
           /^(?=(?:.*[A-Za-z]){1,})(?=(?:.*\d){1,}|(?=.*[!@#$%^&*]){1,})(?=(?:.*[!@#$%^&*]){1,}|(?=.*\d){1,})[A-Za-z\d!@#$%^&*]{8,20}$/,
-        message: '',
+        message: '하이',
       },
     },
   },
   CONFIRMPASSWORD: {
     validation: [],
     option: {
-      required: true,
+      required: false,
     },
   },
   NICKNAME: {

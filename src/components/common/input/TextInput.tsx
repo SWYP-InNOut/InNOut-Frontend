@@ -37,8 +37,8 @@ const TextInput = (props: TextInputProps) => {
     } else {
       setIsFocused(false);
     }
-    if (content != null && content !== '') {
-      setValue(id, content);
+    if (id === 'nickName') {
+      setValue(id, content, { shouldDirty: true, shouldTouch: true, shouldValidate: true });
       setIsFocused(true);
     }
   }, [content]);
