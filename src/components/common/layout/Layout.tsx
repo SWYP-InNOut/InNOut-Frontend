@@ -67,6 +67,7 @@ export const Main = styled.main<{ hasHeader: boolean }>`
 `;
 
 export const HeaderContainer = styled.header`
+  z-index: 100;
   position: sticky;
   background-color: ${colors.white};
   display: grid;
