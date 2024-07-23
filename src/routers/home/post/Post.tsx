@@ -9,6 +9,7 @@ import TextArea from '@components/common/input/TextArea';
 import PrimaryButton from '@components/common/button/PrimaryButton';
 import Picture from '@components/home/post/Picture';
 import { PostInputType } from '@constants/postFormConfig';
+import { css } from '@emotion/react';
 
 const Post = () => {
   const methods = useForm({
@@ -31,7 +32,7 @@ const Post = () => {
     >
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Col padding={'0 16px'} gap={'32'} margin={'32px 0 0 0'}>
+          <Col padding={'0 16px 48px 16px'} gap={'32'} margin={'32px 0 0 0'}>
             <Col gap={'8'}>
               <Txt variant="t20">제목</Txt>
               <TextInput
