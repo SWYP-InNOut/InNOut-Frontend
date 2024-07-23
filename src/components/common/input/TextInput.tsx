@@ -3,22 +3,33 @@ import { InputType } from '@constants/form';
 import { RegisterOptions, set, useFormContext } from 'react-hook-form';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
+import { PostInputType } from '@constants/postFormConfig';
 
 // Props 타입 정의
 interface TextInputProps {
   type?: string;
-  id: InputType;
+  id: InputType | PostInputType;
   options?: RegisterOptions;
   placeholder?: string;
   content?: string;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  maxLength?: number;
 }
 
 const TextInput = (props: TextInputProps) => {
-  const { id, placeholder, onKeyDown, content, options, type = 'text', ...rest } = props;
+  const { id, placeholder, onKeyDown, content, options, type = 'text', maxLength, ...rest } = props;
   const { register, watch, setValue } = useFormContext();
   const value = watch(id);
   const [isFocused, setIsFocused] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    if (maxLength && newValue.length <= maxLength) {
+      setValue(id, newValue);
+    } else if (!maxLength) {
+      setValue(id, newValue);
+    }
+  };
 
   useEffect(() => {
     if (value) {
@@ -40,6 +51,9 @@ const TextInput = (props: TextInputProps) => {
         placeholder={placeholder}
         {...register(id, options)}
         onKeyDown={onKeyDown}
+        onChange={handleChange}
+        value={value || ''}
+        maxLength={maxLength}
       />
     </InputContainer>
   );
