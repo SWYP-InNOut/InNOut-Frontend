@@ -5,57 +5,14 @@ import { Col, Row } from '@components/common/flex/Flex';
 import Txt from '@components/common/text/Txt';
 import { colors } from '@styles/theme';
 import styled from '@emotion/styled';
-import { useFormContext } from 'react-hook-form';
-
-interface PictureType {
-  url: string;
-  file: File;
-}
+import { usePictureHandlers, PictureType } from '@utils/pictureUtils';
 
 const Picture: React.FC = () => {
-  const { setValue } = useFormContext();
   const [pictures, setPictures] = useState<PictureType[]>([]);
   const [mainPicture, setMainPicture] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleAddPicture = (event: ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      const newPictures = Array.from(files).map((file) => ({
-        url: URL.createObjectURL(file),
-        file,
-      }));
-      setPictures((prevPictures) => {
-        const updatedPictures = [...prevPictures, ...newPictures];
-        if (updatedPictures.length === newPictures.length) {
-          setMainPicture(newPictures[0].url);
-        }
-        setValue('pictures', updatedPictures);
-        setValue('mainPicture', updatedPictures[0].url);
-        return updatedPictures;
-      });
-    }
-  };
-
-  const handleRemovePicture = (url: string) => {
-    setPictures((prevPictures) => {
-      const updatedPictures = prevPictures.filter((picture) => picture.url !== url);
-      if (mainPicture === url && updatedPictures.length > 0) {
-        setMainPicture(updatedPictures[0].url);
-        setValue('mainPicture', updatedPictures[0].url);
-      } else if (updatedPictures.length === 0) {
-        setMainPicture(null);
-        setValue('mainPicture', null);
-      }
-      setValue('pictures', updatedPictures);
-      return updatedPictures;
-    });
-  };
-
-  const handleSetMainPicture = (url: string) => {
-    setMainPicture(url);
-    setValue('mainPicture', url);
-  };
+  const { handleAddPicture, handleRemovePicture, handleSetMainPicture } = usePictureHandlers();
 
   const handleClick = () => {
     if (fileInputRef.current) {
@@ -66,7 +23,6 @@ const Picture: React.FC = () => {
   return (
     <>
       <Row gap={'8'}>
-        {/* 사진 업로드 div */}
         {pictures.length < 2 && (
           <Col
             gap={'8'}
@@ -78,6 +34,7 @@ const Picture: React.FC = () => {
               aspect-ratio: 1 / 1;
               border-radius: 8px;
               cursor: pointer;
+              z-index: 1;
             `}
             alignItems="center"
             justifyContent="center"
@@ -91,7 +48,7 @@ const Picture: React.FC = () => {
               type="file"
               accept="image/*"
               multiple
-              onChange={handleAddPicture}
+              onChange={(e) => handleAddPicture(e, setPictures, setMainPicture)}
               css={css`
                 display: none;
               `}
@@ -104,7 +61,7 @@ const Picture: React.FC = () => {
             <Img
               src={picture.url}
               alt="Uploaded"
-              onClick={() => handleSetMainPicture(picture.url)}
+              onClick={() => handleSetMainPicture(picture.url, setMainPicture)}
             />
             <PictureCloseIcon
               css={css`
@@ -112,7 +69,9 @@ const Picture: React.FC = () => {
                 top: 8px;
                 right: 8px;
               `}
-              onClick={() => handleRemovePicture(picture.url)}
+              onClick={() =>
+                handleRemovePicture(picture.url, setPictures, setMainPicture, mainPicture)
+              }
             />
             {mainPicture === picture.url && (
               <MainPicture>
@@ -145,6 +104,7 @@ const PictureWrapper = styled.div`
   cursor: pointer;
   overflow: hidden;
   border-radius: 8px;
+  z-index: 2;
 `;
 
 const MainPicture = styled.div`
