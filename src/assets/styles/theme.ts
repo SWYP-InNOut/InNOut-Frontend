@@ -6,6 +6,7 @@ export const colors = {
   errRed: '#F38142',
   socialKakao: '#FEE500',
   socialGoogle: '#F2F2F2',
+  correctGreen: '#54BE71',
 
   gray100: '#F2F2F1',
   gray200: '#DFDFDF',
@@ -32,7 +33,7 @@ export const colors = {
   red300: '#F8CCB9',
   red400: '#F4AB8B',
   red500: '#F18E64',
-  re600: '#ED723D',
+  red600: '#ED723D',
   red700: '#BE5B31',
   red800: '#8F4525',
   red900: '#71371D',

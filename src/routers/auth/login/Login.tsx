@@ -84,7 +84,7 @@ const Login = () => {
               >
                 <ErrorMessage
                   content={'가입되지 않은 이메일이거나 잘못된 비밀번호입니다'}
-                  isError={true}
+                  isError={'error'}
                   justifyContent={'center'}
                 />
               </div>

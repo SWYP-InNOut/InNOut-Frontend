@@ -64,7 +64,7 @@ const PwdSearch = () => {
               >
                 <ErrorMessage
                   content={'가입되지 않은 회원 정보입니다'}
-                  isError={true}
+                  isError={'error'}
                   justifyContent={'center'}
                 />
               </div>
