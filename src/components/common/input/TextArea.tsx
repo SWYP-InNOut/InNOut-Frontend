@@ -2,22 +2,35 @@ import { colors, fontStyles } from '@styles/theme';
 import { PostInputType } from '@constants/postFormConfig';
 import { RegisterOptions, useFormContext } from 'react-hook-form';
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { ChangeEventHandler, useEffect, useRef, useState } from 'react';
+import { handleResize } from '@utils/handleResize';
 
 interface TextAreaProps {
   type?: string;
   id: PostInputType;
   options?: RegisterOptions;
   placeholder?: string;
-  content?: string;
   onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>;
 }
 
 const TextArea = (props: TextAreaProps) => {
-  const { id, placeholder, onKeyDown, content, options, type = 'text', ...rest } = props;
+  const { id, placeholder, onKeyDown, options, type = 'text', ...rest } = props;
   const { register, watch, setValue } = useFormContext();
   const value = watch(id);
   const [isFocused, setIsFocused] = useState(false);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const [content, setContent] = useState<string>('');
+  const [initialHeight, setInitialHeight] = useState<string>('auto');
+
+  const onChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
+    if (e.target.value.length <= 200) {
+      setContent(e.target.value);
+      if (textAreaRef.current) {
+        textAreaRef.current.style.height = initialHeight;
+        textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+      }
+    }
+  };
 
   useEffect(() => {
     if (content != null && content !== '') {
@@ -26,15 +39,30 @@ const TextArea = (props: TextAreaProps) => {
     }
   }, [content, id, setValue]);
 
+  useEffect(() => {
+    const resizeHandler = () => handleResize(textAreaRef, setInitialHeight);
+
+    resizeHandler();
+    window.addEventListener('resize', resizeHandler);
+
+    return () => {
+      window.removeEventListener('resize', resizeHandler);
+    };
+  }, [textAreaRef]);
+
   return (
     <InputContainer isFocused={isFocused}>
       <StyledInput
+        value={content}
         autoComplete="off"
         placeholder={placeholder}
         {...register(id, options)}
         onKeyDown={onKeyDown}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(value && value.length > 0)}
+        onChange={onChange}
+        ref={textAreaRef}
+        style={{ height: initialHeight }}
       />
     </InputContainer>
   );
@@ -43,7 +71,6 @@ const TextArea = (props: TextAreaProps) => {
 const StyledInput = styled.textarea`
   width: 100%;
   padding: 16px 16px;
-  max-height: 224px;
   color: ${colors.darkGray};
   background-color: transparent;
   border: none;
@@ -52,6 +79,9 @@ const StyledInput = styled.textarea`
   font-weight: ${fontStyles.b16.fontWeight};
   line-height: ${fontStyles.b16.lineHeight};
   font-family: ${fontStyles.b16.fontFamily};
+  resize: none;
+  overflow: hidden;
+
   &::placeholder {
     color: ${colors.lightGray};
   }
