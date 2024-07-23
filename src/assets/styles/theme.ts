@@ -61,14 +61,14 @@ export const fontStyles: Record<string, FontStyle> = {
     fontSize: '2.8rem',
     fontWeight: '700',
     lineHeight: '47px',
-    fontFamily: 'Spoqa Han Sans Neo',
+    fontFamily: 'LINE Seed Sans',
   },
 
   h24: {
     fontSize: '2.4rem',
     fontWeight: '700',
     lineHeight: '36px',
-    fontFamily: 'LINE Seed Sans KR',
+    fontFamily: 'LINE Seed Sans',
   },
 
   t20: {
@@ -94,7 +94,7 @@ export const fontStyles: Record<string, FontStyle> = {
     fontSize: '1.6rem',
     fontWeight: '400',
     lineHeight: '24px',
-    fontFamily: 'Spoqa Han Sans Neo',
+    fontFamily: 'LINE Seed Sans',
   },
   b13: {
     fontSize: '1.3rem',
