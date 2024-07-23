@@ -5,6 +5,7 @@ import { Col, Row } from '@components/common/flex/Flex';
 import Txt from '@components/common/text/Txt';
 import { colors } from '@styles/theme';
 import styled from '@emotion/styled';
+import { useFormContext } from 'react-hook-form';
 
 interface PictureType {
   url: string;
@@ -12,6 +13,7 @@ interface PictureType {
 }
 
 const Picture: React.FC = () => {
+  const { setValue } = useFormContext();
   const [pictures, setPictures] = useState<PictureType[]>([]);
   const [mainPicture, setMainPicture] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -25,10 +27,11 @@ const Picture: React.FC = () => {
       }));
       setPictures((prevPictures) => {
         const updatedPictures = [...prevPictures, ...newPictures];
-        // 첫 번째로 추가된 사진을 메인 사진으로 설정
         if (updatedPictures.length === newPictures.length) {
           setMainPicture(newPictures[0].url);
         }
+        setValue('pictures', updatedPictures);
+        setValue('mainPicture', updatedPictures[0].url);
         return updatedPictures;
       });
     }
@@ -39,15 +42,19 @@ const Picture: React.FC = () => {
       const updatedPictures = prevPictures.filter((picture) => picture.url !== url);
       if (mainPicture === url && updatedPictures.length > 0) {
         setMainPicture(updatedPictures[0].url);
+        setValue('mainPicture', updatedPictures[0].url);
       } else if (updatedPictures.length === 0) {
         setMainPicture(null);
+        setValue('mainPicture', null);
       }
+      setValue('pictures', updatedPictures);
       return updatedPictures;
     });
   };
 
   const handleSetMainPicture = (url: string) => {
     setMainPicture(url);
+    setValue('mainPicture', url);
   };
 
   const handleClick = () => {
