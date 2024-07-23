@@ -10,7 +10,6 @@ jobs:
     name: react build & deploy
     # runner가 실행될 환경지정
     runs-on: ubuntu-latest       
-    
     # name은 단계별로 실행되는 액션들의 설명을 담은 것으로, 나중에 github action에서 workflow에 표시됨
     # uses 키워드로 Action을 불러옴
     # 레포지토리에 접근하여 CI서버로 코드를 내려받는 과정
