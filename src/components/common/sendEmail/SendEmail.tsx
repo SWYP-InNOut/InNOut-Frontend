@@ -17,16 +17,19 @@ const SendEmail = ({ type }: SendEmailProps) => {
         title: '인증 메일을 보냈어요\n확인하고 함께해주세요!',
         subtitle:
           '가입 시 작성한 이메일의 메일함을 확인해주세요\n이메일 인증이 완료되면 자동으로 가입이 완료돼요',
+        icon: SendEmailIcon,
       };
     } else if (type === 'pwd') {
       return {
         title: '임시 비밀번호를 보냈어요\n확인하고 다시 함께해요',
         subtitle: '가입한 이메일의 메일함을 확인해주세요',
+        icon: SendPwdIcon,
       };
     }
   };
 
   const content = getContent();
+  const IconComponent = content?.icon;
   return (
     <div>
       <Col gap={'4'}>
@@ -41,12 +44,19 @@ const SendEmail = ({ type }: SendEmailProps) => {
         <Txt
           variant="b16"
           color={colors.lightGray}
-          style={{ height: '48px', marginBottom: '31px', whiteSpace: 'pre-wrap' }}
+          style={{ height: '48px', marginBottom: '54px', whiteSpace: 'pre-wrap' }}
         >
           {content?.subtitle}
         </Txt>
       </Col>
-      {type === 'email' ? <SendEmailIcon /> : <SendPwdIcon />}
+      {IconComponent && (
+        <IconComponent
+          css={css`
+            width: 100%;
+            height: auto;
+          `}
+        />
+      )}
     </div>
   );
 };
