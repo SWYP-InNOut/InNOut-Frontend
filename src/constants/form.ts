@@ -24,14 +24,14 @@ export const CONFIG: Record<ConfigKeys, ConfigField> = {
   EMAIL: {
     validation: [
       {
-        pattern: /^[^s@]+@[^s@]+.[^s@]+$/,
+        pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
         errorMessages: '잘못된 이메일 형식입니다',
       },
     ],
     option: {
       required: true,
       pattern: {
-        value: /^[^s@]+@[^s@]+.[^s@]+$/,
+        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
         message: '',
       },
     },
