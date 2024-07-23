@@ -15,9 +15,17 @@ import {
 import { css } from '@emotion/react';
 import Toggle from '@components/home/toggle/Toggle';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: () => void }) => {
   const [isOn, setIsOn] = useState(false);
+  const navigate = useNavigate();
+  const handleNickNameChange = () => {
+    navigate('/nickname');
+  };
+  const handlePwdChange = () => {
+    navigate('/pwd');
+  };
 
   return (
     <HomeMenuSliderContainer right={isOpen ? '0%' : '100%'}>
@@ -64,7 +72,13 @@ const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: (
         <Col padding={'0 16px'} gap={'16'}>
           <Txt variant="t20">설정</Txt>
           <Row alignItems="center" justifyContent="space-between">
-            <Row gap={8}>
+            <Row
+              gap={8}
+              onClick={handleNickNameChange}
+              css={css`
+                cursor: pointer;
+              `}
+            >
               <IdCardIcon />
               <Txt variant="b16" lineHeight={32}>
                 닉네임 변경
@@ -73,7 +87,13 @@ const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: (
             <NextIcon />
           </Row>
           <Row alignItems="center" justifyContent="space-between">
-            <Row gap={8}>
+            <Row
+              gap={8}
+              onClick={handlePwdChange}
+              css={css`
+                cursor: pointer;
+              `}
+            >
               <LockIcon />
               <Txt variant="b16" lineHeight={32}>
                 비밀번호 변경
