@@ -3,7 +3,7 @@ import Txt from '@components/common/text/Txt';
 import PrimaryButton from '@components/common/button/PrimaryButton';
 import TextInput from '@components/common/input/TextInput';
 import { CONFIG, INPUT_TYPE, InputType } from '@constants/form';
-import { FormProvider, set, useForm, useWatch } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { Col } from '@components/common/flex/Flex';
 import { LogoIcon } from '@icons/index';
 import Layout from '@components/common/layout/Layout';
@@ -19,11 +19,13 @@ import SendEmail from '@components/common/sendEmail/SendEmail';
 const Signup = () => {
   const methods = useForm<SignUpRequestDTO>({ mode: 'onChange' });
   const [nickname, setNickname] = useState('');
-  const [isDuplicateEmail, setIsDuplicateEmail] = useState(true);
+  const [isEmailError, setIsEmailError] = useState(false);
   const [isDuplicateNickname, setIsDuplicateNickname] = useState(false);
+  const [emailErrorMassage, setEmailErrorMassage] = useState('');
   const [isComplete, setIsComplete] = useState(false);
   const {
     getValues,
+    setFocus,
     formState: { errors },
   } = methods;
   const { mutate, isLoading, isError, data, error } = useMutation(
@@ -32,14 +34,21 @@ const Signup = () => {
       onSuccess: (data) => {
         console.log('회원가입 성공:', data);
         if (data.code === 1000) {
-          alert('회원가입에 성공했습니다.');
           setIsComplete(true);
         } else if (data.code === 5004) {
-          setIsDuplicateEmail(true);
+          setIsEmailError(true);
           setIsDuplicateNickname(false);
+          setEmailErrorMassage('중복된 이메일입니다');
+          setFocus(INPUT_TYPE.EMAIL);
         } else if (data.code === 5005) {
-          setIsDuplicateEmail(false);
+          setIsEmailError(false);
           setIsDuplicateNickname(true);
+          setFocus(INPUT_TYPE.NICKNAME);
+        } else if (data.code === 5006) {
+          setIsEmailError(true);
+          setIsDuplicateNickname(false);
+          setEmailErrorMassage('이미 가입된 이메일입니다');
+          setFocus(INPUT_TYPE.EMAIL);
         }
       },
       onError: (error) => {
@@ -53,14 +62,24 @@ const Signup = () => {
   const password = getValues(INPUT_TYPE.PASSWORD);
   const confirmPassword = getValues(INPUT_TYPE.CONFIRMPASSWORD);
 
-  const isConfirmPasswordError = !confirmPassword || password !== confirmPassword;
+  const isConfirmPasswordError = password !== confirmPassword;
 
   const handleCheckError = (id: InputType, regex: RegExp) => {
     const value = getValues(id);
-    return !value || !regex.test(value);
+    if (!value) return 'default';
+    else if (regex.test(value)) return 'success';
+    else return 'error';
   };
+
   const handleSignup = () => {
-    if (!methods.formState.isValid || isConfirmPasswordError) return;
+    if (
+      methods.getFieldState('email').invalid ||
+      methods.getFieldState('password').invalid ||
+      methods.getFieldState('nickName').invalid ||
+      !confirmPassword ||
+      isConfirmPasswordError
+    )
+      return;
 
     const signUpRequest: SignUpRequestDTO = {
       nickName,
@@ -74,13 +93,14 @@ const Signup = () => {
     const errorComponents = CONFIG[id].validation?.map((validationRule, index) => {
       const message = validationRule.errorMessages || '유효하지 않은 입력입니다.';
       return INPUT_TYPE[id] === 'email' ? (
-        handleCheckError(INPUT_TYPE[id], validationRule.pattern) && (
-          <ErrorMessage
-            key={index}
-            content={message}
-            isError={handleCheckError(INPUT_TYPE[id], validationRule.pattern)}
-          />
-        )
+        getValues(INPUT_TYPE[id]) &&
+          handleCheckError(INPUT_TYPE[id], validationRule.pattern) === 'error' && (
+            <ErrorMessage
+              key={index}
+              content={message}
+              isError={handleCheckError(INPUT_TYPE[id], validationRule.pattern)}
+            />
+          )
       ) : (
         <ErrorMessage
           key={index}
@@ -96,15 +116,15 @@ const Signup = () => {
     setNickname(generateNickname());
   }, []);
   return (
-    <Layout hasHeader={false}>
+    <>
       {isComplete ? (
-        <>
-          <Col padding={'0 16px'} margin={'64px 0 0 0'}>
+        <Layout hasHeader={false}>
+          <Col padding={'64px 16px 0'}>
             <SendEmail type="email" />
           </Col>
-        </>
+        </Layout>
       ) : (
-        <>
+        <Layout hasHeader={false}>
           <FormProvider {...methods}>
             <Col padding={'54px 0 52px'}>
               <div
@@ -135,9 +155,7 @@ const Signup = () => {
                     placeholder="example@gmail.com"
                   />
                   {renderError('EMAIL')}
-                  {isDuplicateEmail && (
-                    <ErrorMessage content={'이미 가입된 이메일입니다'} isError={true} />
-                  )}
+                  {isEmailError && <ErrorMessage content={emailErrorMassage} isError={'error'} />}
                 </Col>
                 <Col padding={'32px 0 0'} gap={8}>
                   <Txt variant="t20" color={colors.darkGray}>
@@ -159,13 +177,11 @@ const Signup = () => {
                     id={INPUT_TYPE.CONFIRMPASSWORD}
                     type="password"
                     placeholder="비밀번호 재입력"
+                    options={CONFIG.CONFIRMPASSWORD.option}
                   />
 
-                  {isConfirmPasswordError && (
-                    <ErrorMessage
-                      content="비밀번호가 일치하지 않습니다"
-                      isError={isConfirmPasswordError}
-                    />
+                  {confirmPassword && isConfirmPasswordError && (
+                    <ErrorMessage content="비밀번호가 일치하지 않습니다" isError={'error'} />
                   )}
                 </Col>
                 <Col padding={'32px 0 0'} gap={8}>
@@ -184,7 +200,7 @@ const Signup = () => {
                   />
                   {renderError('NICKNAME')}
                   {isDuplicateNickname && (
-                    <ErrorMessage content={'이미 사용 중인 닉네임입니다'} isError={true} />
+                    <ErrorMessage content={'이미 사용 중인 닉네임입니다'} isError={'error'} />
                   )}
                 </Col>
               </Col>
@@ -194,9 +210,9 @@ const Signup = () => {
               </Col>
             </Col>
           </FormProvider>
-        </>
+        </Layout>
       )}
-    </Layout>
+    </>
   );
 };
 
