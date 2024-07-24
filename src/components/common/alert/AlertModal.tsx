@@ -6,13 +6,11 @@ import { Col } from '../flex/Flex';
 
 interface AlertModalProps {
   isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
   content: React.ReactNode;
   button: React.ReactNode;
 }
-
-const AlertModal: React.FC<AlertModalProps> = ({ isOpen, onClose, onConfirm, content, button }) => {
+//  제일 상단에 올리면 됩니다용
+const AlertModal: React.FC<AlertModalProps> = ({ isOpen, content, button }) => {
   if (!isOpen) return null;
 
   return (
