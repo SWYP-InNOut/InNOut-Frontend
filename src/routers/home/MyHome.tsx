@@ -7,6 +7,7 @@ import { colors } from '@styles/theme';
 import { ChattingBox } from './MyHome.styles';
 import HomeMenuSlider from './HomeMenuSlider';
 import { useState } from 'react';
+import CardList from '@components/home/post/CardList';
 
 const MyHome = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -62,8 +63,9 @@ const MyHome = () => {
           </Txt>
         </Row>
       </Col>
-      <Col padding={'0 16px'}>
+      <Col padding={'0 16px'} gap={24}>
         <ChattingBox></ChattingBox>
+        <CardList imgList={[]} />
       </Col>
       <HomeMenuSlider isOpen={isOpen} handleMenu={toggleMenu} />
     </Layout>
