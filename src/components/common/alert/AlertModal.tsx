@@ -9,7 +9,7 @@ interface AlertModalProps {
   content: React.ReactNode;
   button: React.ReactNode;
 }
-
+//  제일 상단에 올리면 됩니다용
 const AlertModal: React.FC<AlertModalProps> = ({ isOpen, content, button }) => {
   if (!isOpen) return null;
 
