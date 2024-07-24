@@ -34,7 +34,7 @@ const Filter = ({ selectList, isOpen, selected, handleSelect, handleIsOpen }: Fi
           width: 72px;
         `}
       >
-        {selectList[0]}
+        {selected}
       </Txt>
       <DownArrowIcon
         css={css`

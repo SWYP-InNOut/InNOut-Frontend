@@ -22,6 +22,7 @@ import DownArrowIcon from '@icons/downarrow.svg?react';
 import UpArrowIcon from '@icons/uparrow.svg?react';
 import FilterCheckIcon from '@icons/filterCheck.svg?react';
 import PencilIcon from '@icons/pencil.svg?react';
+import ReplyIcon from '@icons/reply.svg?react';
 
 export {
   LogoIcon,
@@ -48,4 +49,5 @@ export {
   UpArrowIcon,
   FilterCheckIcon,
   PencilIcon,
+  ReplyIcon,
 };

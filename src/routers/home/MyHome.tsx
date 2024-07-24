@@ -10,6 +10,7 @@ import { useState } from 'react';
 import CardList from '@components/home/post/CardList';
 import Filter from '@components/common/filter/Filter';
 import styled from '@emotion/styled';
+import PreviewChat from '@components/chat/PreviewChat';
 
 const MyHome = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -73,9 +74,10 @@ const MyHome = () => {
           </Txt>
         </Row>
       </Col>
-      <Col padding={'0 16px'} gap={24}>
-        <ChattingBox></ChattingBox>
+      <Col padding={'0 16px'}>
+        <PreviewChat />
       </Col>
+
       <Row
         padding={'0 16px'}
         justifyContent={'flex-end'}
@@ -99,12 +101,7 @@ const MyHome = () => {
         `}
       >
         <CardList
-          imgList={[
-            'https://via.placeholder.com/150',
-            'https://via.placeholder.com/150',
-            'https://via.placeholder.com/150',
-            'https://via.placeholder.com/150',
-          ]}
+          imgList={['https://via.placeholder.com/150', 'https://via.placeholder.com/150']}
         />
       </div>
       <Col
