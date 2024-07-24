@@ -16,6 +16,8 @@ import LockIcon from '@icons/lock.svg?react';
 import PrivateIcon from '@icons/private.svg?react';
 import LogoutIcon from '@icons/power.svg?react';
 import NextIcon from '@icons/next.svg?react';
+import PictureIcon from '@icons/picture.svg?react';
+import PictureCloseIcon from '@icons/pictureClose.svg?react';
 
 export {
   LogoIcon,
@@ -36,4 +38,6 @@ export {
   PrivateIcon,
   LogoutIcon,
   NextIcon,
+  PictureIcon,
+  PictureCloseIcon,
 };
