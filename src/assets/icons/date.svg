@@ -1,0 +1,15 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon">
+<rect width="24" height="24" rx="6" fill="#DDDDDD"/>
+<path id="Rectangle 193" d="M3 9H21V18C21 19.6569 19.6569 21 18 21H6C4.34315 21 3 19.6569 3 18V9Z" fill="#F18E64"/>
+<path id="Rectangle 194" d="M21 9L3 9L3 8C3 6.34314 4.34315 5 6 5L18 5C19.6569 5 21 6.34315 21 8L21 9Z" fill="#FEF4F0"/>
+<path id="Line 11" d="M8 4V6" stroke="#F18E64" stroke-width="2" stroke-linecap="round"/>
+<path id="Line 12" d="M16 4V6" stroke="#F18E64" stroke-width="2" stroke-linecap="round"/>
+<rect id="Rectangle 196" x="10" y="12" width="4" height="2" rx="1" fill="white"/>
+<rect id="Rectangle 199" x="10" y="16" width="4" height="2" rx="1" fill="white"/>
+<rect id="Rectangle 197" x="5" y="12" width="4" height="2" rx="1" fill="white"/>
+<rect id="Rectangle 200" x="5" y="16" width="4" height="2" rx="1" fill="white"/>
+<rect id="Rectangle 198" x="15" y="12" width="4" height="2" rx="1" fill="white"/>
+<rect id="Rectangle 201" x="15" y="16" width="4" height="2" rx="1" fill="white"/>
+</g>
+</svg>
