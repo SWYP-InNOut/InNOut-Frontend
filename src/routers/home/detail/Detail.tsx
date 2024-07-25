@@ -34,7 +34,11 @@ const Detail = () => {
   const [heightSize, setHeightSize] = useState<number>(0);
 
   return (
-    <Layout HeaderLeft={<LeftArrowIcon />} HeaderRight={<Txt variant="b16">수정</Txt>}>
+    <Layout
+      HeaderLeft={<LeftArrowIcon />}
+      HeaderRight={<Txt variant="b16">수정</Txt>}
+      Footer={true}
+    >
       <div
         css={css`
           margin-top: 12px;
