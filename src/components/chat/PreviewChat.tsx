@@ -21,7 +21,7 @@ const PreviewChat = () => {
       <TopBlur />
       <BottomBlur />
       <ButtonContainer>
-        <PrimaryButton title="채팅 참여" />
+        <PrimaryButton title="채팅 참여" height="40px" />
       </ButtonContainer>
     </ChattingBoxContainer>
   );
@@ -41,7 +41,7 @@ const ChattingBoxContainer = styled.div`
 const ChattingBox = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 12px 0 69px;
+  padding: 12px 0 61px;
   gap: 8px;
   background-color: transparent;
   width: 100%;

@@ -17,6 +17,7 @@ import { login } from '@apis/auth/auth';
 import ErrorMessage from '@components/auth/ErrorMessage';
 import useAuthStore from '@stores/auth';
 import { BaseResponse } from '@interfaces/api/base';
+import { AxiosError, AxiosHeaders, AxiosResponseHeaders } from 'axios';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -30,14 +31,17 @@ const Login = () => {
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
       console.log('로그인 성공:', data);
-      const accessToken = data.headers['authorization']?.split(' ')[1];
+      const headers = data.headers as AxiosHeaders;
+      const accessToken = String(headers.getAuthorization()).split(' ')[1];
+      console.log(accessToken);
       const result: BaseResponse<string> = data.data;
       const userId = result.result;
       loginStore(accessToken, userId);
-      navigate('/home');
+      navigate('/');
     },
-    onError: (error) => {
+    onError: (error: AxiosError) => {
       console.error('로그인 실패:', error);
+      error.response?.status === 401 ? setShowError(true) : setShowError(false);
     },
   });
 
@@ -79,7 +83,11 @@ const Login = () => {
           <Col gap={'24'}>
             <Col gap={'16'}>
               <TextInput id="email" placeholder="아이디(이메일)" />
-              <TextInput id="password" placeholder="비밀번호(숫자, 영문, 특수문자 8~20자리)" />
+              <TextInput
+                id="password"
+                type="password"
+                placeholder="비밀번호(숫자, 영문, 특수문자 8~20자리)"
+              />
             </Col>
             <Col gap={'12'} alignItems="center">
               <div
