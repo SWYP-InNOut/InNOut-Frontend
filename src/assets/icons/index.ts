@@ -24,6 +24,12 @@ import StoryIcon from '@icons/story.svg?react';
 import TalkIcon from '@icons/talk.svg?react';
 import DateIcon from '@icons/date.svg?react';
 import TempImg from '@icons/tempImg.svg?react';
+import DownArrowIcon from '@icons/downarrow.svg?react';
+import UpArrowIcon from '@icons/uparrow.svg?react';
+import FilterCheckIcon from '@icons/filterCheck.svg?react';
+import PencilIcon from '@icons/pencil.svg?react';
+import ReplyIcon from '@icons/reply.svg?react';
+
 export {
   LogoIcon,
   ErrorIcon,
@@ -51,4 +57,9 @@ export {
   TalkIcon,
   DateIcon,
   TempImg,
+  DownArrowIcon,
+  UpArrowIcon,
+  FilterCheckIcon,
+  PencilIcon,
+  ReplyIcon,
 };
