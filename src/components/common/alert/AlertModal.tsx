@@ -12,7 +12,6 @@ interface AlertModalProps {
   isShare?: boolean;
   close?: () => void;
 }
-//  제일 상단에 올리면 됩니다용
 const AlertModal: React.FC<AlertModalProps> = ({ isOpen, content, button, isShare, close }) => {
   if (!isOpen) return null;
 
@@ -34,7 +33,7 @@ const AlertModal: React.FC<AlertModalProps> = ({ isOpen, content, button, isShar
 };
 
 const Back = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -44,6 +43,8 @@ const Back = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  max-width: 512px;
+  margin: 0 auto;
 `;
 
 const Alert = styled.div<{ isShare?: boolean }>`
