@@ -10,13 +10,14 @@ interface LayoutProps {
   HeaderCenter?: React.ReactNode;
   HeaderRight?: React.ReactNode;
   children: React.ReactNode;
+  overflow?: string;
 }
 
 const Layout = (props: LayoutProps) => {
-  const { hasHeader = true, HeaderLeft, HeaderCenter, HeaderRight, children } = props;
+  const { hasHeader = true, HeaderLeft, HeaderCenter, HeaderRight, children, overflow } = props;
 
   return (
-    <Main hasHeader={hasHeader}>
+    <Main overflow={overflow ? overflow : 'auto'}>
       {hasHeader && (
         <HeaderContainer>
           <div
@@ -47,7 +48,7 @@ const Layout = (props: LayoutProps) => {
   );
 };
 
-export const Main = styled.main<{ hasHeader: boolean }>`
+export const Main = styled.main<{ overflow: string }>`
   position: relative;
   max-width: 512px;
   margin: 0 auto;
@@ -56,6 +57,7 @@ export const Main = styled.main<{ hasHeader: boolean }>`
   -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch !important;
   scrollbar-width: none;
+  overflow: ${({ overflow }) => overflow};
 
   ::-webkit-scrollbar {
     display: none;
