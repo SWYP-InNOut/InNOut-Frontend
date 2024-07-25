@@ -3,6 +3,8 @@ import React from 'react';
 import { colors } from '@styles/theme';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import { Col } from '../flex/Flex';
+import Txt from '../text/Txt';
 
 interface LayoutProps {
   hasHeader?: boolean;
@@ -11,10 +13,19 @@ interface LayoutProps {
   HeaderRight?: React.ReactNode;
   children: React.ReactNode;
   overflow?: string;
+  Footer?: boolean;
 }
 
 const Layout = (props: LayoutProps) => {
-  const { hasHeader = true, HeaderLeft, HeaderCenter, HeaderRight, children, overflow } = props;
+  const {
+    hasHeader = true,
+    HeaderLeft,
+    HeaderCenter,
+    HeaderRight,
+    children,
+    overflow,
+    Footer = false,
+  } = props;
 
   return (
     <Main overflow={overflow ? overflow : 'auto'}>
@@ -44,6 +55,22 @@ const Layout = (props: LayoutProps) => {
         </HeaderContainer>
       )}
       <div>{children}</div>
+      {Footer && (
+        <Col
+          padding={'29.5px 0'}
+          css={css`
+            background-color: ${colors.yellow300};
+            text-align: center;
+          `}
+        >
+          <Txt variant="b16" color={colors.lightGray}>
+            stuffinout@gmail.com
+          </Txt>
+          <Txt variant="c11" color={colors.lightGray}>
+            Copyright ©Teamname. All rights reserved.
+          </Txt>
+        </Col>
+      )}
     </Main>
   );
 };

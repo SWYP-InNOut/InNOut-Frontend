@@ -1,5 +1,6 @@
 import ErrorMessage from '@components/auth/ErrorMessage';
 import ChangeProperty from '@components/ChangeProperty';
+import ToastBar from '@components/common/alert/ToastBar';
 import PrimaryButton from '@components/common/button/PrimaryButton';
 import { Col } from '@components/common/flex/Flex';
 import Layout from '@components/common/layout/Layout';
@@ -13,9 +14,16 @@ const PwdChange = () => {
   const navigate = useNavigate();
   const [isCorrect, setIsCorrect] = useState(true);
   const [pwd, setPwd] = useState('');
+  const [toastVisible, setToastVisible] = useState(false);
   const handleOk = () => {
     console.log('확인');
   };
+
+  // 확인 클릭 후 성공하면 띄우기  -> api 연결 후 수정
+  const handleToast = () => {
+    setToastVisible(!toastVisible);
+  };
+
   return (
     <Layout
       hasHeader={true}
@@ -45,9 +53,10 @@ const PwdChange = () => {
               justifyContent={'center'}
             />
           </div>
-          <PrimaryButton title="확인" onClick={handleOk} />
+          <PrimaryButton title="확인" onClick={handleToast} />
         </Col>
       </Col>
+      <ToastBar message="비밀번호가 변경됐어요" isVisible={toastVisible} onHide={handleToast} />
     </Layout>
   );
 };

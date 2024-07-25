@@ -20,21 +20,14 @@ const Post = () => {
   const [alertBtn, setAlertBtn] = useState<React.ReactNode>(null);
   const methods = useForm<PostRequestDTO>({ mode: 'onChange' });
 
-  // interface PostRequestDTO {
-  //   memberId: number;
-  //   title: string;
-  //   images: string[];
-  //   inContent: string;
-  //   outContent: string;
-  // }
-
   const { setFocus, getValues } = methods;
   const title = getValues('title');
   const images = getValues('images');
   const inContent = getValues('inContent');
   const outContent = getValues('outContent');
 
-  const onFormSubmit = (data: any) => {
+  const onFormSubmit = (data: any, event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     console.log(data);
     if (handleValidation()) {
       console.log(data);
@@ -81,11 +74,11 @@ const Post = () => {
     console.log(title);
 
     //  이거 작동이 안됨 수정 필요
-    if (title === '' || title === null) {
+    if (!title || title.trim() === '') {
       console.log('제목은 필수');
       setAlertContent(
         <Txt variant="b16" align="center">
-          제목은 필수
+          제목은 필수!
         </Txt>
       );
       setAlertBtn(
@@ -93,6 +86,7 @@ const Post = () => {
           title="확인"
           onClick={() => {
             setIsCloseAlert(false);
+            setFocus('title');
           }}
           color={colors.red600}
         />
@@ -100,7 +94,7 @@ const Post = () => {
       setIsCloseAlert(true);
       return false;
     }
-    if (Picture.length < 1) {
+    if (!Picture || Picture.length < 1) {
       setAlertContent(
         <Col gap={'12'} alignItems="center">
           <Txt variant="t20">사진은 중요!</Txt>
@@ -130,7 +124,14 @@ const Post = () => {
       <Layout
         hasHeader={true}
         HeaderCenter={<Txt variant="t20">새 게시물</Txt>}
-        HeaderRight={<CloseIcon onClick={handleCloseBtn} />}
+        HeaderRight={
+          <CloseIcon
+            onClick={handleCloseBtn}
+            css={css`
+              cursor: pointer;
+            `}
+          />
+        }
       >
         <FormProvider {...methods}>
           <form>

@@ -13,7 +13,6 @@ interface FilterProps {
   handleIsOpen: () => void;
   onClick: () => void;
 }
-
 const Filter = ({ selectList, isOpen, selected, handleSelect, handleIsOpen }: FilterProps) => {
   return (
     <Row
@@ -40,6 +39,7 @@ const Filter = ({ selectList, isOpen, selected, handleSelect, handleIsOpen }: Fi
         css={css`
           transform: ${isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
           transition: transform 0.3s ease-in-out;
+          cursor: pointer;
         `}
       />
       {isOpen && (
@@ -52,6 +52,7 @@ const Filter = ({ selectList, isOpen, selected, handleSelect, handleIsOpen }: Fi
               onClick={(event) => {
                 event.stopPropagation(); // 이벤트 버블링 중지
                 handleSelect(item);
+                handleIsOpen();
               }}
             >
               <div
