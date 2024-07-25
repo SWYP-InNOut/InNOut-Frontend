@@ -31,6 +31,11 @@ export const globalStyles = css`
     }
   }
 
+  #root {
+    border: 0 solid ${colors.gray200};
+    border-width: 0 0.3px 0;
+  }
+
   button {
     padding: 0;
     overflow: visible;
