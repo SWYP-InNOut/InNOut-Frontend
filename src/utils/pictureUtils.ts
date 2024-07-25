@@ -67,4 +67,5 @@ const usePictureHandlers = () => {
   };
 };
 
-export { usePictureHandlers, PictureType };
+export { usePictureHandlers };
+export type { PictureType };

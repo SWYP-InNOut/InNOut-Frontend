@@ -7,9 +7,9 @@ interface ContentContainerProps {
   height?: number;
 }
 
-const ContentContainer: React.FC<ContentContainerProps> = ({ content }) => {
+const ContentContainer: React.FC<ContentContainerProps> = ({ content, height = 0 }) => {
   return (
-    <Container>
+    <Container height={height}>
       <Txt variant="b16">{content}</Txt>
     </Container>
   );
