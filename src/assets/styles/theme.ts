@@ -128,6 +128,12 @@ export const fontStyles: Record<string, FontStyle> = {
     lineHeight: '14px',
     fontFamily: 'Spoqa Han Sans Neo',
   },
+  t22: {
+    fontSize: '2.2rem',
+    fontWeight: '700',
+    lineHeight: '33px',
+    fontFamily: 'Spoqa Han Sans Neo',
+  },
 };
 
 export type FontStylesTypes = typeof fontStyles;

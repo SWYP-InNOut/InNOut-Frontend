@@ -43,6 +43,7 @@ const Alert = styled.div`
   background-color: ${colors.white};
   padding: 40px 24px 20px;
   width: 100%;
+  max-width: 300px;
   margin: auto 40px;
   border-radius: 32px;
   justify-content: center;

@@ -12,6 +12,7 @@ import MyHome from '@routers/home/MyHome';
 import NickNameChange from './home/NickNameChange';
 import PwdChange from './home/PwdChange';
 import Post from './home/post/Post';
+import Detail from './home/detail/Detail';
 
 const Router = () => {
   const router = createBrowserRouter(
@@ -25,6 +26,7 @@ const Router = () => {
         <Route path="pwdsearch" element={<PwdSearch />} />
         <Route path="setting" element={<NickNameSetting />} />
         <Route path="pwd" element={<PwdChange />} />
+        <Route path="detail" element={<Detail />} />
       </>
     )
   );

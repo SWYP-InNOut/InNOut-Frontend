@@ -2,19 +2,45 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@routers/*": ["src/routers/*"],
-      "@pages/*": ["src/pages/*"],
-      "@components/*": ["src/components/*"],
-      "@interfaces/*": ["src/interfaces/*"],
-      "@constants/*": ["src/constants/*"],
-      "@stores/*": ["src/stores/*"],
-      "@styles/*": ["src/assets/styles/*"],
-      "@icons/*": ["src/assets/icons/*"],
-      "@fonts/*": ["src/assets/fonts/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@apis/*": ["src/apis/*"],
-      "@utils/*": ["src/utils/*"],
-      "@assets/*": ["src/assets/*"]
+      "@routers/*": [
+        "src/routers/*"
+      ],
+      "@pages/*": [
+        "src/pages/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@interfaces/*": [
+        "src/interfaces/*"
+      ],
+      "@constants/*": [
+        "src/constants/*"
+      ],
+      "@stores/*": [
+        "src/stores/*"
+      ],
+      "@styles/*": [
+        "src/assets/styles/*"
+      ],
+      "@icons/*": [
+        "src/assets/icons/*"
+      ],
+      "@fonts/*": [
+        "src/assets/fonts/*"
+      ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
+      "@apis/*": [
+        "src/apis/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
+      ]
     }
   }
 }
