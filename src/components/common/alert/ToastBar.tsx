@@ -11,7 +11,7 @@ interface ToastBarProps {
   duration?: number;
 }
 
-const ToastBar: React.FC<ToastBarProps> = ({ message, isVisible, onHide, duration = 1000 }) => {
+const ToastBar: React.FC<ToastBarProps> = ({ message, isVisible, onHide, duration = 2000 }) => {
   React.useEffect(() => {
     if (isVisible) {
       const timer = setTimeout(() => {
