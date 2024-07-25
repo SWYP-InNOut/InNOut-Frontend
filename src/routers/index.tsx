@@ -19,6 +19,7 @@ import Detail from './home/detail/Detail';
 
 const ProtectedRoute = () => {
   const isLoggedin = useAuthStore((store) => store.isLoggedIn);
+  console.log(isLoggedin);
 
   if (!isLoggedin) {
     return <Navigate to={'/login'} replace />;

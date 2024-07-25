@@ -33,7 +33,6 @@ const Login = () => {
       console.log('로그인 성공:', data);
       const headers = data.headers as AxiosHeaders;
       const accessToken = String(headers.getAuthorization()).split(' ')[1];
-      console.log(accessToken);
       const result: BaseResponse<string> = data.data;
       const userId = result.result;
       loginStore(accessToken, userId);

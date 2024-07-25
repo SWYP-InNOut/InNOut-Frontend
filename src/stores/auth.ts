@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import axios, { AxiosHeaders } from 'axios';
 import { HTTP_URL } from '@apis/auth';
+import { persist } from 'zustand/middleware';
 
 const apiClient = axios.create({
   baseURL: HTTP_URL, // API의 기본 URL
@@ -39,62 +40,68 @@ interface AuthAction {
   logout: () => Promise<void>;
 }
 
-export const useAuthStore = create<AuthState & AuthAction>((set, get) => ({
-  isLoggedIn: false,
-  memberId: null,
-  login: async (accessToken, userId) => {
-    try {
-      if (accessToken) {
-        apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-        set({ isLoggedIn: true, memberId: 1 });
-        console.log('로그인 됨');
-      }
-    } catch (e) {
-      console.error('로그인 중 오류 발생', e);
-    }
-  },
-  reLogin: async () => {
-    try {
-      const response = await apiClient.post(
-        `${HTTP_URL}/regenerate-token`,
-        {},
-        {
-          withCredentials: true,
+export const useAuthStore = create(
+  persist<AuthState & AuthAction>(
+    (set, get) => ({
+      isLoggedIn: false,
+      memberId: null,
+      login: async (accessToken, userId) => {
+        try {
+          if (accessToken) {
+            apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+            set({ isLoggedIn: true, memberId: 1 });
+          }
+        } catch (e) {
+          console.error('로그인 중 오류 발생', e);
         }
-      );
-      const headers = response.headers as AxiosHeaders;
-      const accessToken = String(headers.getAuthorization()).split(' ')[1];
-      const { userId } = response.data;
+      },
+      reLogin: async () => {
+        try {
+          const response = await apiClient.post(
+            `${HTTP_URL}/regenerate-token`,
+            {},
+            {
+              withCredentials: true,
+            }
+          );
+          const headers = response.headers as AxiosHeaders;
+          const accessToken = String(headers.getAuthorization()).split(' ')[1];
+          const { userId } = response.data;
 
-      if (accessToken) {
-        apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-        set({ isLoggedIn: true, memberId: userId });
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      set({ isLoggedIn: false });
-      console.error('토큰 갱신 중 오류 발생', e);
-      return false;
-    }
-  },
-  logout: async () => {
-    try {
-      await apiClient.post(
-        '/auth/logout',
-        {},
-        {
-          withCredentials: true,
+          if (accessToken) {
+            apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+            set({ isLoggedIn: true, memberId: userId });
+            return true;
+          } else {
+            return false;
+          }
+        } catch (e) {
+          set({ isLoggedIn: false });
+          console.error('토큰 갱신 중 오류 발생', e);
+          return false;
         }
-      );
-    } catch (e) {
-      console.error('로그아웃 중 오류 발생', e);
-    } finally {
-      set({ isLoggedIn: false, memberId: null });
-      apiClient.defaults.headers.common['Authorization'] = '';
+      },
+      logout: async () => {
+        try {
+          await apiClient.post(
+            '/auth/logout',
+            {},
+            {
+              withCredentials: true,
+            }
+          );
+        } catch (e) {
+          console.error('로그아웃 중 오류 발생', e);
+        } finally {
+          set({ isLoggedIn: false, memberId: null });
+          apiClient.defaults.headers.common['Authorization'] = '';
+        }
+      },
+    }),
+    {
+      name: 'userLoginStatus',
     }
-  },
-}));
+  )
+);
 
 export default useAuthStore;
