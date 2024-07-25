@@ -21,7 +21,6 @@ import styled from '@emotion/styled';
 import LottieContainer from '@components/common/lottie/LottieContainer';
 import { css } from '@emotion/react';
 import { colors } from '@styles/theme';
-import ScrollProgress from '@components/home/post/ScrollProgress';
 import TextArea from '@components/common/input/TextArea';
 import ContentContainer from '@components/home/post/ContentContainer';
 import ImagePicker from '@components/home/post/Image/ImagePicker';
