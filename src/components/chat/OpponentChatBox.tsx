@@ -38,7 +38,7 @@ const OpponentChatBox = ({ name, message, time, onClick }: OpponentChatBoxProps)
           `}
         >
           <ReplyIcon />
-          <Txt variant="c12" color={colors.gray300}>
+          <Txt variant="c11" color={colors.gray300}>
             {time}
           </Txt>
         </Col>

@@ -12,7 +12,7 @@ export const signup = async (request: SignUpRequestDTO): Promise<BaseResponse<st
 // 임시
 export const login = async (request: LoginRequestDTO): Promise<AxiosResponse<any, any>> => {
   const response = await axios.post(
-    `${HTTP_URL}/login?email=${request.email}&password=${request.password}`
+    `${HTTP_URL}/login?username=${request.email}&password=${request.password}`
   );
 
   return response;
