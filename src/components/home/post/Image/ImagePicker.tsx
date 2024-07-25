@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { images } from './Image';
 import styled from '@emotion/styled';
-import { LeftArrowIcon, RightArrowIcon } from '@icons/index';
 import { colors } from '@styles/theme';
 
 const ImagePicker = (): JSX.Element => {
@@ -63,7 +62,9 @@ const ImagePicker = (): JSX.Element => {
     <Container onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
       <ImageContainer translateX={-pickIndex * 100}>
         {images.map((image, index) => (
-          <FillImage key={index} src={image} />
+          <ImageWrapper key={index}>
+            <FillImage src={image} />
+          </ImageWrapper>
         ))}
       </ImageContainer>
       <PickerWrapper>{pickers}</PickerWrapper>
@@ -85,6 +86,14 @@ const ImageContainer = styled.div<{ translateX: number }>`
   transition: transform 0.25s ease-out;
   transform: translateX(${(props) => props.translateX}%);
 `;
+
+const ImageWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  flex-shrink: 0;
+`;
+
 const FillImage = styled.img`
   width: 100%;
   height: 100%;
