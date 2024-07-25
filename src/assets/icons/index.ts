@@ -16,6 +16,19 @@ import LockIcon from '@icons/lock.svg?react';
 import PrivateIcon from '@icons/private.svg?react';
 import LogoutIcon from '@icons/power.svg?react';
 import NextIcon from '@icons/next.svg?react';
+import PictureIcon from '@icons/picture.svg?react';
+import PictureCloseIcon from '@icons/pictureClose.svg?react';
+import LeftArrowIcon from '@icons/leftarrow.svg?react';
+import SquareLogoIcon from '@icons/squarelogo.svg?react';
+import StoryIcon from '@icons/story.svg?react';
+import TalkIcon from '@icons/talk.svg?react';
+import DateIcon from '@icons/date.svg?react';
+import TempImg from '@icons/tempImg.svg?react';
+import DownArrowIcon from '@icons/downarrow.svg?react';
+import UpArrowIcon from '@icons/uparrow.svg?react';
+import FilterCheckIcon from '@icons/filterCheck.svg?react';
+import PencilIcon from '@icons/pencil.svg?react';
+import ReplyIcon from '@icons/reply.svg?react';
 
 export {
   LogoIcon,
@@ -36,4 +49,17 @@ export {
   PrivateIcon,
   LogoutIcon,
   NextIcon,
+  PictureIcon,
+  PictureCloseIcon,
+  LeftArrowIcon,
+  SquareLogoIcon,
+  StoryIcon,
+  TalkIcon,
+  DateIcon,
+  TempImg,
+  DownArrowIcon,
+  UpArrowIcon,
+  FilterCheckIcon,
+  PencilIcon,
+  ReplyIcon,
 };

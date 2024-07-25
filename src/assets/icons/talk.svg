@@ -1,0 +1,10 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon">
+<rect width="32" height="32" rx="6" fill="#DDDDDD"/>
+<path id="Union" fill-rule="evenodd" clip-rule="evenodd" d="M12 3C10.3431 3 9 4.34315 9 6V12C9 13.6569 10.3431 15 12 15H20V17.2967C20 18.2251 21.1551 18.6524 21.7593 17.9475L24.2857 15H26C27.6569 15 29 13.6569 29 12V6C29 4.34315 27.6569 3 26 3H12Z" fill="#F18E64"/>
+<circle id="Ellipse 121" cx="11" cy="21" r="8" fill="white"/>
+<line id="Line 15" x1="12" y1="7" x2="26" y2="7" stroke="#F8CCB9" stroke-width="2" stroke-linecap="round"/>
+<line id="Line 16" x1="12" y1="11" x2="19" y2="11" stroke="#F8CCB9" stroke-width="2" stroke-linecap="round"/>
+<path id="Vector" d="M7.42231 24.5603C7.33417 24.5603 7.24603 24.5323 7.16997 24.4751C6.98282 24.334 6.94419 24.0675 7.08424 23.8789C7.87991 22.8045 7.11564 21.724 7.08304 21.679C6.94539 21.4904 6.98524 21.2239 7.17238 21.084C7.35953 20.9441 7.62274 20.983 7.76158 21.1704C8.1733 21.7265 8.70455 23.1148 7.76158 24.3875C7.67828 24.4994 7.5515 24.5591 7.42231 24.5591V24.5603Z" fill="#F4AB8B"/>
+</g>
+</svg>

@@ -3,6 +3,8 @@ import React from 'react';
 import { colors } from '@styles/theme';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import { Col } from '../flex/Flex';
+import Txt from '../text/Txt';
 
 interface LayoutProps {
   hasHeader?: boolean;
@@ -10,13 +12,23 @@ interface LayoutProps {
   HeaderCenter?: React.ReactNode;
   HeaderRight?: React.ReactNode;
   children: React.ReactNode;
+  overflow?: string;
+  Footer?: boolean;
 }
 
 const Layout = (props: LayoutProps) => {
-  const { hasHeader = true, HeaderLeft, HeaderCenter, HeaderRight, children } = props;
+  const {
+    hasHeader = true,
+    HeaderLeft,
+    HeaderCenter,
+    HeaderRight,
+    children,
+    overflow,
+    Footer = false,
+  } = props;
 
   return (
-    <Main hasHeader={hasHeader}>
+    <Main overflow={overflow ? overflow : 'auto'}>
       {hasHeader && (
         <HeaderContainer>
           <div
@@ -43,11 +55,27 @@ const Layout = (props: LayoutProps) => {
         </HeaderContainer>
       )}
       <div>{children}</div>
+      {Footer && (
+        <Col
+          padding={'29.5px 0'}
+          css={css`
+            background-color: ${colors.yellow300};
+            text-align: center;
+          `}
+        >
+          <Txt variant="b16" color={colors.lightGray}>
+            stuffinout@gmail.com
+          </Txt>
+          <Txt variant="c11" color={colors.lightGray}>
+            Copyright ©Teamname. All rights reserved.
+          </Txt>
+        </Col>
+      )}
     </Main>
   );
 };
 
-export const Main = styled.main<{ hasHeader: boolean }>`
+export const Main = styled.main<{ overflow: string }>`
   position: relative;
   max-width: 512px;
   margin: 0 auto;
@@ -56,6 +84,7 @@ export const Main = styled.main<{ hasHeader: boolean }>`
   -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch !important;
   scrollbar-width: none;
+  overflow: ${({ overflow }) => overflow};
 
   ::-webkit-scrollbar {
     display: none;
@@ -67,6 +96,7 @@ export const Main = styled.main<{ hasHeader: boolean }>`
 `;
 
 export const HeaderContainer = styled.header`
+  z-index: 100;
   position: sticky;
   background-color: ${colors.white};
   display: grid;

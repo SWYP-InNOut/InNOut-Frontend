@@ -9,13 +9,17 @@ import { Col } from '@components/common/flex/Flex';
 import { css } from '@emotion/react';
 import { generateNickname } from '@utils/generateNickname';
 import { useNavigate } from 'react-router-dom';
+import ToastBar from '@components/common/alert/ToastBar';
 
 const NickNameChange = () => {
   const navigate = useNavigate();
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [nickname, setNickname] = useState('');
-  const handleOk = () => {
-    console.log('확인');
+  const [toastVisible, setToastVisible] = useState(false);
+
+  // 확인 클릭 후 성공하면 띄우기  -> api 연결 후 수정
+  const handleToast = () => {
+    setToastVisible(!toastVisible);
   };
   useEffect(() => {
     // setIsDuplicate()
@@ -55,9 +59,10 @@ const NickNameChange = () => {
               justifyContent={'center'}
             />
           </div>
-          <PrimaryButton title="확인" onClick={handleOk} />
+          <PrimaryButton title="확인" onClick={handleToast} />
         </Col>
       </Col>
+      <ToastBar message="닉네임이 변경됐어요" isVisible={toastVisible} onHide={handleToast} />
     </Layout>
   );
 };

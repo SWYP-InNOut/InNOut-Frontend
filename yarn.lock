@@ -535,6 +535,19 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@lottiefiles/dotlottie-react@^0.8.3":
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/@lottiefiles/dotlottie-react/-/dotlottie-react-0.8.3.tgz#2d5052d9bdc61171fb3ae4ea55eb8bcd14a5c10b"
+  integrity sha512-JjCz/q3cZ5UQG490hy4n9QruLU+SWujoam9HBWujZlRZyfDcnKmxPlaJt9bFqOJ86OGs23P/9M9QHJbqwor2dg==
+  dependencies:
+    "@lottiefiles/dotlottie-web" "0.29.2"
+    debounce "^2.0.0"
+
+"@lottiefiles/dotlottie-web@0.29.2":
+  version "0.29.2"
+  resolved "https://registry.yarnpkg.com/@lottiefiles/dotlottie-web/-/dotlottie-web-0.29.2.tgz#9258155fad08c19c77f5ae5e739c17d84b3fd809"
+  integrity sha512-2rzm4SJ6MZPbZBjVLI8zuLDxRDvWvYcri8SF9TY4ifgZn2M+6JsQbXwl5P6cDdMctfU78kJvENOXGAO0jKsBTQ==
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -1175,6 +1188,11 @@ csstype@^3.0.2:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.3.tgz#d80ff294d114fb0e6ac500fbf85b60137d7eff81"
   integrity sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==
 
+debounce@^2.0.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/debounce/-/debounce-2.1.0.tgz#eab25eaf254b848fcfccffbde75bdaa44842caa3"
+  integrity sha512-OkL3+0pPWCqoBc/nhO9u6TIQNTK44fnBnzuVtJAbp13Naxw9R6u21x+8tVTka87AhDZ3htqZ2pSSsZl9fqL2Wg==
+
 debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4:
   version "4.3.5"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.5.tgz#e83444eceb9fedd4a1da56d671ae2446a01a6e1e"
@@ -1738,6 +1756,11 @@ loose-envify@^1.1.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
+lottie-web@^5.12.2:
+  version "5.12.2"
+  resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.12.2.tgz#579ca9fe6d3fd9e352571edd3c0be162492f68e5"
+  integrity sha512-uvhvYPC8kGPjXT3MyKMrL3JitEAmDMp30lVkuq/590Mw9ok6pWcFCwXJveo0t5uqYw1UREQHofD+jVpdjBv8wg==
+
 lower-case@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/lower-case/-/lower-case-2.0.2.tgz#6fa237c63dbdc4a82ca0fd882e4722dc5e634e28"
@@ -2004,6 +2027,11 @@ react-router@6.25.0:
   integrity sha512-bziKjCcDbcxgWS9WlWFcQIVZ2vJHnCP6DGpQDT0l+0PFDasfJKgzf9CM22eTyhFsZkjk8ApCdKjJwKtzqH80jQ==
   dependencies:
     "@remix-run/router" "1.18.0"
+
+react-scroll-progress-bar@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/react-scroll-progress-bar/-/react-scroll-progress-bar-2.0.3.tgz#f3b4847f408d3fc4d3bd9f60386cff8c441a461a"
+  integrity sha512-CJ8L/X/oJMei6Pi3LaAG7seLahpdBc3CMNY+hhkmUUtPjND8W8Bva32OipESm2rj5ulkezym05DxKupeAjldzQ==
 
 react@^18.3.1:
   version "18.3.1"

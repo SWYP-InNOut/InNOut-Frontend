@@ -5,7 +5,7 @@ import Txt from '@components/common/text/Txt';
 
 interface PrimaryButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   title: string;
-  onClick: () => void;
+  onClick?: () => void;
   disabled?: boolean;
   color?: string;
   height?: string;
