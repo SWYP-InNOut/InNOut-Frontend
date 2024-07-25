@@ -67,7 +67,7 @@ const ChangeProperty = (props: ChangePropertyProps) => {
             <TextInput id={INPUT_TYPE.NICKNAME} placeholder={placeholder} content={content} />
           </FormProvider>
         </Col>
-        <Col gap={'2'}>{renderError()}</Col>
+        <Col gap={'5'}>{renderError()}</Col>
       </Col>
     </div>
   );

@@ -18,23 +18,49 @@ import {
 import Txt from '@components/common/text/Txt';
 import { Col, Row } from '@components/common/flex/Flex';
 import styled from '@emotion/styled';
-import LottieContainer from '@components/common/lottie/LottieContainer';
 import { css } from '@emotion/react';
 import { colors } from '@styles/theme';
 import TextArea from '@components/common/input/TextArea';
 import ContentContainer from '@components/home/post/ContentContainer';
 import ImagePicker from '@components/home/post/Image/ImagePicker';
 import InOutVoting from '@components/home/\binout/InOutVoting';
+import { useNavigate } from 'react-router-dom';
 
 const Detail = () => {
+  const navigate = useNavigate();
   const inContent: string =
     '사용자가 작성한 내용부분은 inout을 작성할 때, 사용자가 작성한 내용 중 긴 내용에 해당하는 텍스트 박스 사이즈로 통일됩니다. ';
   const outContent: string =
     '사용자가 작성한 내용부분은 inout을 작성할 때, 사용자가 작성한 내용 중 긴 내용에 해당하는 텍스트 박스 사이즈로 통일됩니다. 사용자가 작성한 내용부분은 inout을 작성할 때, 사용자가 작성한 내용 중 긴 내용에 해당하는 텍스트 박스 사이즈로 통일됩니다. ';
   const [heightSize, setHeightSize] = useState<number>(0);
-
+  const handleArrowClick = () => {
+    navigate(-1);
+  };
   return (
-    <Layout HeaderLeft={<LeftArrowIcon />} HeaderRight={<Txt variant="b16">수정</Txt>}>
+    <Layout
+      HeaderLeft={
+        <button
+          onClick={handleArrowClick}
+          css={css`
+            cursor: pointer;
+          `}
+        >
+          <LeftArrowIcon />
+        </button>
+      }
+      HeaderRight={
+        <Txt
+          variant="b16"
+          color={colors.yellow700}
+          css={css`
+            cursor: pointer;
+          `}
+        >
+          수정
+        </Txt>
+      }
+      Footer={true}
+    >
       <div
         css={css`
           margin-top: 12px;
