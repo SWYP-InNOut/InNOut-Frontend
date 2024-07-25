@@ -142,17 +142,25 @@ const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: (
               justifyContent="space-between"
               onClick={() => console.log('나의 홈 대문')}
             >
-              <Row gap={8}>
+              <Row gap={8} alignItems="end">
                 <PrivateIcon />
-                <Txt variant="b16" lineHeight={32}>
-                  나의 홈 대문
-                </Txt>
+                <Col>
+                  <Txt variant="b16" lineHeight={24}>
+                    나의 홈 공개
+                  </Txt>
+                  <Txt variant="c11" lineHeight={11} color={colors.lightGray}>
+                    다른 홈 구경에서 나의 홈을 공개할 수 있어요
+                  </Txt>
+                </Col>
               </Row>
               <Toggle on={isOn} handleToggle={() => setIsOn(!isOn)} />
             </Row>
             <Row
               alignItems="center"
               justifyContent="space-between"
+              css={css`
+                cursor: pointer;
+              `}
               onClick={() => {
                 setIsLogoutAlert(true);
               }}

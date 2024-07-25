@@ -14,8 +14,10 @@ import PreviewChat from '@components/chat/PreviewChat';
 import AlertModal from '@components/common/alert/AlertModal';
 import PrimaryButton from '@components/common/button/PrimaryButton';
 import ToastBar from '@components/common/alert/ToastBar';
+import { useNavigate } from 'react-router-dom';
 
 const MyHome = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [selectList, setSelectList] = useState(['최신순', 'In 많은순', 'Out 많은순', '오래된순']);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -37,6 +39,11 @@ const MyHome = () => {
 
   const handleToast = () => {
     setToastVisible(!toastVisible);
+  };
+
+  const handlePencilBtn = () => {
+    console.log('pencil');
+    navigate('/post');
   };
   return (
     <>
@@ -132,6 +139,7 @@ const MyHome = () => {
           justifyContent={'flex-end'}
           css={css`
             width: 100%;
+            cursor: pointer;
           `}
         >
           <Filter
@@ -154,7 +162,7 @@ const MyHome = () => {
         </div>
         <HomeMenuSlider isOpen={isOpen} handleMenu={toggleMenu} />
         <StyledPencilIcon />
-        <AddButton />
+        <AddButton onClick={handlePencilBtn} />
         <ToastBar message="링크가 복사됐어요" isVisible={toastVisible} onHide={handleToast} />
       </Layout>
     </>
