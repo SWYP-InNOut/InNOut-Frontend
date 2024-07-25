@@ -3,20 +3,28 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { colors } from '../../../assets/styles/theme';
 import { Col } from '../flex/Flex';
+import { CloseIcon } from '@icons/index';
 
 interface AlertModalProps {
   isOpen: boolean;
   content: React.ReactNode;
   button: React.ReactNode;
+  isShare?: boolean;
+  close?: () => void;
 }
 //  제일 상단에 올리면 됩니다용
-const AlertModal: React.FC<AlertModalProps> = ({ isOpen, content, button }) => {
+const AlertModal: React.FC<AlertModalProps> = ({ isOpen, content, button, isShare, close }) => {
   if (!isOpen) return null;
 
   return (
     <Back>
-      <Alert>
+      <Alert isShare={isShare}>
         <Col gap={'24'}>
+          {isShare ? (
+            <Close>
+              <CloseIcon onClick={close} />
+            </Close>
+          ) : null}
           {content}
           {button}
         </Col>
@@ -38,16 +46,23 @@ const Back = styled.div`
   z-index: 1000;
 `;
 
-const Alert = styled.div`
+const Alert = styled.div<{ isShare?: boolean }>`
   display: flex;
   background-color: ${colors.white};
-  padding: 40px 24px 20px;
+  padding: ${(props) => (props.isShare ? '20px 24px 24px 24px' : '40px 24px 20px')};
   width: 100%;
-  max-width: 300px;
-  margin: auto 40px;
+  max-width: 328px;
+  margin: ${(props) => (props.isShare ? 'auto 16px' : 'auto 40px')};
   border-radius: 32px;
   justify-content: center;
   align-items: center;
+`;
+
+const Close = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  cursor: pointer;
 `;
 
 export default AlertModal;
