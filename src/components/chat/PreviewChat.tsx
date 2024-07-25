@@ -41,7 +41,7 @@ const ChattingBoxContainer = styled.div`
 const ChattingBox = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 12px 0 64px;
+  padding: 12px 0 69px;
   gap: 8px;
   background-color: transparent;
   width: 100%;
