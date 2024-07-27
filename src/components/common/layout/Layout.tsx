@@ -54,23 +54,31 @@ const Layout = (props: LayoutProps) => {
           </div>
         </HeaderContainer>
       )}
-      <div>{children}</div>
-      {Footer && (
-        <Col
-          padding={'29.5px 0'}
-          css={css`
-            background-color: ${colors.yellow300};
-            text-align: center;
-          `}
-        >
-          <Txt variant="b16" color={colors.lightGray}>
-            stuffinout@gmail.com
-          </Txt>
-          <Txt variant="c11" color={colors.lightGray}>
-            Copyright ©Teamname. All rights reserved.
-          </Txt>
-        </Col>
-      )}
+      <div
+        css={css`
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        `}
+      >
+        {children}
+        {Footer && (
+          <Col
+            padding={'29.5px 0'}
+            css={css`
+              background-color: ${colors.yellow300};
+              text-align: center;
+            `}
+          >
+            <Txt variant="b16" color={colors.lightGray}>
+              stuffinout@gmail.com
+            </Txt>
+            <Txt variant="c11" color={colors.lightGray}>
+              Copyright ©Teamname. All rights reserved.
+            </Txt>
+          </Col>
+        )}
+      </div>
     </Main>
   );
 };
@@ -80,6 +88,7 @@ export const Main = styled.main<{ overflow: string }>`
   max-width: 512px;
   margin: 0 auto;
   height: calc(var(--vh, 1vh) * 100);
+  min-height: 100%;
   background-color: ${colors.white};
   -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch !important;
@@ -95,6 +104,12 @@ export const Main = styled.main<{ overflow: string }>`
   }
 `;
 
+export const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
 export const HeaderContainer = styled.header`
   z-index: 100;
   position: sticky;
@@ -108,6 +123,11 @@ export const HeaderContainer = styled.header`
   width: 100%;
   height: 64px;
   padding: 28px 16px 4px;
+`;
+export const FooterContainer = styled.footer`
+  width: 100%;
+  margin: 0 auto;
+  max-width: 512px;
 `;
 
 export default Layout;
