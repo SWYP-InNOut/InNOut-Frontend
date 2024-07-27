@@ -29,13 +29,12 @@ const Login = () => {
     formState: { isValid },
   } = methods;
   const loginMutation = useMutation(login, {
-    onSuccess: (data) => {
-      console.log('로그인 성공:', data);
-      const headers = data.headers as AxiosHeaders;
-      const accessToken = String(headers.getAuthorization()).split(' ')[1];
-      const result: BaseResponse<string> = data.data;
-      const userId = result.result;
-      loginStore(accessToken, userId);
+    onSuccess: (response) => {
+      console.log('로그인 성공:', response);
+      const { data, headers } = response;
+      const accessToken = headers.authorization.split(' ')[1];
+      const { memberId, nickname } = data;
+      useAuthStore.getState().login(response);
       navigate('/');
     },
     onError: (error: AxiosError) => {

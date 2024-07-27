@@ -4,7 +4,6 @@ import Txt from '@components/common/text/Txt';
 import { css } from '@emotion/react';
 import { LogoIcon, MenuIcon, PencilIcon } from '@icons/index';
 import { colors } from '@styles/theme';
-import { ChattingBox } from './MyHome.styles';
 import HomeMenuSlider from './HomeMenuSlider';
 import { useState } from 'react';
 import CardList from '@components/home/post/CardList';
@@ -15,6 +14,7 @@ import AlertModal from '@components/common/alert/AlertModal';
 import PrimaryButton from '@components/common/button/PrimaryButton';
 import ToastBar from '@components/common/alert/ToastBar';
 import { useNavigate } from 'react-router-dom';
+import useAuthStore from '@stores/auth';
 
 const MyHome = () => {
   const navigate = useNavigate();
@@ -24,6 +24,7 @@ const MyHome = () => {
   const [selectedFilter, setSelectedFilter] = useState('최신순');
   const [isShareOpenModal, setIsShareModal] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
+  const isLogin = useAuthStore((store) => store.isLoggedIn);
 
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
@@ -93,7 +94,6 @@ const MyHome = () => {
           content={
             <Col gap={'12'} alignItems="center">
               <Txt variant="t20">친구를 초대해요</Txt>
-
               <Col alignItems="center">
                 <Txt variant="b16">이 링크로 초대받은 친구는</Txt>
                 <div>
@@ -132,7 +132,7 @@ const MyHome = () => {
           </Row>
         </Col>
         <Col padding={'0 16px'}>
-          <PreviewChat />
+          <PreviewChat isLogin={isLogin} />
         </Col>
         <Row
           padding={'0 16px'}
@@ -157,12 +157,22 @@ const MyHome = () => {
           `}
         >
           <CardList
-            imgList={['https://via.placeholder.com/150', 'https://via.placeholder.com/150']}
+            imgList={[
+              'https://via.placeholder.com/150',
+              'https://via.placeholder.com/150',
+              'https://via.placeholder.com/150',
+              'https://via.placeholder.com/150',
+            ]}
           />
         </div>
         <HomeMenuSlider isOpen={isOpen} handleMenu={toggleMenu} />
-        <StyledPencilIcon />
-        <AddButton onClick={handlePencilBtn} />
+        {!isOpen && (
+          <>
+            <StyledPencilIcon />
+            <AddButton onClick={handlePencilBtn} />
+          </>
+        )}
+
         <ToastBar message="링크가 복사됐어요" isVisible={toastVisible} onHide={handleToast} />
       </Layout>
     </>
@@ -177,6 +187,7 @@ const StyledPencilIcon = styled(PencilIcon)`
   position: fixed;
   bottom: 40px;
   right: 16px; /* 기본 위치 */
+  z-index: 999;
   filter: drop-shadow(0px 1px 8px rgba(165, 60, 14, 0.3))
     drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.3));
   @media (min-width: 513px) {
@@ -190,7 +201,7 @@ const AddButton = styled.button`
   position: fixed;
   bottom: 40px;
   right: 16px;
-  z-index: 2;
+  z-index: 1000;
   border-radius: 18px;
   &:active {
     background: rgba(97, 59, 42, 0.3);
