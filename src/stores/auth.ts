@@ -3,7 +3,7 @@ import axios, { AxiosHeaders } from 'axios';
 import { HTTP_URL } from '@apis/auth';
 import { persist } from 'zustand/middleware';
 
-const apiClient = axios.create({
+export const apiClient = axios.create({
   baseURL: HTTP_URL, // API의 기본 URL
   withCredentials: true, // 쿠키를 포함한 요청을 보낼 때 필요
 });
