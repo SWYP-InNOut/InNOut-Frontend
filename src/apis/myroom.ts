@@ -17,7 +17,7 @@ export const postMyRoomAddStuff = async (
   request: PostRequestDTO
 ): Promise<BaseResponse<string>> => {
   try {
-    const response = await apiClient.post('/myroom/addstuff', { request });
+    const response = await apiClient.post('/myroom/addstuff', request);
     return response.data;
   } catch (error) {
     console.error('게시물 등록 실패:', error);
@@ -27,10 +27,11 @@ export const postMyRoomAddStuff = async (
 
 //게시물 상세보기
 export const getMyRoomPost = async (
-  memberId: string,
+  memberId: number,
   postId: number
 ): Promise<BaseResponse<string>> => {
   try {
+    console.log('getMyRoomPost');
     const response = await apiClient.get(`/myroom/post/${postId}`, {
       params: { memberId: memberId },
     });

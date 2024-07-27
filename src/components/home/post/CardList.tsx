@@ -24,7 +24,11 @@ const CardList = ({ postList }: { postList?: Post[] }) => {
       ) : (
         <CardContainer>
           {postList.map((post, index) => (
-            <Card key={index} src={post.imgUrl} onClick={() => navigate(`detail:${post.postId}`)} />
+            <Card
+              key={index}
+              src={post.imgUrl}
+              onClick={() => navigate(`/detail/:${post.postId}`)}
+            />
           ))}
         </CardContainer>
       )}

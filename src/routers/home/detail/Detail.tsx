@@ -24,10 +24,62 @@ import TextArea from '@components/common/input/TextArea';
 import ContentContainer from '@components/home/post/ContentContainer';
 import ImagePicker from '@components/home/post/Image/ImagePicker';
 import InOutVoting from '@components/home/\binout/InOutVoting';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { getMyRoomPost } from '@apis/myroom';
+import { useMutation, useQuery } from 'react-query';
+import useAuthStore from '@stores/auth';
+import { postIn, postOut } from '@apis/stuff';
 
 const Detail = () => {
   const navigate = useNavigate();
+  console.log('navigate:');
+  const { postId } = useParams<{ postId: string }>();
+  const [searchParams] = useSearchParams();
+  const memberId = useAuthStore((store) => store.memberId);
+  console.log('memberId:', memberId);
+  console.log('postId:', postId);
+
+  const myRoomMutation = useMutation(() => getMyRoomPost(memberId!, Number(postId)), {
+    onSuccess: (data) => {
+      if (data.code === 1000) {
+        console.log('마이룸 상세 조회 성공:', data);
+      }
+    },
+    onError: (error) => {
+      console.error('마이룸 상세 조회 실패:', error);
+    },
+  });
+
+  const inMutation = useMutation(
+    ({ request, postId }: { request: StuffRequestDTO; postId: string }) => postIn(request, postId),
+    {
+      onSuccess: (data) => {
+        console.log('In 성공:', data);
+      },
+      onError: (error) => {
+        console.error('In 실패:', error);
+      },
+    }
+  );
+
+  const outMutation = useMutation(
+    ({ request, postId }: { request: StuffRequestDTO; postId: string }) => postOut(request, postId),
+    {
+      onSuccess: (data) => {
+        console.log('In 성공:', data);
+      },
+      onError: (error) => {
+        console.error('In 실패:', error);
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (memberId && postId) {
+      myRoomMutation.mutate();
+    }
+  }, [memberId, postId]);
+
   const inContent: string =
     '사용자가 작성한 내용부분은 inout을 작성할 때, 사용자가 작성한 내용 중 긴 내용에 해당하는 텍스트 박스 사이즈로 통일됩니다. ';
   const outContent: string =
