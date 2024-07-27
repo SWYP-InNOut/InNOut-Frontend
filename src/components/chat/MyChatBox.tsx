@@ -13,7 +13,7 @@ interface MyChatBoxProps {
 }
 
 const MyChatBox = ({ message, time, onClick }: MyChatBoxProps) => {
-  const maxWidth = useWindowWidth() * 0.65;
+  const maxWidth = useWindowWidth() * 0.64;
   return (
     <Col padding={'0 16px'} gap={8} alignItems={'flex-end'}>
       <Txt
@@ -25,7 +25,7 @@ const MyChatBox = ({ message, time, onClick }: MyChatBoxProps) => {
       >
         나
       </Txt>
-      <Row gap={2} alignItems={'flex-end'} justifyContent={'flex-end'}>
+      <Row gap={4} alignItems={'flex-end'} justifyContent={'flex-end'}>
         <Txt variant="c11" color={colors.gray300}>
           {time}
         </Txt>
