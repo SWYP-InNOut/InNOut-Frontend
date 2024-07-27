@@ -15,7 +15,7 @@ export const getOthers = async (): Promise<BaseResponse<string>> => {
 //특정 사용자 룸 / 물건 리스트
 export const postOthersRoom = async (request: RoomRequestDTO): Promise<BaseResponse<string>> => {
   try {
-    const response = await apiClient.post('/others/room', { request });
+    const response = await apiClient.post('/others/room', request);
     return response.data;
   } catch (error) {
     console.error('특정 사용자 룸 / 물건 리스트 실패:', error);

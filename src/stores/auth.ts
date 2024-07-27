@@ -1,7 +1,8 @@
 import { create } from 'zustand';
-import axios, { AxiosHeaders } from 'axios';
+import axios, { AxiosHeaders, AxiosResponse } from 'axios';
 import { HTTP_URL } from '@apis/auth';
 import { persist } from 'zustand/middleware';
+import Cookies from 'js-cookie';
 
 export const apiClient = axios.create({
   baseURL: HTTP_URL, // API의 기본 URL
@@ -32,10 +33,11 @@ apiClient.interceptors.response.use(
 interface AuthState {
   isLoggedIn: boolean;
   memberId: number | null;
+  nickname: string | null;
 }
 
 interface AuthAction {
-  login: (email: string, password: string) => Promise<void>;
+  login: (response: AxiosResponse) => Promise<void>;
   reLogin: () => Promise<boolean>;
   logout: () => Promise<void>;
 }
@@ -45,11 +47,19 @@ export const useAuthStore = create(
     (set, get) => ({
       isLoggedIn: false,
       memberId: null,
-      login: async (accessToken, userId) => {
+      nickname: null,
+      login: async (response: AxiosResponse) => {
         try {
+          const { data, headers } = response;
+          const accessToken = headers.authorization.split(' ')[1];
+
           if (accessToken) {
             apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-            set({ isLoggedIn: true, memberId: 1 });
+            set({
+              isLoggedIn: true,
+              memberId: data.memberId,
+              nickname: data.nickname,
+            });
           }
         } catch (e) {
           console.error('로그인 중 오류 발생', e);
@@ -67,7 +77,6 @@ export const useAuthStore = create(
           const headers = response.headers as AxiosHeaders;
           const accessToken = String(headers.getAuthorization()).split(' ')[1];
           const { userId } = response.data;
-
           if (accessToken) {
             apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
             set({ isLoggedIn: true, memberId: userId });
@@ -83,17 +92,14 @@ export const useAuthStore = create(
       },
       logout: async () => {
         try {
-          await apiClient.post(
-            '/auth/logout',
-            {},
-            {
-              withCredentials: true,
-            }
-          );
+          await apiClient.get('/logout', {
+            withCredentials: false,
+          });
         } catch (e) {
           console.error('로그아웃 중 오류 발생', e);
         } finally {
-          set({ isLoggedIn: false, memberId: null });
+          set({ isLoggedIn: false, memberId: null, nickname: null });
+          Cookies.remove('refreshToken'); // 쿠키 삭제 안됨... 왜 안될까
           apiClient.defaults.headers.common['Authorization'] = '';
         }
       },

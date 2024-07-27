@@ -19,7 +19,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AlertModal from '@components/common/alert/AlertModal';
 import PrimaryButton from '@components/common/button/PrimaryButton';
-import { logout } from '@apis/auth/auth';
+
 import useAuthStore from '@stores/auth';
 
 const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: () => void }) => {
@@ -35,6 +35,7 @@ const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: (
     navigate('/pwd');
   };
 
+  const logout = useAuthStore((state) => state.logout);
   const renderTitle = () => {
     return isLogin ? (
       <Row padding={'0 28px 64px'} gap={'4'} justifyContent="start" alignItems="end">
@@ -89,6 +90,7 @@ const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: (
                   await logout();
                   console.log('로그아웃 성공');
                   setIsLogoutAlert(false);
+                  navigate('/login');
                 } catch (error) {
                   console.error('로그아웃 실패', error);
                 }
