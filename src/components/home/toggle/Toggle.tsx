@@ -24,7 +24,7 @@ const Container = styled.div<{ on: boolean }>`
 const Circle = styled.div<{ on: boolean }>`
   position: absolute;
   transition: transform 0.5s;
-  transform: ${({ on }) => (on ? 'translateX(calc(100% - 8px))' : 'translateX(3px)')}
+  transform: ${({ on }) => (on ? 'translateX(calc(100% - 1.9px))' : 'translateX(3.8px)')}
     translateY(-50%);
   top: 50%;
   width: 26px;

@@ -101,17 +101,30 @@ const MyHome = () => {
           </div>
         }
         HeaderRight={
-          <button
-            css={css`
-              width: 29px;
-              cursor: pointer;
-            `}
-            onClick={handleShareBtn}
-          >
-            <Txt variant="b16" color={colors.yellow700}>
-              공유
-            </Txt>
-          </button>
+          !isLogin ? (
+            <LoginButton onClick={() => navigate('/login')}>
+              <Txt variant="c14" color={colors.darkGray} lineHeight={24}>
+                로그인/가입
+              </Txt>
+            </LoginButton>
+          ) : (
+            <button
+              css={css`
+                width: 32px;
+                height: 32px;
+                border-radius: 6px;
+                cursor: pointer;
+                &:active {
+                  background: rgba(0, 0, 0, 0.1);
+                }
+              `}
+              onClick={handleShareBtn}
+            >
+              <Txt variant="b16" color={colors.yellow700}>
+                공유
+              </Txt>
+            </button>
+          )
         }
       >
         <AlertModal
@@ -202,6 +215,17 @@ const MyHome = () => {
 };
 
 export default MyHome;
+
+const LoginButton = styled.button`
+  padding: 0 9px;
+  border-radius: 99px;
+  background-color: ${colors.white};
+  border: 1px solid ${colors.yellow600};
+  background-color: ${colors.white};
+  &:active {
+    background: rgba(0, 0, 0, 0.1);
+  }
+`;
 
 const StyledPencilIcon = styled(PencilIcon)`
   width: 56px; /* 기본 너비 */

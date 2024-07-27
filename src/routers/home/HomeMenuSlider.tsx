@@ -26,6 +26,7 @@ const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: (
   const [isOn, setIsOn] = useState(false);
   const [isLogoutAlert, setIsLogoutAlert] = useState(false);
   const isLogin = useAuthStore((store) => store.isLoggedIn);
+  const memberName = useAuthStore((store) => store.nickname);
   // const isLogin = false;
   const navigate = useNavigate();
   const handleNickNameChange = () => {
@@ -40,7 +41,7 @@ const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: (
     return isLogin ? (
       <Row padding={'0 28px 64px'} gap={'4'} justifyContent="start" alignItems="end">
         <Txt variant="h28" lineHeight={42}>
-          사용자닉네임최대길이
+          {memberName}
         </Txt>
         <Txt variant="t18" color={colors.lightGray}>
           님의 홈
@@ -183,9 +184,19 @@ const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: (
                   justifyContent="space-between"
                   onClick={() => console.log('나의 홈 대문')}
                 >
-                  <Row gap={8} alignItems="end">
+                  <Row
+                    gap={8}
+                    alignItems="flex-end"
+                    css={css`
+                      width: auto;
+                    `}
+                  >
                     <PrivateIcon />
-                    <Col>
+                    <Col
+                      css={css`
+                        width: auto;
+                      `}
+                    >
                       <Txt variant="b16" lineHeight={24}>
                         나의 홈 공개
                       </Txt>

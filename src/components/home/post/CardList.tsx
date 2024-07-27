@@ -3,8 +3,10 @@ import Txt from '@components/common/text/Txt';
 import styled from '@emotion/styled';
 import { Charactor } from '@icons/index';
 import { colors } from '@styles/theme';
+import { useNavigate } from 'react-router-dom';
 
 const CardList = ({ postList }: { postList?: Post[] }) => {
+  const navigate = useNavigate();
   return (
     <>
       {!postList || postList.length === 0 ? (
@@ -22,7 +24,7 @@ const CardList = ({ postList }: { postList?: Post[] }) => {
       ) : (
         <CardContainer>
           {postList.map((post, index) => (
-            <Card key={index} src={post.imgUrl} />
+            <Card key={index} src={post.imgUrl} onClick={() => navigate(`detail:${post.postId}`)} />
           ))}
         </CardContainer>
       )}
