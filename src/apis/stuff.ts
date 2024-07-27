@@ -21,7 +21,7 @@ export const postIn = async (
 //버려
 export const postOut = async (
   request: StuffRequestDTO,
-  postId: string
+  postId: number
 ): Promise<BaseResponse<string>> => {
   try {
     const response = await apiClient.post(`/out/${postId}`, { request });

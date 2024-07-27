@@ -14,8 +14,9 @@ export const postNickName = async (nickname: string): Promise<BaseResponse<strin
 // 비밀번호가 맞는지 확인
 export const getPassword = async (password: string): Promise<BaseResponse<string>> => {
   console.log('dfdfdfdsf');
+  console.log(password);
   try {
-    const response = await apiClient.post('/password', { password: password });
+    const response = await apiClient.post('/check-password', { password: password });
     return response.data;
   } catch (error) {
     console.error('비밀번호 확인 실패:', error);
@@ -23,6 +24,7 @@ export const getPassword = async (password: string): Promise<BaseResponse<string
   }
 };
 
+// 비밀번호 변경
 export const postPassword = async (password: string): Promise<BaseResponse<string>> => {
   try {
     const response = await apiClient.post('/password', { password: password });

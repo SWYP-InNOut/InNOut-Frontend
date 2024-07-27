@@ -18,6 +18,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AlertModal from '@components/common/alert/AlertModal';
 import PrimaryButton from '@components/common/button/PrimaryButton';
+import { logout } from '@apis/auth/auth';
 
 const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: () => void }) => {
   const [isOn, setIsOn] = useState(false);
@@ -44,10 +45,15 @@ const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: (
           <Col gap={'8'}>
             <PrimaryButton
               title="로그아웃"
-              onClick={() => {
+              onClick={async () => {
                 console.log('로그아웃');
-                // TODO: 로그아웃 로직 추가
-                setIsLogoutAlert(false);
+                try {
+                  await logout();
+                  console.log('로그아웃 성공');
+                  setIsLogoutAlert(false);
+                } catch (error) {
+                  console.error('로그아웃 실패', error);
+                }
               }}
               color={colors.red600}
               fontColor={colors.white}

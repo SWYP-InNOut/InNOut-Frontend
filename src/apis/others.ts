@@ -25,7 +25,7 @@ export const postOthersRoom = async (request: RoomRequestDTO): Promise<BaseRespo
 
 // /others/post/{postId}
 //특정 사용자 게시물 상세보기
-export const postOthersRoompost = async (
+export const getOthersRoompost = async (
   memberId: string,
   postId: number
 ): Promise<BaseResponse<string>> => {
