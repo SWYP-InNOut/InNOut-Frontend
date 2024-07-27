@@ -23,6 +23,9 @@ apiClient.interceptors.response.use(
       if (isReLoginSuccess) {
         // reLogin 성공 시, 원래 요청을 새로운 accessToken으로 재시도
         return apiClient(originalRequest);
+      } else {
+        // reLogin 실패 시, 로그아웃 처리
+        useAuthStore.getState().logout();
       }
     }
     // reLogin 실패 또는 다른 모든 경우의 에러를 그대로 반환
@@ -68,14 +71,9 @@ export const useAuthStore = create(
       },
       reLogin: async () => {
         try {
-          const response = await apiClient.post(
-            `${HTTP_URL}/regenerate-token`,
-            {},
-            {
-              withCredentials: true,
-            }
-          );
+          const response = await apiClient.post('/regenerate-token');
           const headers = response.headers as AxiosHeaders;
+          console.log('토큰 갱신 성공', response.data);
           const accessToken = String(headers.getAuthorization()).split(' ')[1];
           const { userId } = response.data;
           if (accessToken) {

@@ -29,6 +29,7 @@ interface MyRoomResponseDTO {
   memberName: string;
   chats: Chat[];
   posts: Post[];
+  public: boolean;
 }
 
 interface OthersRoomResponsetDTO {
@@ -54,6 +55,10 @@ interface Chat {
 interface Post {
   postId: number;
   imgUrl: string;
+}
+
+interface IsPublicResponseDTO {
+  public: boolean;
 }
 
 ///others/room/detail/{postId} 추가 예정
