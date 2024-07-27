@@ -10,3 +10,25 @@ export const postNickName = async (nickname: string): Promise<BaseResponse<strin
     throw error;
   }
 };
+
+// 비밀번호가 맞는지 확인
+export const getPassword = async (password: string): Promise<BaseResponse<string>> => {
+  console.log('dfdfdfdsf');
+  try {
+    const response = await apiClient.post('/password', { password: password });
+    return response.data;
+  } catch (error) {
+    console.error('비밀번호 확인 실패:', error);
+    throw error;
+  }
+};
+
+export const postPassword = async (password: string): Promise<BaseResponse<string>> => {
+  try {
+    const response = await apiClient.post('/password', { password: password });
+    return response.data;
+  } catch (error) {
+    console.error('비밀번호 변경 실패:', error);
+    throw error;
+  }
+};

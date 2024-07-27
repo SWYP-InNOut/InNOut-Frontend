@@ -15,10 +15,20 @@ interface ChangePropertyProps {
   id: keyof typeof INPUT_TYPE;
   onChange?: (value: string) => void;
   isDuplicateNickname?: boolean;
+  newPassword?: boolean;
 }
 
 const ChangeProperty = (props: ChangePropertyProps) => {
-  const { title, subtitle, content, id, placeholder, onChange, isDuplicateNickname } = props;
+  const {
+    title,
+    subtitle,
+    content,
+    id,
+    placeholder,
+    onChange,
+    isDuplicateNickname,
+    newPassword = true,
+  } = props;
 
   const methods = useForm({
     mode: 'onChange',
@@ -79,7 +89,7 @@ const ChangeProperty = (props: ChangePropertyProps) => {
             <TextInput id={INPUT_TYPE[id]} placeholder={placeholder} content={content} />
           </FormProvider>
         </Col>
-        <Col gap={'5'}>{renderError()}</Col>
+        <Col gap={'5'}>{newPassword ? renderError() : null}</Col>
       </Col>
     </div>
   );
