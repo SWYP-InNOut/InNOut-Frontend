@@ -34,3 +34,13 @@ export const postPassword = async (password: string): Promise<BaseResponse<strin
     throw error;
   }
 };
+
+export const postSearchPassword = async (email: string): Promise<BaseResponse<string>> => {
+  try {
+    const response = await apiClient.post('/find-password', { email: email });
+    return response.data;
+  } catch (error) {
+    console.error('비밀번호 찾기 실패:', error);
+    throw error;
+  }
+};
