@@ -15,9 +15,9 @@ interface TextAreaProps {
 
 const TextArea = (props: TextAreaProps) => {
   const { id, placeholder, onKeyDown, options, type = 'text', ...rest } = props;
-  const { register, watch, setValue } = useFormContext();
-  const value = watch(id);
+  const { register, setValue, getValues } = useFormContext();
   const [isFocused, setIsFocused] = useState(false);
+  const value = getValues(id);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [content, setContent] = useState<string>('');
   const [initialHeight, setInitialHeight] = useState<string>('auto');

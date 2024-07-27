@@ -25,7 +25,12 @@ const usePictureHandlers = () => {
         if (updatedPictures.length === newPictures.length) {
           setMainPicture(newPictures[0].url);
         }
-        setValue('pictures', updatedPictures);
+        console.log(updatedPictures);
+        console.log(updatedPictures.map((pic) => pic.url));
+        setValue(
+          'images',
+          updatedPictures.map((pic) => pic.url.replace('blob:', ''))
+        );
         setValue('mainPicture', updatedPictures[0].url);
         return updatedPictures;
       });
@@ -47,7 +52,10 @@ const usePictureHandlers = () => {
         setMainPicture(null);
         setValue('mainPicture', null);
       }
-      setValue('pictures', updatedPictures);
+      setValue(
+        'images',
+        updatedPictures.map((pic) => pic.url.replace('blob:', ''))
+      );
       return updatedPictures;
     });
   };
