@@ -1,9 +1,10 @@
 import { BaseResponse } from '@interfaces/api/base';
 import { apiClient } from '@stores/auth';
 
-export const postMyRoom = async (request: RoomRequestDTO): Promise<BaseResponse<string>> => {
+//이름은 get이지만 post임
+export const getMyRoom = async (request: RoomRequestDTO): Promise<BaseResponse<any>> => {
   try {
-    const response = await apiClient.post('/myroom', { request });
+    const response = await apiClient.post('/myroom', request);
     return response.data;
   } catch (error) {
     console.error('홈화면 / 내 물건 리스트 실패:', error);
