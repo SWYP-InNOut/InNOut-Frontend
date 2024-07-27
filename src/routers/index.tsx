@@ -43,7 +43,7 @@ const Router = () => {
         </Route>
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />
-        <Route path="detail" element={<Detail />} />
+        <Route path="detail/:postId" element={<Detail />} />
         <Route path="error" element={<Error />} />
       </>
     )

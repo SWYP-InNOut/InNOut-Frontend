@@ -13,7 +13,7 @@ export const postIn = async (
     const response = await apiClient.post(`/in/${postId}`, request);
     return response.data;
   } catch (error) {
-    console.error('닉네임변경 실패:', error);
+    console.error('in 실패:', error);
     throw error;
   }
 };
