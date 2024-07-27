@@ -30,15 +30,16 @@ const HomeMenuSlider = ({
   isOpen,
   handleMenu,
   isPublic,
+  memberName,
 }: {
   isOpen: boolean;
   isPublic: boolean;
+  memberName: string;
   handleMenu: () => void;
 }) => {
   const [isOn, setIsOn] = useState(false);
   const [isLogoutAlert, setIsLogoutAlert] = useState(false);
   const isLogin = useAuthStore((store) => store.isLoggedIn);
-  const memberName = useAuthStore((store) => store.nickname);
 
   const getIsPublicMutation = useMutation(getIsPublic, {
     onSuccess: (data) => {

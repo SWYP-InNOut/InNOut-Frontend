@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useRef } from 'react';
+import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
 import { PictureIcon, PictureCloseIcon } from '@icons/index';
 import { css } from '@emotion/react';
 import { Col, Row } from '@components/common/flex/Flex';
@@ -6,11 +6,13 @@ import Txt from '@components/common/text/Txt';
 import { colors } from '@styles/theme';
 import styled from '@emotion/styled';
 import { usePictureHandlers, PictureType } from '@utils/pictureUtils';
+import { useFormContext } from 'react-hook-form';
 
 const Picture: React.FC = () => {
   const [pictures, setPictures] = useState<PictureType[]>([]);
   const [mainPicture, setMainPicture] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { register, setValue, watch, getValues } = useFormContext();
 
   const { handleAddPicture, handleRemovePicture, handleSetMainPicture } = usePictureHandlers();
 
@@ -19,7 +21,6 @@ const Picture: React.FC = () => {
       fileInputRef.current.click();
     }
   };
-
   return (
     <>
       <Row gap={'8'}>

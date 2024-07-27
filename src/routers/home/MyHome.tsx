@@ -201,7 +201,12 @@ const MyHome = () => {
         >
           <CardList postList={myRoomResponse?.posts} />
         </div>
-        <HomeMenuSlider isOpen={isOpen} handleMenu={toggleMenu} isPublic={isPublic} />
+        <HomeMenuSlider
+          memberName={myRoomResponse?.memberName || ''}
+          isOpen={isOpen}
+          handleMenu={toggleMenu}
+          isPublic={isPublic}
+        />
         {!isOpen && (
           <>
             <StyledPencilIcon />
