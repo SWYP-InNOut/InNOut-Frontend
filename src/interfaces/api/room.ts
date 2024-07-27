@@ -21,7 +21,7 @@ interface OthersResponseDTO {
 //0: 최신순, 1: in많은순, 2: out많은순, 3: 오래된순
 // 자신의 룸, 다른 사람 룸 둘다
 interface RoomRequestDTO {
-  memberId: number;
+  ownerId: number;
   filterType: number;
 }
 
@@ -29,6 +29,7 @@ interface MyRoomResponseDTO {
   memberName: string;
   chats: Chat[];
   posts: Post[];
+  public: boolean;
 }
 
 interface OthersRoomResponsetDTO {
@@ -54,6 +55,10 @@ interface Chat {
 interface Post {
   postId: number;
   imgUrl: string;
+}
+
+interface IsPublicResponseDTO {
+  public: boolean;
 }
 
 ///others/room/detail/{postId} 추가 예정

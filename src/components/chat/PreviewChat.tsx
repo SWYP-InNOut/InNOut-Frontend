@@ -53,7 +53,11 @@ const PreviewChat = ({ isLogin, chats }: PreviewChatProps) => {
         </>
       )}
       <ButtonContainer>
-        <PrimaryButton title="채팅 참여" height="40px" />
+        <PrimaryButton
+          title="채팅 참여"
+          height="40px"
+          onClick={() => alert('채팅 기능은 준비중입니다.')}
+        />
       </ButtonContainer>
     </ChattingBoxContainer>
   );

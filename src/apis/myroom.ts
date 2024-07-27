@@ -1,8 +1,21 @@
 import { BaseResponse } from '@interfaces/api/base';
 import { apiClient } from '@stores/auth';
 
+// 나의 룸 공개 여부 변경
+export const getIsPublic = async (): Promise<BaseResponse<IsPublicResponseDTO>> => {
+  try {
+    const response = await apiClient.post('/ispublic');
+    return response.data;
+  } catch (error) {
+    console.error('룸 공개 여부 실패:', error);
+    throw error;
+  }
+};
+
 //이름은 get이지만 post임
-export const getMyRoom = async (request: RoomRequestDTO): Promise<BaseResponse<any>> => {
+export const getMyRoom = async (
+  request: RoomRequestDTO
+): Promise<BaseResponse<MyRoomResponseDTO>> => {
   try {
     const response = await apiClient.post('/myroom', request);
     return response.data;
