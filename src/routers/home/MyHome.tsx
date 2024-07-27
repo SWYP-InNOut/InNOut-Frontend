@@ -18,6 +18,7 @@ import useAuthStore from '@stores/auth';
 import { getMyRoom } from '@apis/myroom';
 import { useMutation } from 'react-query';
 import { AxiosError } from 'axios';
+import { set } from 'react-hook-form';
 
 const MyHome = () => {
   const navigate = useNavigate();
@@ -29,15 +30,15 @@ const MyHome = () => {
   const [toastVisible, setToastVisible] = useState(false);
   const isLogin = useAuthStore((store) => store.isLoggedIn);
   const memberId = useAuthStore((store) => store.memberId);
+  const [isPublic, setIsPublic] = useState(false);
 
   const [myRoomResponse, setMyRoomResponse] = useState<MyRoomResponseDTO>();
 
   const getMyRoomListMutation = useMutation(getMyRoom, {
     onSuccess: (data) => {
       console.log('마이룸 리스트 성공:', data.result);
-      if (data.result as MyRoomResponseDTO) {
-        setMyRoomResponse(data.result);
-      }
+      setMyRoomResponse(data.result);
+      setIsPublic(data.result.public);
     },
     onError: (error: AxiosError) => {
       console.error('마이룸 리스트 실패:', error);
@@ -68,7 +69,7 @@ const MyHome = () => {
   useEffect(() => {
     isLogin &&
       getMyRoomListMutation.mutate({
-        memberId: memberId ? memberId : 0,
+        ownerId: memberId ? memberId : 0,
         filterType: selectedFilter,
       });
   }, [selectedFilter, isLogin]);
@@ -163,7 +164,7 @@ const MyHome = () => {
         />
         <Col padding={'24px 28px'}>
           <Row gap={'4'} justifyContent="start" alignItems="end">
-            <Txt variant="h28" lineHeight={42}>
+            <Txt variant="h28" lineHeight={36}>
               {myRoomResponse?.memberName}
             </Txt>
             <Txt variant="t18" color={colors.lightGray}>
@@ -200,7 +201,7 @@ const MyHome = () => {
         >
           <CardList postList={myRoomResponse?.posts} />
         </div>
-        <HomeMenuSlider isOpen={isOpen} handleMenu={toggleMenu} />
+        <HomeMenuSlider isOpen={isOpen} handleMenu={toggleMenu} isPublic={isPublic} />
         {!isOpen && (
           <>
             <StyledPencilIcon />
