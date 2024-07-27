@@ -1,3 +1,7 @@
+import React, { useState, useEffect } from 'react';
+import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
+import { getPassword, postPassword } from '@apis/user';
 import ErrorMessage from '@components/auth/ErrorMessage';
 import ChangeProperty from '@components/ChangeProperty';
 import ToastBar from '@components/common/alert/ToastBar';
@@ -7,21 +11,66 @@ import Layout from '@components/common/layout/Layout';
 import Txt from '@components/common/text/Txt';
 import { css } from '@emotion/react';
 import { CloseIcon } from '@icons/index';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const PwdChange = () => {
   const navigate = useNavigate();
-  const [isCorrect, setIsCorrect] = useState(true);
-  const [pwd, setPwd] = useState('');
+  const [step, setStep] = useState('check');
+  const [currentPwd, setCurrentPwd] = useState('');
+  const [newPwd, setNewPwd] = useState('');
+  const [confirmNewPwd, setConfirmNewPwd] = useState('');
   const [toastVisible, setToastVisible] = useState(false);
-  const handleOk = () => {
-    console.log('확인');
-  };
+  const [isNowPwdError, setIsNowPwdError] = useState(false);
+  const [isNewPwdError, setIsNewPwdError] = useState(false);
 
-  // 확인 클릭 후 성공하면 띄우기  -> api 연결 후 수정
-  const handleToast = () => {
-    setToastVisible(!toastVisible);
+  useEffect(() => {
+    if (newPwd !== confirmNewPwd) {
+      setIsNewPwdError(true);
+    } else {
+      setIsNewPwdError(false);
+    }
+  }, [newPwd, confirmNewPwd]);
+
+  const checkPasswordMutation = useMutation(getPassword, {
+    onSuccess: (data) => {
+      if (data.code === 1000) {
+        setStep('change');
+        setCurrentPwd('');
+        setIsNowPwdError(false);
+      } else if (data.code === 5007) {
+        console.error('비밀번호 확인 실패:', data);
+        setIsNowPwdError(true);
+      }
+    },
+    onError: (error) => {
+      console.error('비밀번호 확인 실패:', error);
+      setIsNowPwdError(true);
+    },
+  });
+
+  const changePasswordMutation = useMutation(postPassword, {
+    onSuccess: (data) => {
+      if (data.code === 1000) {
+        console.log('비밀번호 변경 성공:', data);
+        setToastVisible(true);
+        setTimeout(() => navigate(-1), 1000);
+      } else {
+        console.error('비밀번호 변경 실패:', data);
+      }
+    },
+    onError: (error) => {
+      console.error('비밀번호 변경 실패:', error);
+    },
+  });
+
+  const handleSubmit = () => {
+    if (step === 'check') {
+      console.log('currentPwd:', currentPwd);
+      checkPasswordMutation.mutate(currentPwd);
+    } else {
+      if (newPwd === confirmNewPwd) {
+        changePasswordMutation.mutate(newPwd);
+      }
+    }
   };
 
   return (
@@ -39,24 +88,73 @@ const PwdChange = () => {
         </div>
       }
     >
-      <Col gap={'66'} padding={'0 16px'} margin={'185px 0 0 0 '}>
-        <ChangeProperty title="비밀번호" id={'PASSWORD'} placeholder="비밀번호 입력" />
-        <Col gap={'12'}>
-          <div
-            css={css`
-              visibility: ${isCorrect ? 'visible' : 'hidden'};
-            `}
-          >
-            <ErrorMessage
-              content={'비밀번호가 일치하지 않습니다'}
-              isError={'error'}
-              justifyContent={'center'}
+      {step === 'check' ? (
+        <>
+          <Col gap={'215'} padding={'0 16px'} margin={'179px 0 0 0 '}>
+            <ChangeProperty
+              title="현재 비밀번호"
+              id={'PASSWORD'}
+              placeholder="비밀번호(숫자, 영문, 특수문자 8~20자리)"
+              onChange={(value) => setCurrentPwd(value)}
+              content={currentPwd}
+              newPassword={false}
             />
-          </div>
-          <PrimaryButton title="확인" onClick={handleToast} />
-        </Col>
-      </Col>
-      <ToastBar message="비밀번호가 변경됐어요" isVisible={toastVisible} onHide={handleToast} />
+            <Col gap={'12'}>
+              {isNowPwdError && (
+                <ErrorMessage
+                  content={'비밀번호가 일치하지 않습니다'}
+                  isError={'error'}
+                  justifyContent={'center'}
+                />
+              )}
+              <PrimaryButton title="확인" onClick={handleSubmit} disabled={!currentPwd} />
+            </Col>
+          </Col>
+        </>
+      ) : (
+        <>
+          <Col gap={'66'} padding={'0 16px'}>
+            <Col gap={'40'} margin={'96px 0 0 0'}>
+              <ChangeProperty
+                title="새 비밀번호"
+                id={'PASSWORD'}
+                placeholder="비밀번호 입력"
+                onChange={(value) => setNewPwd(value)}
+                newPassword={true}
+                content={newPwd}
+              />
+              <ChangeProperty
+                title="새 비밀번호 확인"
+                id={'PASSWORD'}
+                placeholder="비밀번호 재입력"
+                onChange={(value) => setConfirmNewPwd(value)}
+                newPassword={false}
+                content={confirmNewPwd}
+              />
+            </Col>
+
+            <Col gap={'12'}>
+              {isNewPwdError && (
+                <ErrorMessage
+                  content={'비밀번호가 일치하지 않습니다'}
+                  isError={'error'}
+                  justifyContent={'center'}
+                />
+              )}
+              <PrimaryButton
+                title="확인"
+                onClick={handleSubmit}
+                disabled={!newPwd || !confirmNewPwd || isNewPwdError}
+              />
+            </Col>
+          </Col>
+        </>
+      )}
+      <ToastBar
+        message="비밀번호가 변경됐어요"
+        isVisible={toastVisible}
+        onHide={() => setToastVisible(false)}
+      />
     </Layout>
   );
 };
