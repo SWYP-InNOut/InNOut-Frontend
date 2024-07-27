@@ -9,7 +9,6 @@ interface OthersResponseDTO {
   recentPostDate: string;
 }
 
-
 interface OthersResponseDTO {
   memberName: string;
   memberId: number;
@@ -26,7 +25,7 @@ interface RoomRequestDTO {
   filterType: number;
 }
 
-interface MyRoomResponsetDTO {
+interface MyRoomResponseDTO {
   memberName: string;
   chats: Chat[];
   posts: Post[];
