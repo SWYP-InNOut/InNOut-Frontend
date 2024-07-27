@@ -10,7 +10,7 @@ export const postIn = async (
   postId: string
 ): Promise<BaseResponse<string>> => {
   try {
-    const response = await apiClient.post(`/in/${postId}`, { request });
+    const response = await apiClient.post(`/in/${postId}`, request);
     return response.data;
   } catch (error) {
     console.error('닉네임변경 실패:', error);
@@ -24,7 +24,7 @@ export const postOut = async (
   postId: number
 ): Promise<BaseResponse<string>> => {
   try {
-    const response = await apiClient.post(`/out/${postId}`, { request });
+    const response = await apiClient.post(`/out/${postId}`, request);
     return response.data;
   } catch (error) {
     console.error('out 실패:', error);
