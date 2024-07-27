@@ -18,20 +18,16 @@ const Post = () => {
   const [isCloseAlert, setIsCloseAlert] = useState(false);
   const [alertContent, setAlertContent] = useState<React.ReactNode>(null);
   const [alertBtn, setAlertBtn] = useState<React.ReactNode>(null);
-  const methods = useForm({
-    mode: 'onChange',
-    defaultValues: {
-      title: '',
-      pictures: [],
-      mainPicture: null,
-      inContent: '',
-      outContent: '',
-    },
-  });
-  const { handleSubmit, getValues } = methods;
+  const methods = useForm<PostRequestDTO>({ mode: 'onChange' });
 
-  const onFormSubmit = (data: any) => {
-    console.log('fff');
+  const { setFocus, getValues } = methods;
+  const title = getValues('title');
+  const images = getValues('images');
+  const inContent = getValues('inContent');
+  const outContent = getValues('outContent');
+
+  const onFormSubmit = (data: any, event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     console.log(data);
     if (handleValidation()) {
       console.log(data);
@@ -74,15 +70,15 @@ const Post = () => {
     );
   };
   const handleValidation = () => {
-    const { title, pictures } = getValues();
     console.log('ffff');
     console.log(title);
 
     //  이거 작동이 안됨 수정 필요
-    if (title === '') {
+    if (!title || title.trim() === '') {
+      console.log('제목은 필수');
       setAlertContent(
         <Txt variant="b16" align="center">
-          제목은 필수
+          제목은 필수!
         </Txt>
       );
       setAlertBtn(
@@ -90,6 +86,7 @@ const Post = () => {
           title="확인"
           onClick={() => {
             setIsCloseAlert(false);
+            setFocus('title');
           }}
           color={colors.red600}
         />
@@ -97,7 +94,7 @@ const Post = () => {
       setIsCloseAlert(true);
       return false;
     }
-    if (pictures.length < 1) {
+    if (!Picture || Picture.length < 1) {
       setAlertContent(
         <Col gap={'12'} alignItems="center">
           <Txt variant="t20">사진은 중요!</Txt>
@@ -127,10 +124,17 @@ const Post = () => {
       <Layout
         hasHeader={true}
         HeaderCenter={<Txt variant="t20">새 게시물</Txt>}
-        HeaderRight={<CloseIcon onClick={handleCloseBtn} />}
+        HeaderRight={
+          <CloseIcon
+            onClick={handleCloseBtn}
+            css={css`
+              cursor: pointer;
+            `}
+          />
+        }
       >
         <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(onFormSubmit)}>
+          <form>
             <Col padding={'0 16px 48px 16px'} gap={'32'} margin={'32px 0 0 0'}>
               <Col gap={'8'}>
                 <Txt variant="t20">제목</Txt>
@@ -157,7 +161,12 @@ const Post = () => {
                   placeholder={`버리고 싶은 이유를 알려주세요.\n자세히 들려줄수록 투표수가 올라가요.`}
                 />
               </Col>
-              <PrimaryButton title="등록" type="submit" />
+              <PrimaryButton
+                title="등록"
+                onClick={() => {
+                  onFormSubmit;
+                }}
+              />
             </Col>
           </form>
         </FormProvider>

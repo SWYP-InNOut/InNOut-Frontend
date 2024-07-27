@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import { useWindowWidth } from '@hooks/useWindowWidth';
 import { ReplyIcon } from '@icons/index';
 import { colors } from '@styles/theme';
+import { useEffect, useState } from 'react';
 
 interface OpponentChatBoxProps {
   name: string;
@@ -14,7 +15,8 @@ interface OpponentChatBoxProps {
 }
 
 const OpponentChatBox = ({ name, message, time, onClick }: OpponentChatBoxProps) => {
-  const maxWidth = useWindowWidth() * 0.61;
+  const maxWidth = useWindowWidth() * 0.6;
+
   return (
     <Col padding={'0 16px'} gap={8}>
       <Txt
@@ -38,7 +40,7 @@ const OpponentChatBox = ({ name, message, time, onClick }: OpponentChatBoxProps)
           `}
         >
           <ReplyIcon />
-          <Txt variant="c12" color={colors.gray300}>
+          <Txt variant="c11" color={colors.gray300}>
             {time}
           </Txt>
         </Col>

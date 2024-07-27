@@ -7,13 +7,12 @@ import { colors } from '@styles/theme';
 
 interface FilterProps {
   selectList: string[];
-  selected: string;
-  handleSelect: (selected: string) => void;
+  selected: number;
+  handleSelect: (selected: number) => void;
   isOpen: boolean;
   handleIsOpen: () => void;
   onClick: () => void;
 }
-
 const Filter = ({ selectList, isOpen, selected, handleSelect, handleIsOpen }: FilterProps) => {
   return (
     <Row
@@ -34,12 +33,13 @@ const Filter = ({ selectList, isOpen, selected, handleSelect, handleIsOpen }: Fi
           width: 72px;
         `}
       >
-        {selected}
+        {selectList[selected]}
       </Txt>
       <DownArrowIcon
         css={css`
           transform: ${isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
           transition: transform 0.3s ease-in-out;
+          cursor: pointer;
         `}
       />
       {isOpen && (
@@ -48,23 +48,24 @@ const Filter = ({ selectList, isOpen, selected, handleSelect, handleIsOpen }: Fi
             <Selector
               key={index}
               last={index === selectList.length - 1}
-              selected={selected === item}
+              selected={selected === index}
               onClick={(event) => {
                 event.stopPropagation(); // 이벤트 버블링 중지
-                handleSelect(item);
+                handleSelect(index);
+                handleIsOpen();
               }}
             >
               <div
                 css={css`
                   display: flex;
-                  visibility: ${selected === item ? 'visible' : 'hidden'};
+                  visibility: ${selected === index ? 'visible' : 'hidden'};
                   align-items: center;
                 `}
               >
                 <FilterCheckIcon />
               </div>
 
-              <Txt variant="c14" color={selected === item ? colors.white : colors.gray400}>
+              <Txt variant="c14" color={selected === index ? colors.white : colors.gray400}>
                 {item}
               </Txt>
             </Selector>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import Txt from './common/text/Txt';
 import { Col } from './common/flex/Flex';
@@ -13,11 +13,23 @@ interface ChangePropertyProps {
   content?: string;
   placeholder?: string;
   id: keyof typeof INPUT_TYPE;
+  onChange?: (value: string) => void;
+  isDuplicateNickname?: boolean;
+  newPassword?: boolean;
 }
 
 const ChangeProperty = (props: ChangePropertyProps) => {
-  const { title, subtitle, content, id, placeholder } = props;
-  const [isDuplicateNickname, setIsDuplicateNickname] = useState(false);
+  const {
+    title,
+    subtitle,
+    content,
+    id,
+    placeholder,
+    onChange,
+    isDuplicateNickname,
+    newPassword = true,
+  } = props;
+
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -26,9 +38,19 @@ const ChangeProperty = (props: ChangePropertyProps) => {
   });
 
   const {
+    watch,
+    setValue,
     formState: { errors },
     getValues,
   } = methods;
+
+  const value = watch(INPUT_TYPE[id]);
+
+  useEffect(() => {
+    if (onChange) {
+      onChange(value);
+    }
+  }, [value, onChange, isDuplicateNickname]);
 
   const handleCheckError = (id: string, regex: RegExp) => {
     const value = getValues(id);
@@ -44,7 +66,7 @@ const ChangeProperty = (props: ChangePropertyProps) => {
         <ErrorMessage
           key={index}
           content={message}
-          isError={handleCheckError(INPUT_TYPE[id], validationRule.pattern) ? 'error' : 'default'}
+          isError={handleCheckError(INPUT_TYPE[id], validationRule.pattern)}
         />
       );
     });
@@ -64,10 +86,10 @@ const ChangeProperty = (props: ChangePropertyProps) => {
             )}
           </Col>
           <FormProvider {...methods}>
-            <TextInput id={INPUT_TYPE.NICKNAME} placeholder={placeholder} content={content} />
+            <TextInput id={INPUT_TYPE[id]} placeholder={placeholder} content={content} />
           </FormProvider>
         </Col>
-        <Col gap={'2'}>{renderError()}</Col>
+        <Col gap={'5'}>{newPassword ? renderError() : null}</Col>
       </Col>
     </div>
   );

@@ -38,7 +38,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({
         <CorrectCheckIcon />
       )}
       <Txt
-        lineHeight={16}
+        lineHeight={21}
         variant="c14"
         color={
           isError === 'default'
