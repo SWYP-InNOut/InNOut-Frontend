@@ -16,6 +16,7 @@ import PwdChange from './home/PwdChange';
 import Post from './home/post/Post';
 import useAuthStore from '@stores/auth';
 import Detail from './home/detail/Detail';
+import Error from './error/Error';
 
 const ProtectedRoute = () => {
   const isLoggedin = useAuthStore((store) => store.isLoggedIn);
@@ -43,6 +44,7 @@ const Router = () => {
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />
         <Route path="detail" element={<Detail />} />
+        <Route path="error" element={<Error />} />
       </>
     )
   );

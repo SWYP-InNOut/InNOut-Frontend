@@ -16,7 +16,7 @@ export const postMyRoomAddStuff = async (
   request: PostRequestDTO
 ): Promise<BaseResponse<string>> => {
   try {
-    const response = await apiClient.post('/myroom/addstuff', { request });
+    const response = await apiClient.post('/myroom/addstuff', request);
     return response.data;
   } catch (error) {
     console.error('게시물 등록 실패:', error);
