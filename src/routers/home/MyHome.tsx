@@ -5,7 +5,7 @@ import { css } from '@emotion/react';
 import { LogoIcon, MenuIcon, PencilIcon } from '@icons/index';
 import { colors } from '@styles/theme';
 import HomeMenuSlider from './HomeMenuSlider';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CardList from '@components/home/post/CardList';
 import Filter from '@components/common/filter/Filter';
 import styled from '@emotion/styled';
@@ -15,16 +15,36 @@ import PrimaryButton from '@components/common/button/PrimaryButton';
 import ToastBar from '@components/common/alert/ToastBar';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '@stores/auth';
+import { getMyRoom } from '@apis/myroom';
+import { useMutation } from 'react-query';
+import { AxiosError } from 'axios';
+import { set } from 'react-hook-form';
+import { MyRoomResponseDTO } from '@interfaces/api/room';
 
 const MyHome = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectList, setSelectList] = useState(['최신순', 'In 많은순', 'Out 많은순', '오래된순']);
+  const selectList = ['최신순', 'In 많은순', 'Out 많은순', '오래된순'];
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState('최신순');
+  const [selectedFilter, setSelectedFilter] = useState(0);
   const [isShareOpenModal, setIsShareModal] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
   const isLogin = useAuthStore((store) => store.isLoggedIn);
+  const memberId = useAuthStore((store) => store.memberId);
+  const [isPublic, setIsPublic] = useState(false);
+
+  const [myRoomResponse, setMyRoomResponse] = useState<MyRoomResponseDTO>();
+
+  const getMyRoomListMutation = useMutation(getMyRoom, {
+    onSuccess: (data) => {
+      console.log('마이룸 리스트 성공:', data.result);
+      setMyRoomResponse(data.result);
+      setIsPublic(data.result.public);
+    },
+    onError: (error: AxiosError) => {
+      console.error('마이룸 리스트 실패:', error);
+    },
+  });
 
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
@@ -46,10 +66,19 @@ const MyHome = () => {
     console.log('pencil');
     navigate('/post');
   };
+
+  useEffect(() => {
+    isLogin &&
+      getMyRoomListMutation.mutate({
+        ownerId: memberId ? memberId : 0,
+        filterType: selectedFilter,
+      });
+  }, [selectedFilter, isLogin]);
+
   return (
     <>
       <Layout
-        Footer={true}
+        Footer={!myRoomResponse?.posts || myRoomResponse?.posts.length === 0 ? false : true}
         overflow={isOpen ? 'hidden' : 'auto'}
         hasHeader={true}
         HeaderLeft={
@@ -74,17 +103,30 @@ const MyHome = () => {
           </div>
         }
         HeaderRight={
-          <button
-            css={css`
-              width: 29px;
-              cursor: pointer;
-            `}
-            onClick={handleShareBtn}
-          >
-            <Txt variant="b16" color={colors.yellow700}>
-              공유
-            </Txt>
-          </button>
+          !isLogin ? (
+            <LoginButton onClick={() => navigate('/login')}>
+              <Txt variant="c14" color={colors.darkGray} lineHeight={24}>
+                로그인/가입
+              </Txt>
+            </LoginButton>
+          ) : (
+            <button
+              css={css`
+                width: 32px;
+                height: 32px;
+                border-radius: 6px;
+                cursor: pointer;
+                &:active {
+                  background: rgba(0, 0, 0, 0.1);
+                }
+              `}
+              onClick={handleShareBtn}
+            >
+              <Txt variant="b16" color={colors.yellow700}>
+                공유
+              </Txt>
+            </button>
+          )
         }
       >
         <AlertModal
@@ -123,8 +165,8 @@ const MyHome = () => {
         />
         <Col padding={'24px 28px'}>
           <Row gap={'4'} justifyContent="start" alignItems="end">
-            <Txt variant="h28" lineHeight={42}>
-              사용자닉네임최대길이
+            <Txt variant="h28" lineHeight={36}>
+              {myRoomResponse?.memberName}
             </Txt>
             <Txt variant="t18" color={colors.lightGray}>
               님의 홈
@@ -132,7 +174,7 @@ const MyHome = () => {
           </Row>
         </Col>
         <Col padding={'0 16px'}>
-          <PreviewChat isLogin={isLogin} />
+          <PreviewChat isLogin={isLogin} chats={myRoomResponse?.chats} />
         </Col>
         <Row
           padding={'0 16px'}
@@ -142,30 +184,25 @@ const MyHome = () => {
             cursor: pointer;
           `}
         >
-          <Filter
-            selectList={selectList}
-            isOpen={isFilterOpen}
-            handleIsOpen={toggleFilter}
-            selected={selectedFilter}
-            handleSelect={setSelectedFilter}
-            onClick={toggleFilter}
-          />
+          {myRoomResponse?.posts && myRoomResponse?.posts.length !== 0 && (
+            <Filter
+              selectList={selectList}
+              isOpen={isFilterOpen}
+              handleIsOpen={toggleFilter}
+              selected={selectedFilter}
+              handleSelect={setSelectedFilter}
+              onClick={toggleFilter}
+            />
+          )}
         </Row>
         <div
           css={css`
             padding: 0 16px 20px;
           `}
         >
-          <CardList
-            imgList={[
-              'https://via.placeholder.com/150',
-              'https://via.placeholder.com/150',
-              'https://via.placeholder.com/150',
-              'https://via.placeholder.com/150',
-            ]}
-          />
+          <CardList postList={myRoomResponse?.posts} />
         </div>
-        <HomeMenuSlider isOpen={isOpen} handleMenu={toggleMenu} />
+        <HomeMenuSlider isOpen={isOpen} handleMenu={toggleMenu} isPublic={isPublic} />
         {!isOpen && (
           <>
             <StyledPencilIcon />
@@ -180,6 +217,17 @@ const MyHome = () => {
 };
 
 export default MyHome;
+
+const LoginButton = styled.button`
+  padding: 0 9px;
+  border-radius: 99px;
+  background-color: ${colors.white};
+  border: 1px solid ${colors.yellow600};
+  background-color: ${colors.white};
+  &:active {
+    background: rgba(0, 0, 0, 0.1);
+  }
+`;
 
 const StyledPencilIcon = styled(PencilIcon)`
   width: 56px; /* 기본 너비 */

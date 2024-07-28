@@ -1,4 +1,5 @@
 import { BaseResponse } from '@interfaces/api/base';
+import { RoomRequestDTO } from '@interfaces/api/room';
 import { apiClient } from '@stores/auth';
 
 //타사용자룸 전체보기(방문자순)

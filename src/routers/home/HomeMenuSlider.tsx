@@ -15,18 +15,44 @@ import {
 } from '@icons/index';
 import { css } from '@emotion/react';
 import Toggle from '@components/home/toggle/Toggle';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AlertModal from '@components/common/alert/AlertModal';
 import PrimaryButton from '@components/common/button/PrimaryButton';
 
 import useAuthStore from '@stores/auth';
+import { getIsPublic } from '@apis/myroom';
+import { useMutation } from 'react-query';
+import { AxiosError } from 'axios';
+import { set } from 'react-hook-form';
+import { IsPublicResponseDTO } from '@interfaces/api/room';
 
-const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: () => void }) => {
+const HomeMenuSlider = ({
+  isOpen,
+  handleMenu,
+  isPublic,
+}: {
+  isOpen: boolean;
+  isPublic: boolean;
+  handleMenu: () => void;
+}) => {
   const [isOn, setIsOn] = useState(false);
   const [isLogoutAlert, setIsLogoutAlert] = useState(false);
   const isLogin = useAuthStore((store) => store.isLoggedIn);
-  // const isLogin = false;
+  const memberName = useAuthStore((store) => store.nickname);
+
+  const getIsPublicMutation = useMutation(getIsPublic, {
+    onSuccess: (data) => {
+      console.log('공개 성공:', data.result);
+      if (data.result as IsPublicResponseDTO) {
+        setIsOn(data.result.public);
+      }
+    },
+    onError: (error: AxiosError) => {
+      console.error('공개 실패:', error);
+    },
+  });
+
   const navigate = useNavigate();
   const handleNickNameChange = () => {
     navigate('/nickname');
@@ -35,12 +61,22 @@ const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: (
     navigate('/pwd');
   };
 
+  const handlePublic = () => {
+    getIsPublicMutation.mutate();
+    console.log();
+    console.log('나의 홈 공개');
+  };
+
+  useEffect(() => {
+    setIsOn(isPublic);
+  }, []);
+
   const logout = useAuthStore((state) => state.logout);
   const renderTitle = () => {
     return isLogin ? (
       <Row padding={'0 28px 64px'} gap={'4'} justifyContent="start" alignItems="end">
-        <Txt variant="h28" lineHeight={42}>
-          사용자닉네임최대길이
+        <Txt variant="h28" lineHeight={36}>
+          {memberName}
         </Txt>
         <Txt variant="t18" color={colors.lightGray}>
           님의 홈
@@ -133,7 +169,7 @@ const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: (
             padding={'0 16px'}
             gap={'8'}
             alignItems="center"
-            onClick={() => console.log('다른홈가기')}
+            onClick={() => alert('다른 홈 구경 기능은 준비중입니다.')}
             css={css`
               cursor: pointer;
             `}
@@ -183,9 +219,19 @@ const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: (
                   justifyContent="space-between"
                   onClick={() => console.log('나의 홈 대문')}
                 >
-                  <Row gap={8} alignItems="end">
+                  <Row
+                    gap={8}
+                    alignItems="flex-end"
+                    css={css`
+                      width: auto;
+                    `}
+                  >
                     <PrivateIcon />
-                    <Col>
+                    <Col
+                      css={css`
+                        width: auto;
+                      `}
+                    >
                       <Txt variant="b16" lineHeight={24}>
                         나의 홈 공개
                       </Txt>
@@ -194,7 +240,7 @@ const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: (
                       </Txt>
                     </Col>
                   </Row>
-                  <Toggle on={isOn} handleToggle={() => setIsOn(!isOn)} />
+                  <Toggle on={isOn} handleToggle={handlePublic} />
                 </Row>
                 <Row
                   alignItems="center"
@@ -256,6 +302,7 @@ const HomeMenuSlider = ({ isOpen, handleMenu }: { isOpen: boolean; handleMenu: (
 const Devider = styled.div`
   width: 100%;
   height: 8px;
+  min-height: 8px;
   background-color: ${colors.gray100};
 `;
 

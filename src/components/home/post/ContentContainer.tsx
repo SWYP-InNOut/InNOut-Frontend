@@ -4,12 +4,11 @@ import { colors } from '@styles/theme';
 import React from 'react';
 interface ContentContainerProps {
   content: string;
-  height?: number;
 }
 
-const ContentContainer: React.FC<ContentContainerProps> = ({ content, height = 0 }) => {
+const ContentContainer: React.FC<ContentContainerProps> = ({ content }) => {
   return (
-    <Container height={height}>
+    <Container>
       <Txt variant="b16">{content}</Txt>
     </Container>
   );
@@ -17,8 +16,7 @@ const ContentContainer: React.FC<ContentContainerProps> = ({ content, height = 0
 
 export default ContentContainer;
 
-const Container = styled.div<{ height: number }>`
-  height: ${(props) => props.height}px;
+const Container = styled.div`
   padding: 16px;
   background-color: ${colors.yellow300};
   border-radius: 8px;

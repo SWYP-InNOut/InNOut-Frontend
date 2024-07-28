@@ -59,9 +59,10 @@ const Layout = (props: LayoutProps) => {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          height: calc(var(--vh, 1vh) * 100 - 64px);
         `}
       >
-        {children}
+        {<Col>{children}</Col>}
         {Footer && (
           <Col
             padding={'29.5px 0'}
@@ -102,12 +103,6 @@ export const Main = styled.main<{ overflow: string }>`
     background: transparent; /* Optional: just make scrollbar invisible */
     -webkit-appearance: none;
   }
-`;
-
-export const PageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 `;
 
 export const HeaderContainer = styled.header`
