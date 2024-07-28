@@ -28,20 +28,4 @@ export const login = async (request: LoginRequestDTO): Promise<AxiosResponse<any
   return response;
 };
 
-// // export const logout = async (): Promise<BaseResponse<string>> => {
-// //   try {
-// //     const response = await apiClient.post((`${HTTP_URL}/logout`);
-// //     return response.data;
-// //   } catch (error) {
-// //     console.error('로그아웃 실패', error);
-// //     throw error;
-// //   }
-// // };
-
-// export const logout = async (): Promise<AxiosResponse<any, any>> => {
-//   const response = await axios.get(`${HTTP_URL}/logout`);
-
-//   return response;
-// };
-
 export { HTTP_URL };

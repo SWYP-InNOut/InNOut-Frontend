@@ -6,6 +6,7 @@ import MyChatBox from './MyChatBox';
 import { Col } from '@components/common/flex/Flex';
 import Txt from '@components/common/text/Txt';
 import { css } from '@emotion/react';
+import { Chat } from '@interfaces/api/room';
 
 interface PreviewChatProps {
   isLogin: boolean;
