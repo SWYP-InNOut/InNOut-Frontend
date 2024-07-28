@@ -16,17 +16,31 @@ const link = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API
 // //   window.location.href = link;
 // //   const code = new URL(document.location.toString()).searchParams.get('code');
 // // };
-var code: string | null = '';
+
 const SocialLogin = () => {
-  const handleKakaoLogin = () => {
-    window.location.href = link;
-  };
+  const navigate = useNavigate();
+  // const handleKakaoLogin = () => {
+  //   window.location.href = link;
+  //   // navigate('/nickname');
+  // };
+
   // useEffect(() => {
-  //   const code = new URL(window.location.href).searchParams.get('code');
-  //   if (code) {
-  //     console.log(code);
+  //   // 페이지 로드 후 pre 태그의 내용을 가져옵니다.
+  //   const preElement = document.querySelector('pre');
+  //   if (preElement) {
+  //     try {
+  //       // pre 태그 내용을 JSON으로 파싱합니다.
+  //       console;
+  //     } catch (error) {
+  //       console.error('Error parsing pre content:', error);
+  //     }
   //   }
   // }, []);
+
+  const handleKakaoLogin = async () => {
+    alert('Google 로그인 준비중');
+  };
+
   const handleGoogleLogin = () => {
     alert('Google 로그인 준비중');
   };

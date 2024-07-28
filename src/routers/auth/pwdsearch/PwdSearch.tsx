@@ -10,21 +10,43 @@ import { useNavigate } from 'react-router-dom';
 import ErrorMessage from '@components/auth/ErrorMessage';
 import { css } from '@emotion/react';
 import SendEmail from '@components/common/sendEmail/SendEmail';
+import { useMutation } from 'react-query';
+import { postSearchPassword } from '@apis/user';
 
 const PwdSearch = () => {
   const navigate = useNavigate();
   const methods = useForm<PwdSearchRequestDTO>({ mode: 'onChange' });
-  const [showError, setShowError] = useState(true);
+  const [showError, setShowError] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const {
     watch,
+    getValues,
     formState: { isValid },
   } = methods;
 
+  const pwdSearchMutation = useMutation(postSearchPassword, {
+    onSuccess: (data) => {
+      console.log('비밀번호 찾기 성공:', data);
+      if (data.code === 1000) {
+        setIsComplete(true);
+      } else {
+        setShowError(true);
+      }
+    },
+    onError: (error) => {
+      console.error('비밀번호 찾기 실패:', error);
+      setShowError(true);
+    },
+  });
+
   const handlePwdSend = () => {
+    const email = getValues('email');
     console.log('임시 비밀번호 전송');
-    // api 로직 추가 예정
-    setIsComplete(true);
+    if (email) {
+      pwdSearchMutation.mutate(email);
+    } else {
+      setShowError(true);
+    }
   };
 
   const handleGoToLogin = () => {

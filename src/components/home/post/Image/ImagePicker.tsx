@@ -1,9 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { images } from './Image';
 import styled from '@emotion/styled';
 import { colors } from '@styles/theme';
 
-const ImagePicker = (): JSX.Element => {
+interface ImagePickerProps {
+  images?: string[] | [];
+}
+
+const ImagePicker: React.FC<ImagePickerProps> = (props): JSX.Element => {
   const [pickers, setPickers] = useState<JSX.Element[]>([]);
   const [pickIndex, setPickIndex] = useState<number>(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -35,7 +38,7 @@ const ImagePicker = (): JSX.Element => {
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
 
-    if (isLeftSwipe && pickIndex < images.length - 1) {
+    if (isLeftSwipe && pickIndex < (props.images ?? []).length - 1) {
       setPickIndex((prev) => prev + 1);
     }
     if (isRightSwipe && pickIndex > 0) {
@@ -45,7 +48,7 @@ const ImagePicker = (): JSX.Element => {
 
   useEffect(() => {
     setPickers(
-      images.map((_: string, idx: number) => {
+      (props.images ?? []).map((_: string, idx: number) => {
         return (
           <Picker
             key={idx}
@@ -61,7 +64,7 @@ const ImagePicker = (): JSX.Element => {
   return (
     <Container onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
       <ImageContainer translateX={-pickIndex * 100}>
-        {images.map((image, index) => (
+        {props.images?.map((image, index) => (
           <ImageWrapper key={index}>
             <FillImage src={image} />
           </ImageWrapper>
