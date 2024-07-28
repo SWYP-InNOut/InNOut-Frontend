@@ -68,7 +68,7 @@ const MyHome = () => {
   useEffect(() => {
     isLogin &&
       getMyRoomListMutation.mutate({
-        memberId: memberId ? memberId : 0,
+        ownerId: memberId ? memberId : 0,
         filterType: selectedFilter,
       });
   }, [selectedFilter, isLogin]);

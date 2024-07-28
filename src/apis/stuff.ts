@@ -5,11 +5,9 @@ import { apiClient } from '@stores/auth';
 
 // /in/{postId}
 //버리지마
-export const postIn = async (
-  request: StuffRequestDTO,
-  postId: string
-): Promise<BaseResponse<string>> => {
+export const postIn = async (request: StuffRequestDTO): Promise<BaseResponse<string>> => {
   try {
+    const postId = request.postId;
     const response = await apiClient.post(`/in/${postId}`, request);
     return response.data;
   } catch (error) {
@@ -19,11 +17,9 @@ export const postIn = async (
 };
 
 //버려
-export const postOut = async (
-  request: StuffRequestDTO,
-  postId: number
-): Promise<BaseResponse<string>> => {
+export const postOut = async (request: StuffRequestDTO): Promise<BaseResponse<string>> => {
   try {
+    const postId = request.postId;
     const response = await apiClient.post(`/out/${postId}`, request);
     return response.data;
   } catch (error) {

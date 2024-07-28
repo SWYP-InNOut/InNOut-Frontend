@@ -27,7 +27,7 @@ const CardList = ({ postList }: { postList?: Post[] }) => {
             <Card
               key={index}
               src={post.imgUrl}
-              onClick={() => navigate(`/detail/:${post.postId}`)}
+              onClick={() => navigate(`/detail/${post.postId}`)}
             />
           ))}
         </CardContainer>

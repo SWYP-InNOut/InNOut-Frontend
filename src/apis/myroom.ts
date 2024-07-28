@@ -1,5 +1,6 @@
 import { BaseResponse } from '@interfaces/api/base';
 import { apiClient } from '@stores/auth';
+import { c } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 
 //이름은 get이지만 post임
 export const getMyRoom = async (request: RoomRequestDTO): Promise<BaseResponse<any>> => {
@@ -25,16 +26,40 @@ export const postMyRoomAddStuff = async (
   }
 };
 
-//게시물 상세보기
+// //게시물 상세보기
+// export const getMyRoomPost = async (
+//   memberId: number,
+//   postId: number
+// ): Promise<BaseResponse<string>> => {
+//   try {
+//     console.log('getMyRoomPost');
+//     console.log('memberId:', memberId);
+//     console.log('fff', typeof memberId);
+//     console.log('ddscd', typeof postId);
+//     const response = await apiClient.get(`/myroom/post/${postId}`, {
+//       params: { memberId: memberId },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error('게시물 상세보기 실패:', error);
+//     throw error;
+//   }
+// };
+
 export const getMyRoomPost = async (
   memberId: number,
   postId: number
 ): Promise<BaseResponse<string>> => {
   try {
-    console.log('getMyRoomPost');
+    console.log('getMyRoomPost 호출됨');
+    console.log('memberId:', memberId);
+    console.log('postId:', postId);
+
     const response = await apiClient.get(`/myroom/post/${postId}`, {
       params: { memberId: memberId },
     });
+
+    console.log('응답 데이터:', response.data);
     return response.data;
   } catch (error) {
     console.error('게시물 상세보기 실패:', error);
