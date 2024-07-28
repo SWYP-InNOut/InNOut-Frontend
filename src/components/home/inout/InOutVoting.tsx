@@ -4,17 +4,53 @@ import { colors } from '@styles/theme';
 import { useEffect, useState } from 'react';
 import InOutButton from './InOutButton';
 import { VoteType } from '@constants/voteConstants';
+import { useMutation } from 'react-query';
+import { postIn, postOut } from '@apis/stuff';
+import useAuthStore from '@stores/auth';
+import { set } from 'react-hook-form';
 
 export interface InOutVoting {
   initialInCount?: number;
   initialOutCount?: number;
+  postId: number;
   onVote?: () => void;
 }
 
-const InOutVoting: React.FC<InOutVoting> = ({ initialInCount = 0, initialOutCount = 0 }) => {
+const InOutVoting: React.FC<InOutVoting> = ({
+  initialInCount = 0,
+  initialOutCount = 0,
+  postId,
+}) => {
   const [inCount, setInCount] = useState<number>(initialInCount);
   const [outCount, setOutCount] = useState<number>(initialOutCount);
   const [selectedVote, setSelectedVote] = useState<VoteType | null>(null);
+
+  const isMember = useAuthStore((store) => store.isLoggedIn);
+  const memberId = useAuthStore((store) => store.memberId);
+
+  const [StuffRequestDTO, setStuffRequestDTO] = useState({
+    postId: postId,
+    isMember: isMember,
+    memberId: memberId ?? 0,
+  });
+
+  const inMutation = useMutation(postIn, {
+    onSuccess: (data) => {
+      console.log('In 성공:', data);
+    },
+    onError: (error) => {
+      console.error('In 실패:', error);
+    },
+  });
+
+  const outMutation = useMutation(postOut, {
+    onSuccess: (data) => {
+      console.log('Out 성공:', data);
+    },
+    onError: (error) => {
+      console.error(' Out 실패:', error);
+    },
+  });
 
   const handleVote = (type: VoteType) => {
     console.log('handleVote');
@@ -23,8 +59,10 @@ const InOutVoting: React.FC<InOutVoting> = ({ initialInCount = 0, initialOutCoun
       setSelectedVote(null);
       if (type === 'In') {
         setInCount((prev) => prev - 1);
+        inMutation.mutate(StuffRequestDTO);
       } else {
         setOutCount((prev) => prev - 1);
+        outMutation.mutate(StuffRequestDTO);
       }
     } else {
       // 다른 버튼을 클릭하거나 처음 클릭할 때
@@ -50,6 +88,16 @@ const InOutVoting: React.FC<InOutVoting> = ({ initialInCount = 0, initialOutCoun
     // 투표 로직 넣으면 됨
     console.log('In:', inCount, 'Out:', outCount);
   }, [inCount, outCount]);
+
+  useEffect(() => {
+    if (isMember) {
+      setStuffRequestDTO({
+        ...StuffRequestDTO,
+        isMember: isMember,
+        memberId: memberId ?? 0,
+      });
+    }
+  }, [postId, isMember, memberId]);
 
   return (
     <Row gap={'8'}>

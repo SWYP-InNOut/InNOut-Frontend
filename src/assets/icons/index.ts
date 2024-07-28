@@ -31,6 +31,7 @@ import PencilIcon from '@icons/pencil.svg?react';
 import ReplyIcon from '@icons/reply.svg?react';
 import TeamLogo from '@icons/teamLogo.svg?react';
 import Charactor from '@icons/charactor.svg?react';
+import ErrorImg from '@icons/errorImg.svg?react';
 
 export {
   LogoIcon,
@@ -66,4 +67,5 @@ export {
   ReplyIcon,
   TeamLogo,
   Charactor,
+  ErrorImg,
 };

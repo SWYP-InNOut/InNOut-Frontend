@@ -14,7 +14,6 @@ export interface InOutButtonProps {
 
 const InOutButton: React.FC<InOutButtonProps> = ({ type, count, onVote, isSelected }) => {
   const [isHovered, setIsHovered] = useState(false);
-  console.log(isSelected);
 
   return (
     <Container>

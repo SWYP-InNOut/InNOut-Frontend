@@ -20,12 +20,12 @@ interface OthersResponseDTO {
 }
 //0: 최신순, 1: in많은순, 2: out많은순, 3: 오래된순
 // 자신의 룸, 다른 사람 룸 둘다
-interface RoomRequestDTO {
+export interface RoomRequestDTO {
   ownerId: number;
   filterType: number;
 }
 
-interface MyRoomResponseDTO {
+export interface MyRoomResponseDTO {
   memberName: string;
   chats: Chat[];
   posts: Post[];
@@ -40,7 +40,7 @@ interface OthersRoomResponsetDTO {
   posts: Post[];
 }
 
-interface Chat {
+export interface Chat {
   chatId: number;
   sender: number;
   createdAt: string;
@@ -52,13 +52,25 @@ interface Chat {
   reply: boolean;
 }
 
-interface Post {
+export interface Post {
   postId: number;
   imgUrl: string;
 }
 
-interface IsPublicResponseDTO {
+export interface IsPublicResponseDTO {
   public: boolean;
 }
 
 ///others/room/detail/{postId} 추가 예정
+
+export interface GetDetailResponseDTO {
+  ownerName: string;
+  title: string;
+  inContent: string;
+  outContent: string;
+  createdAt: string;
+  isCheckedIn: boolean;
+  isCheckedOut: boolean;
+  chats: Chat[];
+  imageUrls: string[];
+}
