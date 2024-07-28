@@ -1,4 +1,5 @@
 import { BaseResponse } from '@interfaces/api/base';
+import { IsPublicResponseDTO, MyRoomResponseDTO, RoomRequestDTO } from '@interfaces/api/room';
 import { apiClient } from '@stores/auth';
 import { c } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 

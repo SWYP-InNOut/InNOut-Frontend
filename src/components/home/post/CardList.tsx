@@ -2,6 +2,7 @@ import { Col } from '@components/common/flex/Flex';
 import Txt from '@components/common/text/Txt';
 import styled from '@emotion/styled';
 import { Charactor } from '@icons/index';
+import { Post } from '@interfaces/api/room';
 import { colors } from '@styles/theme';
 import { useNavigate } from 'react-router-dom';
 

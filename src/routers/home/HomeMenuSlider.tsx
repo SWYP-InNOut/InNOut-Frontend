@@ -25,6 +25,7 @@ import { getIsPublic } from '@apis/myroom';
 import { useMutation } from 'react-query';
 import { AxiosError } from 'axios';
 import { set } from 'react-hook-form';
+import { IsPublicResponseDTO } from '@interfaces/api/room';
 
 const HomeMenuSlider = ({
   isOpen,
