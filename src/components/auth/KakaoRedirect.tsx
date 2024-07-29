@@ -24,11 +24,11 @@ const KakaoRedirect = () => {
       console.log('로그인 성공', data);
       localStorage.setItem('accessToken', data.result.accessToken);
       localStorage.setItem('memberId', data.result.memberId);
-      navigate('/');
+      // navigate('/');
     },
     onError: (error) => {
       console.error('로그인 실패', error);
-      navigate('/login');
+      // navigate('/login');
     },
   });
 
