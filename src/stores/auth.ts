@@ -68,25 +68,19 @@ export const useAuthStore = create(
       },
       reLogin: async () => {
         try {
-          const response = await apiClient.post(
-            `${HTTP_URL}/regenerate-token`,
-            {},
-            {
-              withCredentials: true,
-            }
-          );
+          const response = await apiClient.get('/regenerate-token');
           const headers = response.headers as AxiosHeaders;
+          console.log('토큰 갱신 성공', response.data);
           const accessToken = String(headers.getAuthorization()).split(' ')[1];
-          const { userId } = response.data;
           if (accessToken) {
             apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-            set({ isLoggedIn: true, memberId: userId });
+            apiClient.defaults.withCredentials = true;
             return true;
           } else {
             return false;
           }
         } catch (e) {
-          set({ isLoggedIn: false });
+          set({ isLoggedIn: false, memberId: null, nickname: null });
           console.error('토큰 갱신 중 오류 발생', e);
           return false;
         }

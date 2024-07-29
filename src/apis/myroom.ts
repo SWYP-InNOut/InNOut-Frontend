@@ -1,9 +1,23 @@
 import { BaseResponse } from '@interfaces/api/base';
+import { IsPublicResponseDTO, MyRoomResponseDTO, RoomRequestDTO } from '@interfaces/api/room';
 import { apiClient } from '@stores/auth';
 import { c } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 
+// 나의 룸 공개 여부 변경
+export const getIsPublic = async (): Promise<BaseResponse<IsPublicResponseDTO>> => {
+  try {
+    const response = await apiClient.post('/ispublic');
+    return response.data;
+  } catch (error) {
+    console.error('룸 공개 여부 실패:', error);
+    throw error;
+  }
+};
+
 //이름은 get이지만 post임
-export const getMyRoom = async (request: RoomRequestDTO): Promise<BaseResponse<any>> => {
+export const getMyRoom = async (
+  request: RoomRequestDTO
+): Promise<BaseResponse<MyRoomResponseDTO>> => {
   try {
     const response = await apiClient.post('/myroom', request);
     return response.data;
@@ -14,9 +28,7 @@ export const getMyRoom = async (request: RoomRequestDTO): Promise<BaseResponse<a
 };
 
 //게시물 등록
-export const postMyRoomAddStuff = async (
-  request: PostRequestDTO
-): Promise<BaseResponse<string>> => {
+export const postMyRoomAddStuff = async (request: FormData): Promise<BaseResponse<any>> => {
   try {
     const response = await apiClient.post('/myroom/addstuff', request);
     return response.data;
