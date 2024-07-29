@@ -5,15 +5,13 @@ import axios from 'axios';
 
 const KakaoRedirect = () => {
   const navigate = useNavigate();
-
+  console.log('카카오 로그인 처리 중...');
   const kakaoLogin = async (code: string) => {
+    console.log('카카오 로그인 요청:', code);
     try {
-      const response = await axios.get(
-        `https://api.stuffinout.site/kakaologin/callback?code=${code}`,
-        {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' },
-        }
-      );
+      const response = await axios.get(`https://api.stuffinout.site/kakaologin?code=${code}`, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' },
+      });
       return response.data;
     } catch (error) {
       console.error('카카오 로그인 실패:', error);
@@ -26,11 +24,11 @@ const KakaoRedirect = () => {
       console.log('로그인 성공', data);
       localStorage.setItem('accessToken', data.result.accessToken);
       localStorage.setItem('memberId', data.result.memberId);
-      navigate('/');
+      // navigate('/');
     },
     onError: (error) => {
       console.error('로그인 실패', error);
-      navigate('/login');
+      // navigate('/login');
     },
   });
 
