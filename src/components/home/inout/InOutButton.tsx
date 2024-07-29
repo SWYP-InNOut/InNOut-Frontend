@@ -26,7 +26,7 @@ const InOutButton: React.FC<InOutButtonProps> = ({ type, count, onVote, isSelect
         isSelected={isSelected}
         type={type}
       >
-        <LottieContainer path={`/src/assets/lottie/Out.json`} isPlay={isSelected} />
+        <LottieContainer path={'/Out.json'} isPlay={isSelected} />
         {isSelected ? (
           <Txt
             variant="h24"
