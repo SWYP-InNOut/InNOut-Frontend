@@ -4,7 +4,7 @@ import Txt from '@components/common/text/Txt';
 import { css } from '@emotion/react';
 import { LogoIcon, MenuIcon, PencilIcon } from '@icons/index';
 import { colors } from '@styles/theme';
-import HomeMenuSlider from './HomeMenuSlider';
+import HomeMenuSlider from './homemenu/HomeMenuSlider';
 import { useEffect, useState } from 'react';
 import CardList from '@components/home/post/CardList';
 import Filter from '@components/common/filter/Filter';
@@ -37,6 +37,7 @@ const MyHome = () => {
 
   const getMyRoomListMutation = useMutation(getMyRoom, {
     onSuccess: (data) => {
+      console.log('마이룸 리스트 성공:', data);
       setMyRoomResponse(data.result);
       setIsPublic(data.result.public);
     },

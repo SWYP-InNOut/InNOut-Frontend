@@ -74,7 +74,7 @@ const HomeMenuSlider = ({
 
   useEffect(() => {
     setIsOn(isPublic);
-  }, []);
+  }, [isPublic]);
 
   const logout = useAuthStore((state) => state.logout);
   const renderTitle = () => {
@@ -126,7 +126,6 @@ const HomeMenuSlider = ({
             <PrimaryButton
               title="로그아웃"
               onClick={async () => {
-                console.log('로그아웃');
                 try {
                   await logout();
                   console.log('로그아웃 성공');
@@ -174,7 +173,7 @@ const HomeMenuSlider = ({
             padding={'0 16px'}
             gap={'8'}
             alignItems="center"
-            onClick={() => alert('다른 홈 구경 기능은 준비중입니다.')}
+            onClick={() => navigate('/others-home')}
             css={css`
               cursor: pointer;
             `}
@@ -219,11 +218,7 @@ const HomeMenuSlider = ({
                   </Row>
                   <NextIcon />
                 </Row>
-                <Row
-                  alignItems="center"
-                  justifyContent="space-between"
-                  onClick={() => console.log('나의 홈 대문')}
-                >
+                <Row alignItems="center" justifyContent="space-between">
                   <Row
                     gap={8}
                     alignItems="flex-end"

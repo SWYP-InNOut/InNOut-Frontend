@@ -9,20 +9,20 @@ import {
 import Signup from '@routers/auth/signup/Signup';
 import Login from '@routers/auth/login/Login';
 import PwdSearch from '@routers/auth/pwdsearch/PwdSearch';
-import NickNameSetting from './auth/nickname/NickNameSetting';
+import NickNameSetting from '@routers/auth/nickname/NickNameSetting';
 import MyHome from '@routers/home/MyHome';
-import NickNameChange from './home/NickNameChange';
-import PwdChange from './home/PwdChange';
-import Post from './home/post/Post';
+import NickNameChange from '@routers/home/homemenu/NickNameChange';
+import PwdChange from '@routers/home/homemenu/PwdChange';
+import Post from '@routers/home/post/Post';
 import useAuthStore from '@stores/auth';
-import Detail from './home/detail/Detail';
-import Error from './error/Error';
+import Detail from '@routers/home/detail/Detail';
+import Error from '@routers/error/Error';
 import KakaoRedirect from '@components/auth/KakaoRedirect';
-import Introduce from './home/introduce/Introduce';
+import Introduce from '@routers/home/introduce/Introduce';
+import OthersHomeList from '@routers/home/homemenu/OthersHomeList';
 
 const ProtectedRoute = () => {
   const isLoggedin = useAuthStore((store) => store.isLoggedIn);
-  console.log(isLoggedin);
 
   if (!isLoggedin) {
     return <Navigate to={'/login'} replace />;
@@ -42,6 +42,7 @@ const Router = () => {
           <Route path="pwd" element={<PwdChange />} />
           <Route path="post" element={<Post />} />
           <Route path="nickname" element={<NickNameChange />} />
+          <Route path="others-home" element={<OthersHomeList />} />
         </Route>
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />
