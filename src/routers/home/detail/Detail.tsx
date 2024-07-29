@@ -30,11 +30,13 @@ import { useMutation, useQuery } from 'react-query';
 import useAuthStore from '@stores/auth';
 import { postIn, postOut } from '@apis/stuff';
 import { GetDetailResponseDTO } from '@interfaces/api/room';
+import PreviewChat from '@components/chat/PreviewChat';
 
 const Detail = () => {
   const navigate = useNavigate();
   const { postId } = useParams<{ postId: string }>();
   const memberId = useAuthStore((store) => store.memberId);
+  const isLogin = useAuthStore((store) => store.isLoggedIn);
   const myRoomMutation = useMutation(() => getMyRoomPost(memberId!, Number(postId)), {
     onSuccess: (data) => {
       if (data.code === 1000) {
@@ -132,6 +134,7 @@ const Detail = () => {
           <TalkIcon />
           <Txt variant="h24">의견 티키타카</Txt>
         </Row>
+        <PreviewChat isLogin={isLogin} />
       </Col>
     </Layout>
   );
