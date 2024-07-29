@@ -68,6 +68,10 @@ const HomeMenuSlider = ({
     console.log('나의 홈 공개');
   };
 
+  const handleIntroduce = () => {
+    navigate('/introduce');
+  };
+
   useEffect(() => {
     setIsOn(isPublic);
   }, []);
@@ -265,7 +269,15 @@ const HomeMenuSlider = ({
             </>
           )}
           <Devider />
-          <Row gap={8} padding={'0 16px'} alignItems="center">
+          <Row
+            gap={8}
+            padding={'0 16px'}
+            alignItems="center"
+            css={css`
+              cursor: pointer;
+            `}
+            onClick={handleIntroduce}
+          >
             <TeamLogo />
             <Txt variant="t18" lineHeight={32}>
               팀 maximalist 소개
@@ -290,7 +302,7 @@ const HomeMenuSlider = ({
                 stuffinout@gmail.com
               </Txt>
               <Txt variant="c11" color={colors.lightGray}>
-                Copyright ©Teamname. All rights reserved.
+                Copyright ©maximalist. All rights reserved.
               </Txt>
             </Col>
           </Col>

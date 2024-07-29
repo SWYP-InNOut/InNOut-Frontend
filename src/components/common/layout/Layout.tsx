@@ -75,7 +75,7 @@ const Layout = (props: LayoutProps) => {
               stuffinout@gmail.com
             </Txt>
             <Txt variant="c11" color={colors.lightGray}>
-              Copyright ©Teamname. All rights reserved.
+              Copyright ©maximalist. All rights reserved.
             </Txt>
           </Col>
         )}
