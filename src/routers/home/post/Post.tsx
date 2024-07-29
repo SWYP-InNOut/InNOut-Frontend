@@ -1,6 +1,6 @@
 import Layout from '@components/common/layout/Layout';
 import Txt from '@components/common/text/Txt';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { CloseIcon } from '@icons/index';
 import TextInput from '@components/common/input/TextInput';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -12,27 +12,39 @@ import { css } from '@emotion/react';
 import AlertModal from '@components/common/alert/AlertModal';
 import { colors } from '@styles/theme';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { postMyRoomAddStuff } from '@apis/myroom';
+import { AxiosError } from 'axios';
+import useAuthStore from '@stores/auth';
 
 const Post = () => {
   const navigate = useNavigate();
   const [isCloseAlert, setIsCloseAlert] = useState(false);
   const [alertContent, setAlertContent] = useState<React.ReactNode>(null);
   const [alertBtn, setAlertBtn] = useState<React.ReactNode>(null);
-  const methods = useForm<PostRequestDTO>({ mode: 'onChange' });
+  const methods = useForm<PostRequestDTO>({
+    defaultValues: {
+      fileList: [], // fileList를 빈 배열로 초기화
+    },
+    mode: 'onChange',
+  });
 
-  const { setFocus, getValues } = methods;
+  const { setFocus, getValues, formState, setValue } = methods;
   const title = getValues('title');
-  const images = getValues('images');
+  const fileList = getValues('fileList');
   const inContent = getValues('inContent');
   const outContent = getValues('outContent');
 
-  const onFormSubmit = (data: any, event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log(data);
-    if (handleValidation()) {
-      console.log(data);
-    }
-  };
+  const ownerId = useAuthStore((store) => store.memberId);
+
+  const postMyRoomAddStuffMutation = useMutation(postMyRoomAddStuff, {
+    onSuccess: (data) => {
+      console.log('게시물 등록 성공:', data.result);
+    },
+    onError: (error: AxiosError) => {
+      console.error('게시물 등록 실패:', error);
+    },
+  });
 
   const handleExitBtn = () => {
     navigate(-1);
@@ -70,11 +82,8 @@ const Post = () => {
     );
   };
   const handleValidation = () => {
-    console.log('ffff');
-    console.log(title);
-
-    //  이거 작동이 안됨 수정 필요
-    if (!title || title.trim() === '') {
+    console.log(fileList);
+    if (title === '' || title === undefined) {
       console.log('제목은 필수');
       setAlertContent(
         <Txt variant="b16" align="center">
@@ -94,7 +103,7 @@ const Post = () => {
       setIsCloseAlert(true);
       return false;
     }
-    if (!Picture || Picture.length < 1) {
+    if (fileList.length < 1) {
       setAlertContent(
         <Col gap={'12'} alignItems="center">
           <Txt variant="t20">사진은 중요!</Txt>
@@ -118,6 +127,35 @@ const Post = () => {
     return true;
   };
 
+  const onFormSubmit = () => {
+    console.log(formState);
+    let validation = handleValidation();
+    if (validation) {
+      const formData = new FormData();
+      if (inContent === '' || inContent === undefined) {
+        setValue('inContent', ' ');
+      }
+      if (outContent === '' || outContent === undefined) {
+        setValue('outContent', ' ');
+      }
+      const data: Omit<PostRequestDTO, 'fileList'> = {
+        memberId: ownerId as number,
+        title,
+        inContent,
+        outContent,
+      };
+      formData.append('request', JSON.stringify(data));
+      fileList.forEach((file) => {
+        formData.append('file', file);
+      });
+      postMyRoomAddStuffMutation.mutate(formData);
+    }
+  };
+
+  useEffect(() => {
+    console.log(isCloseAlert, 'isCloseAlert');
+  }, []);
+
   return (
     <>
       <AlertModal isOpen={isCloseAlert} content={alertContent} button={alertBtn} />
@@ -135,7 +173,7 @@ const Post = () => {
       >
         <FormProvider {...methods}>
           <form>
-            <Col padding={'0 16px 48px 16px'} gap={'32'} margin={'32px 0 0 0'}>
+            <Col padding={'0 16px 0 16px'} gap={32} margin={'32px 0 0 0'}>
               <Col gap={'8'}>
                 <Txt variant="t20">제목</Txt>
                 <TextInput
@@ -161,15 +199,18 @@ const Post = () => {
                   placeholder={`버리고 싶은 이유를 알려주세요.\n자세히 들려줄수록 투표수가 올라가요.`}
                 />
               </Col>
-              <PrimaryButton
-                title="등록"
-                onClick={() => {
-                  onFormSubmit;
-                }}
-              />
             </Col>
           </form>
         </FormProvider>
+        <div
+          css={css`
+            width: 100%;
+            padding: 0 16px 38px;
+            margin-top: 32px;
+          `}
+        >
+          <PrimaryButton title="등록" onClick={onFormSubmit} />
+        </div>
       </Layout>
     </>
   );
