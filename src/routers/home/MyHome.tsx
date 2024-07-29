@@ -57,31 +57,31 @@ const MyHome = () => {
     setIsShareModal(!isShareOpenModal);
   };
 
-  const onClickShareKakaoTalk = async () => {
-    const link = window.location.href;
-    await window.Kakao.Share.sendDefault({
-      objectType: 'text',
-      text: `qjfu??`,
-      link: {
-        mobileWebUrl: link,
-        webUrl: link,
-      },
-    });
-  };
+  // const onClickShareKakaoTalk = async () => {
+  //   const link = window.location.href;
+  //   await window.Kakao.Share.sendDefault({
+  //     objectType: 'text',
+  //     text: `qjfu??`,
+  //     link: {
+  //       mobileWebUrl: link,
+  //       webUrl: link,
+  //     },
+  //   });
+  // };
 
   const handleToast = async () => {
     const link = window.location.href;
     await navigator.clipboard.writeText(link);
-    onClickShareKakaoTalk();
+    // onClickShareKakaoTalk();
     setToastVisible(!toastVisible);
   };
 
-  const initKakao = () => {
-    const KAKAO_JS_KEY = import.meta.env.VITE_REACT_APP_KAKAO_JS_KEY;
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(KAKAO_JS_KEY);
-    }
-  };
+  // const initKakao = () => {
+  //   const KAKAO_JS_KEY = import.meta.env.VITE_REACT_APP_KAKAO_JS_KEY;
+  //   if (!window.Kakao.isInitialized()) {
+  //     window.Kakao.init(KAKAO_JS_KEY);
+  //   }
+  // };
 
   const handlePencilBtn = () => {
     console.log('pencil');
@@ -96,9 +96,9 @@ const MyHome = () => {
       });
   }, [selectedFilter, isLogin]);
 
-  useEffect(() => {
-    initKakao();
-  }, []);
+  // useEffect(() => {
+  //   initKakao();
+  // }, []);
 
   return (
     <>
