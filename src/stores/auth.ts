@@ -1,8 +1,9 @@
 import { create } from 'zustand';
-import axios, { AxiosHeaders, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosHeaders, AxiosResponse } from 'axios';
 import { HTTP_URL } from '@apis/auth';
 import { persist } from 'zustand/middleware';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 export const apiClient = axios.create({
   baseURL: HTTP_URL, // API의 기본 URL
@@ -35,12 +36,14 @@ interface AuthState {
   isLoggedIn: boolean;
   memberId: number | null;
   nickname: string | null;
+  isPublic: boolean | null;
 }
 
 interface AuthAction {
   login: (response: AxiosResponse) => Promise<void>;
   reLogin: () => Promise<boolean>;
   logout: () => Promise<void>;
+  settingIsPublic: (isPublic: boolean) => void;
 }
 
 export const useAuthStore = create(
@@ -49,6 +52,7 @@ export const useAuthStore = create(
       isLoggedIn: false,
       memberId: null,
       nickname: null,
+      isPublic: null,
       login: async (response: AxiosResponse) => {
         try {
           const { data, headers } = response;
@@ -60,6 +64,7 @@ export const useAuthStore = create(
               isLoggedIn: true,
               memberId: data.memberId,
               nickname: data.nickname,
+              isPublic: null,
             });
           }
         } catch (e) {
@@ -87,16 +92,17 @@ export const useAuthStore = create(
       },
       logout: async () => {
         try {
-          await apiClient.get('/logout', {
-            withCredentials: false,
-          });
+          const response: AxiosResponse = await apiClient.post('/logout');
+          apiClient.defaults.withCredentials = true;
+          console.log('로그아웃 성공', response.data);
+          set({ isLoggedIn: false, memberId: null, nickname: null, isPublic: null });
+          apiClient.defaults.headers.common['Authorization'] = '';
         } catch (e) {
           console.error('로그아웃 중 오류 발생', e);
-        } finally {
-          set({ isLoggedIn: false, memberId: null, nickname: null });
-          Cookies.remove('refreshToken'); // 쿠키 삭제 안됨... 왜 안될까
-          apiClient.defaults.headers.common['Authorization'] = '';
         }
+      },
+      settingIsPublic: (isPublic: boolean) => {
+        set({ isPublic });
       },
     }),
     {
