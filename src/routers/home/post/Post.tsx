@@ -22,11 +22,16 @@ const Post = () => {
   const [isCloseAlert, setIsCloseAlert] = useState(false);
   const [alertContent, setAlertContent] = useState<React.ReactNode>(null);
   const [alertBtn, setAlertBtn] = useState<React.ReactNode>(null);
-  const methods = useForm<PostRequestDTO>({ mode: 'onChange' });
+  const methods = useForm<PostRequestDTO>({
+    defaultValues: {
+      fileList: [], // fileList를 빈 배열로 초기화
+    },
+    mode: 'onChange',
+  });
 
-  const { setFocus, getValues, formState } = methods;
+  const { setFocus, getValues, formState, setValue } = methods;
   const title = getValues('title');
-  const images = getValues('images');
+  const fileList = getValues('fileList');
   const inContent = getValues('inContent');
   const outContent = getValues('outContent');
 
@@ -77,7 +82,7 @@ const Post = () => {
     );
   };
   const handleValidation = () => {
-    console.log(images);
+    console.log(fileList);
     if (title === '' || title === undefined) {
       console.log('제목은 필수');
       setAlertContent(
@@ -98,7 +103,7 @@ const Post = () => {
       setIsCloseAlert(true);
       return false;
     }
-    if (!images || images.length < 1) {
+    if (fileList.length < 1) {
       setAlertContent(
         <Col gap={'12'} alignItems="center">
           <Txt variant="t20">사진은 중요!</Txt>
@@ -126,13 +131,24 @@ const Post = () => {
     console.log(formState);
     let validation = handleValidation();
     if (validation) {
-      postMyRoomAddStuffMutation.mutate({
+      const formData = new FormData();
+      if (inContent === '' || inContent === undefined) {
+        setValue('inContent', ' ');
+      }
+      if (outContent === '' || outContent === undefined) {
+        setValue('outContent', ' ');
+      }
+      const data: Omit<PostRequestDTO, 'fileList'> = {
         memberId: ownerId as number,
         title,
-        images,
         inContent,
         outContent,
+      };
+      formData.append('request', JSON.stringify(data));
+      fileList.forEach((file) => {
+        formData.append('file', file);
       });
+      postMyRoomAddStuffMutation.mutate(formData);
     }
   };
 

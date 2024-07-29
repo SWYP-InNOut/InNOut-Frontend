@@ -1,7 +1,7 @@
 interface PostRequestDTO {
   memberId: number;
   title: string;
-  images: string[];
+  fileList: File[];
   inContent: string;
   outContent: string;
 }

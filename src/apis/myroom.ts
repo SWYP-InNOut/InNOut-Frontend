@@ -28,7 +28,7 @@ export const getMyRoom = async (
 };
 
 //게시물 등록
-export const postMyRoomAddStuff = async (request: PostRequestDTO): Promise<BaseResponse<any>> => {
+export const postMyRoomAddStuff = async (request: FormData): Promise<BaseResponse<any>> => {
   try {
     const response = await apiClient.post('/myroom/addstuff', request);
     return response.data;
