@@ -14,7 +14,7 @@ export const INPUT_TYPE = {
   EMAIL: 'email',
   PASSWORD: 'password',
   CONFIRMPASSWORD: 'confirmPassword',
-  NICKNAME: 'nickName',
+  NICKNAME: 'username',
 } as const;
 
 export type ConfigKeys = keyof typeof INPUT_TYPE;
