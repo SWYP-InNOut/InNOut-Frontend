@@ -87,7 +87,6 @@ const Post = () => {
   const handleValidation = () => {
     console.log(fileList);
     if (title === '' || title === undefined) {
-      console.log('제목은 필수');
       setAlertContent(
         <Txt variant="b16" align="center">
           제목은 필수!
@@ -158,10 +157,6 @@ const Post = () => {
       postMyRoomAddStuffMutation.mutate(formData);
     }
   };
-
-  useEffect(() => {
-    console.log(isCloseAlert, 'isCloseAlert');
-  }, []);
 
   return (
     <>

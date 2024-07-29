@@ -24,23 +24,21 @@ import useAuthStore from '@stores/auth';
 import { getIsPublic } from '@apis/myroom';
 import { useMutation } from 'react-query';
 import { AxiosError } from 'axios';
-import { set } from 'react-hook-form';
 import { IsPublicResponseDTO } from '@interfaces/api/room';
 
 const HomeMenuSlider = ({
   isOpen,
   handleMenu,
   isPublic,
-  memberName,
 }: {
   isOpen: boolean;
   isPublic: boolean;
-  memberName: string;
   handleMenu: () => void;
 }) => {
   const [isOn, setIsOn] = useState(false);
   const [isLogoutAlert, setIsLogoutAlert] = useState(false);
   const isLogin = useAuthStore((store) => store.isLoggedIn);
+  const nickName = useAuthStore((store) => store.nickname);
 
   const getIsPublicMutation = useMutation(getIsPublic, {
     onSuccess: (data) => {
@@ -64,8 +62,6 @@ const HomeMenuSlider = ({
 
   const handlePublic = () => {
     getIsPublicMutation.mutate();
-    console.log();
-    console.log('나의 홈 공개');
   };
 
   const handleIntroduce = () => {
@@ -74,14 +70,14 @@ const HomeMenuSlider = ({
 
   useEffect(() => {
     setIsOn(isPublic);
-  }, []);
+  }, [isPublic]);
 
   const logout = useAuthStore((state) => state.logout);
   const renderTitle = () => {
     return isLogin ? (
-      <Row padding={'0 28px 64px'} gap={'4'} justifyContent="start" alignItems="end">
+      <Row padding={'0 28px 64px'} gap={'4'} justifyContent="center" alignItems="end">
         <Txt variant="h28" lineHeight={36}>
-          {memberName}
+          {nickName}
         </Txt>
         <Txt variant="t18" color={colors.lightGray}>
           님의 홈
@@ -126,14 +122,12 @@ const HomeMenuSlider = ({
             <PrimaryButton
               title="로그아웃"
               onClick={async () => {
-                console.log('로그아웃');
                 try {
                   await logout();
-                  console.log('로그아웃 성공');
                   setIsLogoutAlert(false);
                   navigate('/login');
-                } catch (error) {
-                  console.error('로그아웃 실패', error);
+                } catch (e) {
+                  console.log('로그아웃 실패:', e);
                 }
               }}
               color={colors.red600}
@@ -174,7 +168,7 @@ const HomeMenuSlider = ({
             padding={'0 16px'}
             gap={'8'}
             alignItems="center"
-            onClick={() => alert('다른 홈 구경 기능은 준비중입니다.')}
+            onClick={() => navigate('/others-home')}
             css={css`
               cursor: pointer;
             `}
@@ -219,11 +213,7 @@ const HomeMenuSlider = ({
                   </Row>
                   <NextIcon />
                 </Row>
-                <Row
-                  alignItems="center"
-                  justifyContent="space-between"
-                  onClick={() => console.log('나의 홈 대문')}
-                >
+                <Row alignItems="center" justifyContent="space-between">
                   <Row
                     gap={8}
                     alignItems="flex-end"

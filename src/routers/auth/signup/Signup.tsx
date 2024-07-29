@@ -29,7 +29,7 @@ const Signup = () => {
     formState: { errors },
   } = methods;
   const { mutate, isLoading, isError, data, error } = useMutation(
-    (signUpRequest: SignUpRequestDTO) => signup(signUpRequest),
+    (signUpRequest: Omit<SignUpRequestDTO, 'confirmPassword'>) => signup(signUpRequest),
     {
       onSuccess: (data) => {
         console.log('회원가입 성공:', data);
@@ -57,7 +57,7 @@ const Signup = () => {
     }
   );
 
-  const nickName = getValues(INPUT_TYPE.NICKNAME);
+  const username = getValues(INPUT_TYPE.NICKNAME);
   const email = getValues(INPUT_TYPE.EMAIL);
   const password = getValues(INPUT_TYPE.PASSWORD);
   const confirmPassword = getValues(INPUT_TYPE.CONFIRMPASSWORD);
@@ -75,17 +75,16 @@ const Signup = () => {
     if (
       methods.getFieldState('email').invalid ||
       methods.getFieldState('password').invalid ||
-      methods.getFieldState('nickName').invalid ||
+      methods.getFieldState('username').invalid ||
       !confirmPassword ||
       isConfirmPasswordError
     )
       return;
 
-    const signUpRequest: SignUpRequestDTO = {
-      nickName,
+    const signUpRequest: Omit<SignUpRequestDTO, 'confirmPassword'> = {
+      username,
       email,
       password,
-      confirmPassword,
     };
     mutate(signUpRequest);
   };
