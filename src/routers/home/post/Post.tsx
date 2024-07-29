@@ -3,7 +3,7 @@ import Txt from '@components/common/text/Txt';
 import React, { useCallback, useEffect, useState } from 'react';
 import { CloseIcon } from '@icons/index';
 import TextInput from '@components/common/input/TextInput';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { Col } from '@components/common/flex/Flex';
 import TextArea from '@components/common/input/TextArea';
 import PrimaryButton from '@components/common/button/PrimaryButton';
@@ -26,20 +26,23 @@ const Post = () => {
     defaultValues: {
       fileList: [], // fileList를 빈 배열로 초기화
     },
-    mode: 'onChange',
+    mode: 'all',
   });
 
-  const { setFocus, getValues, formState, setValue } = methods;
-  const title = getValues('title');
-  const fileList = getValues('fileList');
-  const inContent = getValues('inContent');
-  const outContent = getValues('outContent');
+  const { watch, setFocus, getValues, formState, setValue } = methods;
+  const [title, fileList, inContent, outContent] = watch([
+    'title',
+    'fileList',
+    'inContent',
+    'outContent',
+  ]);
 
   const ownerId = useAuthStore((store) => store.memberId);
 
   const postMyRoomAddStuffMutation = useMutation(postMyRoomAddStuff, {
     onSuccess: (data) => {
       console.log('게시물 등록 성공:', data.result);
+      navigate('/');
     },
     onError: (error: AxiosError) => {
       console.error('게시물 등록 실패:', error);
@@ -132,6 +135,8 @@ const Post = () => {
     let validation = handleValidation();
     if (validation) {
       const formData = new FormData();
+      console.log(inContent, 'inContent');
+      console.log(outContent, 'outContent');
       if (inContent === '' || inContent === undefined) {
         setValue('inContent', ' ');
       }
@@ -144,7 +149,9 @@ const Post = () => {
         inContent,
         outContent,
       };
-      formData.append('request', JSON.stringify(data));
+
+      const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+      formData.append('request', blob);
       fileList.forEach((file) => {
         formData.append('file', file);
       });
