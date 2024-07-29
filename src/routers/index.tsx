@@ -17,6 +17,8 @@ import Post from './home/post/Post';
 import useAuthStore from '@stores/auth';
 import Detail from './home/detail/Detail';
 import Error from './error/Error';
+import KakaoRedirect from '@components/auth/KakaoRedirect';
+import Introduce from './home/introduce/Introduce';
 
 const ProtectedRoute = () => {
   const isLoggedin = useAuthStore((store) => store.isLoggedIn);
@@ -45,6 +47,8 @@ const Router = () => {
         <Route path="login" element={<Login />} />
         <Route path="detail/:postId" element={<Detail />} />
         <Route path="error" element={<Error />} />
+        <Route path="kakaologin/callback" element={<KakaoRedirect />} />
+        <Route path="introduce" element={<Introduce />} />
       </>
     )
   );
