@@ -37,7 +37,6 @@ const MyHome = () => {
 
   const getMyRoomListMutation = useMutation(getMyRoom, {
     onSuccess: (data) => {
-      console.log('마이룸 리스트 성공:', data.result);
       setMyRoomResponse(data.result);
       setIsPublic(data.result.public);
     },
@@ -229,7 +228,7 @@ const MyHome = () => {
           <CardList postList={myRoomResponse?.posts} />
         </div>
         <HomeMenuSlider
-          memberName={myRoomResponse?.memberName || ''}
+          memberName={myRoomResponse?.memberName || '비회원'}
           isOpen={isOpen}
           handleMenu={toggleMenu}
           isPublic={isPublic}
