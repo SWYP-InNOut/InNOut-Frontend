@@ -37,7 +37,6 @@ const Router = () => {
       <>
         <Route index element={<MyHome />} />
         <Route path="*" element={<ProtectedRoute />}>
-          <Route path="pwdsearch" element={<PwdSearch />} />
           <Route path="setting" element={<NickNameSetting />} />
           <Route path="pwd" element={<PwdChange />} />
           <Route path="post" element={<Post />} />
@@ -46,6 +45,7 @@ const Router = () => {
         </Route>
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />
+        <Route path="pwdsearch" element={<PwdSearch />} />
         <Route path="detail/:postId" element={<Detail />} />
         <Route path="error" element={<Error />} />
         <Route path="kakaologin/callback" element={<KakaoRedirect />} />
