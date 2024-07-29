@@ -32,6 +32,7 @@ const MyHome = () => {
   const isLogin = useAuthStore((store) => store.isLoggedIn);
   const memberId = useAuthStore((store) => store.memberId);
   const [isPublic, setIsPublic] = useState(false);
+  const settingIsPublic = useAuthStore((state) => state.settingIsPublic);
 
   const [myRoomResponse, setMyRoomResponse] = useState<MyRoomResponseDTO>();
 
@@ -40,6 +41,7 @@ const MyHome = () => {
       console.log('마이룸 리스트 성공:', data);
       setMyRoomResponse(data.result);
       setIsPublic(data.result.public);
+      settingIsPublic(data.result.public);
     },
     onError: (error: AxiosError) => {
       console.error('마이룸 리스트 실패:', error);
@@ -190,7 +192,7 @@ const MyHome = () => {
           }
         />
         <Col padding={'24px 28px'}>
-          <Row gap={'4'} justifyContent="start" alignItems="end">
+          <Row gap={'4'} justifyContent="center" alignItems="end">
             <Txt variant="h28" lineHeight={36}>
               {myRoomResponse?.memberName}
             </Txt>
@@ -228,12 +230,7 @@ const MyHome = () => {
         >
           <CardList postList={myRoomResponse?.posts} />
         </div>
-        <HomeMenuSlider
-          memberName={myRoomResponse?.memberName || '비회원'}
-          isOpen={isOpen}
-          handleMenu={toggleMenu}
-          isPublic={isPublic}
-        />
+        <HomeMenuSlider isOpen={isOpen} handleMenu={toggleMenu} isPublic={isPublic} />
         {!isOpen && (
           <>
             <StyledPencilIcon />
