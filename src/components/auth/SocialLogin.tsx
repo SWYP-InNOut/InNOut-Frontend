@@ -6,39 +6,16 @@ import { colors } from '@styles/theme';
 import styled from '@emotion/styled';
 import Txt from '@components/common/text/Txt';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 const KAKAO_REST_API_KEY = import.meta.env.VITE_REACT_APP_KAKAO_REST_API;
 const KAKAO_REDIRECT_URI = import.meta.env.VITE_REACT_APP_KAKAO_REDIRECT_URI;
 const link = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
 
-// // const handleKakaoLogin = () => {
-// //   window.location.href = link;
-// //   const code = new URL(document.location.toString()).searchParams.get('code');
-// // };
-
 const SocialLogin = () => {
   const navigate = useNavigate();
-  // const handleKakaoLogin = () => {
-  //   window.location.href = link;
-  //   // navigate('/nickname');
-  // };
 
-  // useEffect(() => {
-  //   // 페이지 로드 후 pre 태그의 내용을 가져옵니다.
-  //   const preElement = document.querySelector('pre');
-  //   if (preElement) {
-  //     try {
-  //       // pre 태그 내용을 JSON으로 파싱합니다.
-  //       console;
-  //     } catch (error) {
-  //       console.error('Error parsing pre content:', error);
-  //     }
-  //   }
-  // }, []);
-
-  const handleKakaoLogin = async () => {
-    alert('Google 로그인 준비중');
+  const handleKakaoLogin = () => {
+    window.location.href = link;
   };
 
   const handleGoogleLogin = () => {

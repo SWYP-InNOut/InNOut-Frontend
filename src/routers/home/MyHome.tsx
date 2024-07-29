@@ -37,7 +37,6 @@ const MyHome = () => {
 
   const getMyRoomListMutation = useMutation(getMyRoom, {
     onSuccess: (data) => {
-      console.log('마이룸 리스트 성공:', data.result);
       setMyRoomResponse(data.result);
       setIsPublic(data.result.public);
     },
@@ -58,8 +57,30 @@ const MyHome = () => {
     setIsShareModal(!isShareOpenModal);
   };
 
-  const handleToast = () => {
+  const onClickShareKakaoTalk = async () => {
+    const link = window.location.href;
+    await window.Kakao.Share.sendDefault({
+      objectType: 'text',
+      text: `qjfu??`,
+      link: {
+        mobileWebUrl: link,
+        webUrl: link,
+      },
+    });
+  };
+
+  const handleToast = async () => {
+    const link = window.location.href;
+    await navigator.clipboard.writeText(link);
+    onClickShareKakaoTalk();
     setToastVisible(!toastVisible);
+  };
+
+  const initKakao = () => {
+    const KAKAO_JS_KEY = import.meta.env.VITE_REACT_APP_KAKAO_JS_KEY;
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(KAKAO_JS_KEY);
+    }
   };
 
   const handlePencilBtn = () => {
@@ -74,6 +95,10 @@ const MyHome = () => {
         filterType: selectedFilter,
       });
   }, [selectedFilter, isLogin]);
+
+  useEffect(() => {
+    initKakao();
+  }, []);
 
   return (
     <>
@@ -202,7 +227,12 @@ const MyHome = () => {
         >
           <CardList postList={myRoomResponse?.posts} />
         </div>
-        <HomeMenuSlider isOpen={isOpen} handleMenu={toggleMenu} isPublic={isPublic} />
+        <HomeMenuSlider
+          memberName={myRoomResponse?.memberName || '비회원'}
+          isOpen={isOpen}
+          handleMenu={toggleMenu}
+          isPublic={isPublic}
+        />
         {!isOpen && (
           <>
             <StyledPencilIcon />

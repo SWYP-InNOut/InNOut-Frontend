@@ -28,11 +28,13 @@ export const getMyRoom = async (
 };
 
 //게시물 등록
-export const postMyRoomAddStuff = async (
-  request: PostRequestDTO
-): Promise<BaseResponse<string>> => {
+export const postMyRoomAddStuff = async (request: FormData): Promise<BaseResponse<any>> => {
   try {
-    const response = await apiClient.post('/myroom/addstuff', request);
+    const response = await apiClient.post('/myroom/addstuff', request, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('게시물 등록 실패:', error);
