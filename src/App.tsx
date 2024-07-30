@@ -21,7 +21,6 @@ export const App = () => {
   return (
     <div>
       <Global styles={globalStyles} />
-      {/* {loading ? <Loading /> : <Router />} */}
       <Router />
     </div>
   );
