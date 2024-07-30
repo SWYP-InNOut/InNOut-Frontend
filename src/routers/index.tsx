@@ -19,6 +19,7 @@ import Detail from './home/detail/Detail';
 import Error from './error/Error';
 import KakaoRedirect from '@components/auth/KakaoRedirect';
 import Introduce from './home/introduce/Introduce';
+import Loading from '@components/common/loading/Loading';
 
 const ProtectedRoute = () => {
   const isLoggedin = useAuthStore((store) => store.isLoggedIn);
