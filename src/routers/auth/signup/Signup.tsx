@@ -15,6 +15,7 @@ import { useMutation } from 'react-query';
 import { signup } from '@apis/auth/auth';
 import SocialLogin from '@components/auth/SocialLogin';
 import SendEmail from '@components/common/sendEmail/SendEmail';
+import Loading from '@components/common/loading/Loading';
 
 const Signup = () => {
   const methods = useForm<SignUpRequestDTO>({ mode: 'onChange' });
@@ -114,8 +115,10 @@ const Signup = () => {
   useEffect(() => {
     setNickname(generateNickname());
   }, []);
+
   return (
     <>
+      {isLoading && <Loading />}
       {isComplete ? (
         <Layout hasHeader={false}>
           <Col padding={'64px 16px 0'}>
