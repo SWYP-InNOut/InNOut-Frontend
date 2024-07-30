@@ -3,20 +3,10 @@ import { HTTP_URL } from '.';
 import { AxiosResponse } from 'axios';
 import { apiClient } from '@stores/auth';
 
-export const signup = async (request: SignUpRequestDTO): Promise<BaseResponse<string>> => {
-  const response = await apiClient.post(
-    `/join`,
-    {
-      username: request.nickName,
-      email: request.email,
-      password: request.password,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+export const signup = async (
+  request: Omit<SignUpRequestDTO, 'confirmPassword'>
+): Promise<BaseResponse<string>> => {
+  const response = await apiClient.post(`/join`, request);
   return response.data;
 };
 
