@@ -1,5 +1,7 @@
 import { Col, Row } from '@components/common/flex/Flex';
+import LottieContainer from '@components/common/lottie/LottieContainer';
 import Txt from '@components/common/text/Txt';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { colors } from '@styles/theme';
 import { useEffect, useState } from 'react';
@@ -44,7 +46,20 @@ const StuffCardList = ({ contentList }: StuffCardProps) => {
         ))}
       </FirstColumn>
       <SecondColumn>
-        <DefaultCard maxWidth={(innerWidth - 40) / 2} />
+        <DefaultCard maxWidth={(innerWidth - 40) / 2}>
+          <div
+            css={css`
+              width: 61px;
+              height: 61px;
+              margin-bottom: -4px;
+            `}
+          >
+            <LottieContainer path={'/In.json'} isPlay={true} />
+          </div>
+          <Txt variant="c14" color={colors.black}>
+            나의 홈도 가득 채워봐요!
+          </Txt>
+        </DefaultCard>
         {oddContentList.map((card, index) => (
           <Col key={index} gap={8} justifyContent="center" alignItems="center">
             <ImageCard src={card.imgUrl} />
@@ -61,6 +76,11 @@ const StuffCardList = ({ contentList }: StuffCardProps) => {
 
 const DefaultCard = styled.div<{ maxWidth: number }>`
   width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 6px;
   max-width: ${(props) => props.maxWidth}px;
   grid-row: 1;
   grid-column: 2;
