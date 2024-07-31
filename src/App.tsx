@@ -1,12 +1,14 @@
 import { Global } from '@emotion/react';
 import Router from '@routers/index';
 import { globalStyles } from '@styles/globalStyles';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Loading from '@components/common/loading/Loading';
 export const App = () => {
   const setScreenHeight = () => {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
   };
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setScreenHeight();
