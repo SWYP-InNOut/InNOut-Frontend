@@ -1,13 +1,13 @@
-interface StuffRequestDTO {
+interface InOutRequestDTO {
   postId: number;
   isMember: boolean;
-  memberId: number;
+  in: boolean;
+  out: boolean;
 }
 
-interface StuffInResponseDTO {
+interface InOutResponseDTO {
   inCount: number;
-}
-
-interface StuffOutResponseDTO {
   outCount: number;
+  in: boolean;
+  out: boolean;
 }

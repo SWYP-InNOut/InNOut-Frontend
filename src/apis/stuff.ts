@@ -1,29 +1,14 @@
 import { BaseResponse } from '@interfaces/api/base';
 import { apiClient } from '@stores/auth';
 
-//postId : 게시물 id
-
-// /in/{postId}
-//버리지마
-export const postIn = async (request: StuffRequestDTO): Promise<BaseResponse<string>> => {
+// POST
+export const postInOut = async (
+  request: InOutRequestDTO
+): Promise<BaseResponse<InOutResponseDTO>> => {
   try {
-    const postId = request.postId;
-    const response = await apiClient.post(`/in/${postId}`, request);
+    const response = await apiClient.post<BaseResponse<InOutResponseDTO>>(`/inout`, request);
     return response.data;
   } catch (error) {
-    console.error('in 실패:', error);
-    throw error;
-  }
-};
-
-//버려
-export const postOut = async (request: StuffRequestDTO): Promise<BaseResponse<string>> => {
-  try {
-    const postId = request.postId;
-    const response = await apiClient.post(`/out/${postId}`, request);
-    return response.data;
-  } catch (error) {
-    console.error('out 실패:', error);
     throw error;
   }
 };

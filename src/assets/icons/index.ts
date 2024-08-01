@@ -32,6 +32,7 @@ import ReplyIcon from '@icons/reply.svg?react';
 import TeamLogo from '@icons/teamLogo.svg?react';
 import Charactor from '@icons/charactor.svg?react';
 import ErrorImg from '@icons/errorImg.svg?react';
+import HomeIcon from '@icons/home.svg?react';
 
 export {
   LogoIcon,
@@ -68,4 +69,5 @@ export {
   TeamLogo,
   Charactor,
   ErrorImg,
+  HomeIcon,
 };
