@@ -3,6 +3,7 @@ import Txt from '@components/common/text/Txt';
 import { VoteType } from '@constants/voteConstants';
 import styled from '@emotion/styled';
 import { colors } from '@styles/theme';
+import React from 'react';
 import { useState } from 'react';
 
 export interface InOutButtonProps {
@@ -10,21 +11,27 @@ export interface InOutButtonProps {
   count: number;
   onVote: () => void;
   isSelected: boolean;
+  isLoading: boolean;
 }
 
-const InOutButton: React.FC<InOutButtonProps> = ({ type, count, onVote, isSelected }) => {
+const InOutButton: React.FC<InOutButtonProps> = ({
+  type,
+  count,
+  onVote,
+  isSelected,
+  isLoading,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <Container>
       <ButtonContainer
-        onClick={() => {
-          onVote();
-        }}
+        onClick={onVote}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         isSelected={isSelected}
         type={type}
+        disabled={isLoading}
       >
         <LottieContainer path={type === 'In' ? '/In.json' : '/Out.json'} isPlay={isSelected} />
         {isSelected ? (
@@ -33,7 +40,7 @@ const InOutButton: React.FC<InOutButtonProps> = ({ type, count, onVote, isSelect
             color={type === 'Out' ? colors.yellow800 : colors.red800}
             lineHeight={42}
           >
-            {count} 명!
+            {isLoading ? '...' : `${count} 명!`}
           </Txt>
         ) : (
           <Logo32>{type}</Logo32>
@@ -42,13 +49,17 @@ const InOutButton: React.FC<InOutButtonProps> = ({ type, count, onVote, isSelect
     </Container>
   );
 };
+
+export default React.memo(InOutButton);
 const Container = styled.div`
   &:active {
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: 8px;
   }
 `;
-const ButtonContainer = styled.div<{ isSelected: boolean; type: VoteType }>`
+const ButtonContainer = styled.div<{ isSelected: boolean; type: VoteType; disabled: boolean }>`
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
   padding: 16px 8px;
   gap: 6px;
   background-color: ${(props) => {
@@ -65,7 +76,6 @@ const ButtonContainer = styled.div<{ isSelected: boolean; type: VoteType }>`
   align-items: center;
   transition: background-color 0.3s ease;
 `;
-export default InOutButton;
 
 const Logo32 = styled.span`
   color: #000;
