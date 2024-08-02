@@ -14,6 +14,7 @@ import {
   SquareLogoIcon,
   StoryIcon,
   TalkIcon,
+  HomeIcon,
 } from '@icons/index';
 import Txt from '@components/common/text/Txt';
 import { Col, Row } from '@components/common/flex/Flex';
@@ -28,7 +29,6 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { getMyRoomPost } from '@apis/myroom';
 import { useMutation, useQuery } from 'react-query';
 import useAuthStore from '@stores/auth';
-import { postIn, postOut } from '@apis/stuff';
 import { GetDetailResponseDTO } from '@interfaces/api/room';
 import PreviewChat from '@components/chat/PreviewChat';
 
@@ -57,10 +57,12 @@ const Detail = () => {
     | GetDetailResponseDTO
     | undefined;
   console.log('postDetail:', postDetail);
-
-  const [heightSize, setHeightSize] = useState<number>(0);
   const handleArrowClick = () => {
     navigate(-1);
+  };
+
+  const handleHomeClick = () => {
+    navigate('/');
   };
   return (
     <Layout
@@ -75,15 +77,19 @@ const Detail = () => {
         </button>
       }
       HeaderRight={
-        <Txt
-          variant="b16"
-          color={colors.yellow700}
-          css={css`
-            cursor: pointer;
-          `}
-        >
-          수정
-        </Txt>
+        postDetail?.ownerId === memberId ? (
+          <Txt
+            variant="b16"
+            color={colors.yellow700}
+            css={css`
+              cursor: pointer;
+            `}
+          >
+            수정
+          </Txt>
+        ) : (
+          <HomeIcon onClick={handleHomeClick} />
+        )
       }
       Footer={true}
     >
@@ -108,8 +114,9 @@ const Detail = () => {
       <Col padding={'32px 16px'} gap={'32'} margin={'0 0 12px 0'}>
         <SquareLogoIcon />
         <InOutVoting
-          initialInCount={postDetail?.isCheckedIn ? 1 : 0}
-          initialOutCount={postDetail?.isCheckedOut ? 1 : 0}
+          initialInCount={postDetail?.inCount}
+          initialOutCount={postDetail?.outCount}
+          inOrOut={postDetail?.checkedIn ? 'In' : postDetail?.checkedOut ? 'Out' : 'None'}
           postId={Number(postId)}
         />
       </Col>

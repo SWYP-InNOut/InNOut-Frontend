@@ -1,12 +1,14 @@
 import { BaseResponse } from '@interfaces/api/base';
 import { apiClient } from '@stores/auth';
 
-export const postNickName = async (nickname: string): Promise<BaseResponse<string>> => {
+//프로필 수정
+export const postModifyUser = async (
+  request: modifyUserRequestDTO
+): Promise<BaseResponse<string>> => {
   try {
-    const response = await apiClient.post('/nickname', { nickname: nickname });
+    const response = await apiClient.post('/user/modify', request);
     return response.data;
   } catch (error) {
-    console.error('닉네임변경 실패:', error);
     throw error;
   }
 };
