@@ -18,7 +18,6 @@ import useAuthStore from '@stores/auth';
 import { getMyRoom } from '@apis/myroom';
 import { useMutation } from 'react-query';
 import { AxiosError } from 'axios';
-import { set } from 'react-hook-form';
 import { MyRoomResponseDTO } from '@interfaces/api/room';
 
 const MyHome = () => {

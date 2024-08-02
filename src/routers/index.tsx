@@ -19,7 +19,7 @@ import Detail from '@routers/home/detail/Detail';
 import Error from '@routers/error/Error';
 import KakaoRedirect from '@components/auth/KakaoRedirect';
 import Introduce from '@routers/home/introduce/Introduce';
-import OthersHomeList from '@routers/home/homemenu/OthersHomeList';
+import OthersStuffList from '@routers/home/homemenu/OthersStuffList';
 
 const ProtectedRoute = () => {
   const isLoggedin = useAuthStore((store) => store.isLoggedIn);
@@ -41,7 +41,7 @@ const Router = () => {
           <Route path="pwd" element={<PwdChange />} />
           <Route path="post" element={<Post />} />
           <Route path="nickname" element={<NickNameChange />} />
-          <Route path="others-home" element={<OthersHomeList />} />
+          <Route path="others-home" element={<OthersStuffList />} />
         </Route>
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />

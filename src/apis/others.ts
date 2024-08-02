@@ -1,14 +1,14 @@
 import { BaseResponse } from '@interfaces/api/base';
-import { RoomRequestDTO } from '@interfaces/api/room';
+import { OthersStuffListResponseDTO, RoomRequestDTO } from '@interfaces/api/room';
 import { apiClient } from '@stores/auth';
 
 //타사용자룸 전체보기(방문자순)
-export const getOthers = async (): Promise<BaseResponse<string>> => {
+export const getOthers = async (): Promise<BaseResponse<OthersStuffListResponseDTO[]>> => {
   try {
     const response = await apiClient.get('/others');
     return response.data;
   } catch (error) {
-    console.error('타사용자룸 전체보기(방문자순) 실패:', error);
+    console.error('타사용자게시물 전체보기(방문자순) 실패:', error);
     throw error;
   }
 };

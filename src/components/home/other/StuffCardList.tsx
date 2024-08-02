@@ -3,8 +3,10 @@ import LottieContainer from '@components/common/lottie/LottieContainer';
 import Txt from '@components/common/text/Txt';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { OthersStuffListResponseDTO } from '@interfaces/api/room';
 import { colors } from '@styles/theme';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export interface StuffCard {
   imgUrl: string;
@@ -13,10 +15,11 @@ export interface StuffCard {
 }
 
 interface StuffCardProps {
-  contentList: StuffCard[];
+  contentList: OthersStuffListResponseDTO[];
 }
 
 const StuffCardList = ({ contentList }: StuffCardProps) => {
+  const navigate = useNavigate();
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -37,10 +40,10 @@ const StuffCardList = ({ contentList }: StuffCardProps) => {
       <FirstColumn>
         {evenContentList.map((card, index) => (
           <Col key={index} gap={8} justifyContent="center" alignItems="center">
-            <ImageCard src={card.imgUrl} />
+            <ImageCard src={card.imageUrl} onClick={() => navigate(`/detail/${card.postId}`)} />
             <Row gap={4} padding={'4px'} justifyContent="center" alignItems="center">
-              <ProfileImg src={card.profileImgUrl} />
-              <Txt variant="c14">{card.name}</Txt>
+              <ProfileImg src={'profileImgUrl'} />
+              <Txt variant="c14">{card.memberName}</Txt>
             </Row>
           </Col>
         ))}
@@ -62,10 +65,10 @@ const StuffCardList = ({ contentList }: StuffCardProps) => {
         </DefaultCard>
         {oddContentList.map((card, index) => (
           <Col key={index} gap={8} justifyContent="center" alignItems="center">
-            <ImageCard src={card.imgUrl} />
+            <ImageCard src={card.imageUrl} onClick={() => navigate(`/detail/${card.postId}`)} />
             <Row gap={4} padding={'4px'} justifyContent="center" alignItems="center">
-              <ProfileImg src={card.profileImgUrl} />
-              <Txt variant="c14">{card.name}</Txt>
+              <ProfileImg src={'profileImgUrl'} />
+              <Txt variant="c14">{card.memberName}</Txt>
             </Row>
           </Col>
         ))}
@@ -118,6 +121,7 @@ const ImageCard = styled.img`
   aspect-ratio: 1 / 1;
   background-color: lightgray;
   border-radius: 8px;
+  cursor: pointer;
 `;
 
 const ProfileImg = styled.img`
