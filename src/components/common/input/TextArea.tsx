@@ -15,16 +15,15 @@ interface TextAreaProps {
 
 const TextArea = (props: TextAreaProps) => {
   const { id, placeholder, onKeyDown, options, type = 'text', ...rest } = props;
-  const { register, setValue, getValues } = useFormContext();
+  const { register, setValue, watch } = useFormContext();
   const [isFocused, setIsFocused] = useState(false);
-  const value = getValues(id);
+  const value = watch(id);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const [content, setContent] = useState<string>('');
   const [initialHeight, setInitialHeight] = useState<string>('auto');
 
   const onChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
-    if (e.target.value.length <= 200) {
-      setContent(e.target.value);
+    setValue(id, e.target.value);
+    if (value <= 200) {
       if (textAreaRef.current) {
         textAreaRef.current.style.height = initialHeight;
         textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
@@ -33,11 +32,12 @@ const TextArea = (props: TextAreaProps) => {
   };
 
   useEffect(() => {
-    if (content != null && content !== '') {
-      setValue(id, content);
+    if (value) {
       setIsFocused(true);
+    } else {
+      setIsFocused(false);
     }
-  }, [content, id, setValue]);
+  }, [value]);
 
   useEffect(() => {
     const resizeHandler = () => handleResize(textAreaRef, setInitialHeight);
@@ -53,13 +53,11 @@ const TextArea = (props: TextAreaProps) => {
   return (
     <InputContainer isFocused={isFocused}>
       <StyledInput
-        value={content}
+        value={value || ''}
         autoComplete="off"
         placeholder={placeholder}
         {...register(id, options)}
         onKeyDown={onKeyDown}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(value && value.length > 0)}
         onChange={onChange}
         ref={textAreaRef}
         style={{ height: initialHeight }}
