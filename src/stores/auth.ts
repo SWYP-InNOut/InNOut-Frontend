@@ -36,6 +36,7 @@ interface AuthState {
   isLoggedIn: boolean;
   memberId: number | null;
   nickname: string | null;
+  memberImageId: number | null;
   isPublic: boolean | null;
 }
 
@@ -52,6 +53,7 @@ export const useAuthStore = create(
       isLoggedIn: false,
       memberId: null,
       nickname: null,
+      memberImageId: null,
       isPublic: null,
       login: async (response: AxiosResponse) => {
         try {
@@ -64,6 +66,7 @@ export const useAuthStore = create(
               isLoggedIn: true,
               memberId: data.memberId,
               nickname: data.nickname,
+              memberImageId: data.memberImageId,
               isPublic: null,
             });
           }
@@ -85,7 +88,13 @@ export const useAuthStore = create(
             return false;
           }
         } catch (e) {
-          set({ isLoggedIn: false, memberId: null, nickname: null });
+          set({
+            isLoggedIn: false,
+            memberId: null,
+            nickname: null,
+            memberImageId: null,
+            isPublic: null,
+          });
           console.error('토큰 갱신 중 오류 발생', e);
           return false;
         }
@@ -95,7 +104,13 @@ export const useAuthStore = create(
           const response: AxiosResponse = await apiClient.post('/logout');
           apiClient.defaults.withCredentials = true;
           console.log('로그아웃 성공', response.data);
-          set({ isLoggedIn: false, memberId: null, nickname: null, isPublic: null });
+          set({
+            isLoggedIn: false,
+            memberId: null,
+            nickname: null,
+            isPublic: null,
+            memberImageId: null,
+          });
           apiClient.defaults.headers.common['Authorization'] = '';
         } catch (e) {
           console.error('로그아웃 중 오류 발생', e);

@@ -193,7 +193,7 @@ const HomeMenuSlider = ({
                   >
                     <IdCardIcon />
                     <Txt variant="b16" lineHeight={32}>
-                      닉네임 변경
+                      프로필 변경
                     </Txt>
                   </Row>
                   <NextIcon />
