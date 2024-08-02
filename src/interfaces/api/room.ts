@@ -32,12 +32,12 @@ export interface MyRoomResponseDTO {
   public: boolean;
 }
 
-interface OthersRoomResponsetDTO {
+export interface OthersStuffListResponseDTO {
   memberName: string;
-  isCheckedIn: boolean;
-  isCheckedOut: boolean;
-  chats: Chat[];
-  posts: Post[];
+  memberId: number;
+  imageUrl: string;
+  memberImageId: number;
+  postId: number;
 }
 
 export interface Chat {
