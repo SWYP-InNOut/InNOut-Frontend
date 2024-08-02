@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HomeMenuSlider from './HomeMenuSlider';
 import useAuthStore from '@stores/auth';
-import StuffCardList, { StuffCard } from '@components/home/other/StuffCardList';
+import StuffCardList from '@components/home/other/StuffCardList';
 import { Col } from '@components/common/flex/Flex';
 import { useMutation } from 'react-query';
 import { OthersStuffListResponseDTO } from '@interfaces/api/room';
@@ -55,7 +55,9 @@ const OthersStuffList = () => {
         <div
           css={css`
             width: 104px;
+            cursor: pointer;
           `}
+          onClick={() => navigate('/')}
         >
           <LogoIcon />
         </div>

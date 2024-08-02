@@ -42,6 +42,21 @@ export const postMyRoomAddStuff = async (request: FormData): Promise<BaseRespons
   }
 };
 
+//게시물 수정
+export const postMyRoomModifyStuff = async (request: FormData): Promise<BaseResponse<any>> => {
+  try {
+    const response = await apiClient.post('/myroom/updatestuff', request, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('게시물 등록 실패:', error);
+    throw error;
+  }
+};
+
 // //게시물 상세보기
 // export const getMyRoomPost = async (
 //   memberId: number,
