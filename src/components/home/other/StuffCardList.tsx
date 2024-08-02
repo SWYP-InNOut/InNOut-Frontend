@@ -7,6 +7,7 @@ import { OthersStuffListResponseDTO } from '@interfaces/api/room';
 import { colors } from '@styles/theme';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { iconSVGs } from '@constants/icons';
 
 export interface StuffCard {
   imgUrl: string;
@@ -42,7 +43,12 @@ const StuffCardList = ({ contentList }: StuffCardProps) => {
           <Col key={index} gap={8} justifyContent="center" alignItems="center">
             <ImageCard src={card.imageUrl} onClick={() => navigate(`/detail/${card.postId}`)} />
             <Row gap={4} padding={'4px'} justifyContent="center" alignItems="center">
-              <ProfileImg src={'profileImgUrl'} />
+              <ProfileImg>
+                {iconSVGs[card.memberImageId as keyof typeof iconSVGs]({
+                  width: '100%',
+                  height: '100%',
+                })}
+              </ProfileImg>
               <Txt variant="c14">{card.memberName}</Txt>
             </Row>
           </Col>
@@ -67,7 +73,12 @@ const StuffCardList = ({ contentList }: StuffCardProps) => {
           <Col key={index} gap={8} justifyContent="center" alignItems="center">
             <ImageCard src={card.imageUrl} onClick={() => navigate(`/detail/${card.postId}`)} />
             <Row gap={4} padding={'4px'} justifyContent="center" alignItems="center">
-              <ProfileImg src={'profileImgUrl'} />
+              <ProfileImg>
+                {iconSVGs[card.memberImageId as keyof typeof iconSVGs]({
+                  width: '100%',
+                  height: '100%',
+                })}
+              </ProfileImg>
               <Txt variant="c14">{card.memberName}</Txt>
             </Row>
           </Col>
@@ -124,10 +135,11 @@ const ImageCard = styled.img`
   cursor: pointer;
 `;
 
-const ProfileImg = styled.img`
+const ProfileImg = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 50%;
+  overflow: hidden;
 `;
 
 export default StuffCardList;
