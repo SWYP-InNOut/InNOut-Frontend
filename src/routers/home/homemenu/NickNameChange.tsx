@@ -23,7 +23,7 @@ const NickNameChange = () => {
   const [toastVisible, setToastVisible] = useState(false);
   const [isDuplicateNickname, setIsDuplicateNickname] = useState(false);
   const [isValidNickname, setIsValidNickname] = useState(false);
-  const [isProfileSelect, setIsProfileSelect] = useState(true);
+  const [isProfileSelect, setIsProfileSelect] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState(1);
 
   const nicknameMutation = useMutation(postNickName, {
