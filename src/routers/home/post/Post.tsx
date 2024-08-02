@@ -11,17 +11,23 @@ import Picture from '@components/home/post/Picture';
 import { css } from '@emotion/react';
 import AlertModal from '@components/common/alert/AlertModal';
 import { colors } from '@styles/theme';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { postMyRoomAddStuff } from '@apis/myroom';
-import { AxiosError } from 'axios';
+import { postMyRoomAddStuff, postMyRoomModifyStuff } from '@apis/myroom';
+import axios, { AxiosError } from 'axios';
 import useAuthStore from '@stores/auth';
+import { GetDetailResponseDTO } from '@interfaces/api/room';
+import { PictureType } from '@utils/pictureUtils';
 
 const Post = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isCloseAlert, setIsCloseAlert] = useState(false);
   const [alertContent, setAlertContent] = useState<React.ReactNode>(null);
   const [alertBtn, setAlertBtn] = useState<React.ReactNode>(null);
+  const postDetail: GetDetailResponseDTO = location.state;
+  const isModify = postDetail ? true : false;
+  const [pictures, setPictures] = useState<PictureType[]>([]);
   const methods = useForm<PostRequestDTO>({
     defaultValues: {
       fileList: [], // fileList를 빈 배열로 초기화
@@ -46,6 +52,16 @@ const Post = () => {
     },
     onError: (error: AxiosError) => {
       console.error('게시물 등록 실패:', error);
+    },
+  });
+
+  const postMyRoomModifyStuffMutation = useMutation(postMyRoomModifyStuff, {
+    onSuccess: (data) => {
+      console.log('게시물 수정 성공:', data.result);
+      navigate('/');
+    },
+    onError: (error: AxiosError) => {
+      console.error('게시물 수정 실패:', error);
     },
   });
 
@@ -85,7 +101,6 @@ const Post = () => {
     );
   };
   const handleValidation = () => {
-    console.log(fileList);
     if (title === '' || title === undefined) {
       setAlertContent(
         <Txt variant="b16" align="center">
@@ -130,12 +145,9 @@ const Post = () => {
   };
 
   const onFormSubmit = () => {
-    console.log(formState);
     let validation = handleValidation();
     if (validation) {
       const formData = new FormData();
-      console.log(inContent, 'inContent');
-      console.log(outContent, 'outContent');
       if (inContent === '' || inContent === undefined) {
         setValue('inContent', ' ');
       }
@@ -154,16 +166,59 @@ const Post = () => {
       fileList.forEach((file) => {
         formData.append('file', file);
       });
-      postMyRoomAddStuffMutation.mutate(formData);
+
+      if (isModify) {
+        postMyRoomModifyStuffMutation.mutate(formData);
+      } else {
+        postMyRoomAddStuffMutation.mutate(formData);
+      }
     }
   };
+
+  async function downloadImageAsFile(s3Url: string): Promise<File> {
+    try {
+      const response = await axios({
+        method: 'get',
+        url: s3Url,
+        responseType: 'blob', // 이미지 데이터를 Blob으로 받기
+      });
+
+      const blob = response.data;
+
+      // Blob을 File 객체로 변환 (이름과 타입 지정)
+      const file = new File([blob], `download_image.jpg`, { type: blob.type });
+
+      return file;
+    } catch (error) {
+      console.error('Error downloading image:', error);
+      throw error;
+    }
+  }
+
+  useEffect(() => {
+    if (postDetail) {
+      console.log('postDetail:', postDetail);
+      setValue('title', postDetail.title);
+      setValue('inContent', postDetail.inContent);
+      setValue('outContent', postDetail.outContent);
+      const uniqueUrls = [...new Set(postDetail.imageUrls)]; // 중복 제거
+      Promise.all(uniqueUrls.map((url) => downloadImageAsFile(url)))
+        .then((files) => {
+          setPictures((prevPictures) => [
+            ...prevPictures,
+            ...files.map((file) => ({ url: URL.createObjectURL(file), file })),
+          ]);
+        })
+        .catch((error) => console.error('Error downloading images:', error));
+    }
+  }, [postDetail]);
 
   return (
     <>
       <AlertModal isOpen={isCloseAlert} content={alertContent} button={alertBtn} />
       <Layout
         hasHeader={true}
-        HeaderCenter={<Txt variant="t20">새 게시물</Txt>}
+        HeaderCenter={<Txt variant="t20">{postDetail ? '게시물 수정' : '새 게시물'}</Txt>}
         HeaderRight={
           <CloseIcon
             onClick={handleCloseBtn}
@@ -185,7 +240,7 @@ const Post = () => {
                   maxLength={20}
                 />
               </Col>
-              <Picture />
+              <Picture images={pictures} />
 
               <Col gap={'8'}>
                 <Txt variant="t20">In! 하고 싶은 이유</Txt>
