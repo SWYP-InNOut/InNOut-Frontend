@@ -10,29 +10,34 @@ import ErrorMessage from '@components/auth/ErrorMessage';
 import PrimaryButton from '@components/common/button/PrimaryButton';
 import { Col } from '@components/common/flex/Flex';
 import ToastBar from '@components/common/alert/ToastBar';
-import { postNickName } from '@apis/user';
+import { postModifyUser } from '@apis/user';
 import { CONFIG, INPUT_TYPE } from '@constants/form';
 import AlertModal from '@components/common/alert/AlertModal';
 import { colors } from '@styles/theme';
 import styled from '@emotion/styled';
 import { iconSVGs } from '@constants/icons';
+import useAuthStore from '@stores/auth';
 
 const NickNameChange = () => {
   const navigate = useNavigate();
-  const [nickname, setNickname] = useState('');
+  const [nickname, setNickname] = useState(useAuthStore((store) => store.nickname));
+  const memberId = useAuthStore((store) => store.memberId);
   const [toastVisible, setToastVisible] = useState(false);
   const [isDuplicateNickname, setIsDuplicateNickname] = useState(false);
   const [isValidNickname, setIsValidNickname] = useState(false);
   const [isProfileSelect, setIsProfileSelect] = useState(false);
-  const [selectedProfile, setSelectedProfile] = useState(1);
+  const [selectedProfile, setSelectedProfile] = useState(
+    useAuthStore((store) => store.memberImageId)
+  );
 
-  const nicknameMutation = useMutation(postNickName, {
+  const profileMutation = useMutation(postModifyUser, {
     onSuccess: (data) => {
       if (data.code === 1000) {
         setToastVisible(true);
         setTimeout(() => {
           navigate(-1);
         }, 2000);
+        console.log(data.result);
       } else if (data.code === 5005) {
         // 중복된 닉넴 처리
         console.log('중복된 닉네임');
@@ -41,7 +46,7 @@ const NickNameChange = () => {
       }
     },
     onError: (error) => {
-      console.error('닉네임 변경 실패:', error);
+      console.error('프로필 변경 실패:', error);
     },
   });
 
@@ -53,22 +58,22 @@ const NickNameChange = () => {
 
   const handleSubmit = useCallback(() => {
     if (isValidNickname) {
-      nicknameMutation.mutate(nickname);
+      const requestData = {
+        memberId: memberId!,
+        nickname: nickname!,
+        memberImageId: selectedProfile,
+      };
+      profileMutation.mutate(requestData);
+      console.log('requestData:', requestData);
     }
-  }, [isValidNickname, nickname, nicknameMutation]);
-
-  // const handleSubmit = useCallback(() => {
-  //   if (isValidNickname) {
-  //     nicknameMutation.mutate({ nickname, profileId: selectedProfile });
-  //   }
-  // }, [isValidNickname, nickname, selectedProfile, nicknameMutation]);
+  }, [isValidNickname, nickname, selectedProfile, memberId, profileMutation]);
 
   useEffect(() => {
     setIsDuplicateNickname(false);
   }, [nickname]);
 
   const isButtonDisabled =
-    !isValidNickname || isDuplicateNickname || nicknameMutation.isLoading || !nickname.trim();
+    !isValidNickname || isDuplicateNickname || profileMutation.isLoading || !nickname!.trim();
 
   return (
     <>
