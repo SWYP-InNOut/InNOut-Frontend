@@ -64,6 +64,11 @@ const Detail = () => {
   const handleHomeClick = () => {
     navigate('/');
   };
+
+  const handleModifyBtnClick = () => {
+    navigate(`/post`, { state: postDetail });
+  };
+
   return (
     <Layout
       HeaderLeft={
@@ -78,15 +83,22 @@ const Detail = () => {
       }
       HeaderRight={
         postDetail?.ownerId === memberId ? (
-          <Txt
-            variant="b16"
-            color={colors.yellow700}
+          <button
             css={css`
+              width: 32px;
+              height: 32px;
+              border-radius: 6px;
               cursor: pointer;
+              &:active {
+                background: rgba(0, 0, 0, 0.1);
+              }
             `}
+            onClick={handleModifyBtnClick}
           >
-            수정
-          </Txt>
+            <Txt variant="b16" color={colors.yellow700}>
+              수정
+            </Txt>
+          </button>
         ) : (
           <HomeIcon onClick={handleHomeClick} />
         )
