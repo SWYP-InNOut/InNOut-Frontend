@@ -67,7 +67,6 @@ const MyHome = () => {
   };
 
   const handlePencilBtn = () => {
-    console.log('pencil');
     navigate('/post');
   };
 
