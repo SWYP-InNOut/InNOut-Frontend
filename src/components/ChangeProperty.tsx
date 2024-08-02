@@ -86,7 +86,12 @@ const ChangeProperty = (props: ChangePropertyProps) => {
             )}
           </Col>
           <FormProvider {...methods}>
-            <TextInput id={INPUT_TYPE[id]} placeholder={placeholder} content={content} />
+            <TextInput
+              type="password"
+              id={INPUT_TYPE[id]}
+              placeholder={placeholder}
+              content={content}
+            />
           </FormProvider>
         </Col>
         <Col gap={'5'}>{newPassword ? renderError() : null}</Col>
