@@ -8,7 +8,7 @@ import styled from '@emotion/styled';
 import { usePictureHandlers, PictureType } from '@utils/pictureUtils';
 import { useFormContext } from 'react-hook-form';
 
-const Picture: React.FC = () => {
+const Picture = ({ images }: { images: PictureType[] }) => {
   const [pictures, setPictures] = useState<PictureType[]>([]);
   const [mainPicture, setMainPicture] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -21,6 +21,11 @@ const Picture: React.FC = () => {
       fileInputRef.current.click();
     }
   };
+
+  useEffect(() => {
+    setPictures(images);
+    setMainPicture(images[0]?.url);
+  }, [images]);
   return (
     <>
       <Row gap={'8'}>
