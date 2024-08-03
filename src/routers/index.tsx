@@ -50,6 +50,7 @@ const Router = () => {
         <Route path="error" element={<Error />} />
         <Route path="kakaologin/callback" element={<KakaoRedirect />} />
         <Route path="introduce" element={<Introduce />} />
+        {/* <Route path="other/:ownerId" element={<MyHome />} /> */}
       </>
     )
   );

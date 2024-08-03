@@ -105,7 +105,7 @@ const FillImage = styled.img`
 `;
 
 const PickerWrapper = styled.div`
-  height: 100%;
+  /* height: 100%; */
   align-items: center;
   justify-content: center;
   display: flex;
