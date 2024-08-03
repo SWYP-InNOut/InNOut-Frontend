@@ -1,8 +1,13 @@
 import { Col, Row } from '@components/common/flex/Flex';
+import LottieContainer from '@components/common/lottie/LottieContainer';
 import Txt from '@components/common/text/Txt';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { OthersStuffListResponseDTO } from '@interfaces/api/room';
 import { colors } from '@styles/theme';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { iconSVGs } from '@constants/icons';
 
 export interface StuffCard {
   imgUrl: string;
@@ -11,10 +16,11 @@ export interface StuffCard {
 }
 
 interface StuffCardProps {
-  contentList: StuffCard[];
+  contentList: OthersStuffListResponseDTO[];
 }
 
 const StuffCardList = ({ contentList }: StuffCardProps) => {
+  const navigate = useNavigate();
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -35,22 +41,45 @@ const StuffCardList = ({ contentList }: StuffCardProps) => {
       <FirstColumn>
         {evenContentList.map((card, index) => (
           <Col key={index} gap={8} justifyContent="center" alignItems="center">
-            <ImageCard src={card.imgUrl} />
+            <ImageCard src={card.imageUrl} onClick={() => navigate(`/detail/${card.postId}`)} />
             <Row gap={4} padding={'4px'} justifyContent="center" alignItems="center">
-              <ProfileImg src={card.profileImgUrl} />
-              <Txt variant="c14">{card.name}</Txt>
+              <ProfileImg>
+                {iconSVGs[card.memberImageId as keyof typeof iconSVGs]({
+                  width: '100%',
+                  height: '100%',
+                })}
+              </ProfileImg>
+              <Txt variant="c14">{card.memberName}</Txt>
             </Row>
           </Col>
         ))}
       </FirstColumn>
       <SecondColumn>
-        <DefaultCard maxWidth={(innerWidth - 40) / 2} />
+        <DefaultCard maxWidth={(innerWidth - 40) / 2}>
+          <div
+            css={css`
+              width: 61px;
+              height: 61px;
+              margin-bottom: -4px;
+            `}
+          >
+            <LottieContainer path={'/In.json'} isPlay={true} />
+          </div>
+          <Txt variant="c14" color={colors.black}>
+            나의 홈도 가득 채워봐요!
+          </Txt>
+        </DefaultCard>
         {oddContentList.map((card, index) => (
           <Col key={index} gap={8} justifyContent="center" alignItems="center">
-            <ImageCard src={card.imgUrl} />
+            <ImageCard src={card.imageUrl} onClick={() => navigate(`/detail/${card.postId}`)} />
             <Row gap={4} padding={'4px'} justifyContent="center" alignItems="center">
-              <ProfileImg src={card.profileImgUrl} />
-              <Txt variant="c14">{card.name}</Txt>
+              <ProfileImg>
+                {iconSVGs[card.memberImageId as keyof typeof iconSVGs]({
+                  width: '100%',
+                  height: '100%',
+                })}
+              </ProfileImg>
+              <Txt variant="c14">{card.memberName}</Txt>
             </Row>
           </Col>
         ))}
@@ -61,6 +90,11 @@ const StuffCardList = ({ contentList }: StuffCardProps) => {
 
 const DefaultCard = styled.div<{ maxWidth: number }>`
   width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 6px;
   max-width: ${(props) => props.maxWidth}px;
   grid-row: 1;
   grid-column: 2;
@@ -98,12 +132,14 @@ const ImageCard = styled.img`
   aspect-ratio: 1 / 1;
   background-color: lightgray;
   border-radius: 8px;
+  cursor: pointer;
 `;
 
-const ProfileImg = styled.img`
+const ProfileImg = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 50%;
+  overflow: hidden;
 `;
 
 export default StuffCardList;

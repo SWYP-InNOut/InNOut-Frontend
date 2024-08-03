@@ -41,7 +41,7 @@ const TextInput = (props: TextInputProps) => {
       setValue(id, content, { shouldDirty: true, shouldTouch: true, shouldValidate: true });
       setIsFocused(true);
     }
-  }, [content]);
+  }, [content, value]);
 
   return (
     <InputContainer isFocused={isFocused}>
