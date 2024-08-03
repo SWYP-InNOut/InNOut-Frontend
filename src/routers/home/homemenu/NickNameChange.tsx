@@ -20,7 +20,7 @@ import useAuthStore from '@stores/auth';
 
 const NickNameChange = () => {
   const navigate = useNavigate();
-  const [nickname, setNickname] = useState(useAuthStore((store) => store.nickname));
+  const [nickname, setNickname] = useState(useAuthStore((store) => store.nickname) || '');
   const memberId = useAuthStore((store) => store.memberId);
   const [toastVisible, setToastVisible] = useState(false);
   const [isDuplicateNickname, setIsDuplicateNickname] = useState(false);
@@ -61,7 +61,7 @@ const NickNameChange = () => {
       const requestData = {
         memberId: memberId!,
         nickname: nickname!,
-        memberImageId: selectedProfile,
+        memberImageId: selectedProfile as number,
       };
       profileMutation.mutate(requestData);
       console.log('requestData:', requestData);

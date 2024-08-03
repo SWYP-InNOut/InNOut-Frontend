@@ -16,6 +16,7 @@ interface ChangePropertyProps {
   onChange?: (value: string) => void;
   isDuplicateNickname?: boolean;
   newPassword?: boolean;
+  isPassword?: boolean;
 }
 
 const ChangeProperty = (props: ChangePropertyProps) => {
@@ -28,6 +29,7 @@ const ChangeProperty = (props: ChangePropertyProps) => {
     onChange,
     isDuplicateNickname,
     newPassword = true,
+    isPassword = false,
   } = props;
 
   const methods = useForm({
@@ -87,10 +89,10 @@ const ChangeProperty = (props: ChangePropertyProps) => {
           </Col>
           <FormProvider {...methods}>
             <TextInput
-              type="password"
               id={INPUT_TYPE[id]}
               placeholder={placeholder}
               content={content}
+              type={isPassword ? 'password' : ''}
             />
           </FormProvider>
         </Col>
