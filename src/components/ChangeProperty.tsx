@@ -92,7 +92,7 @@ const ChangeProperty = (props: ChangePropertyProps) => {
               id={INPUT_TYPE[id]}
               placeholder={placeholder}
               content={content}
-              type={isPassword ? 'password' : ''}
+              type={isPassword ? 'password' : 'text'}
             />
           </FormProvider>
         </Col>
