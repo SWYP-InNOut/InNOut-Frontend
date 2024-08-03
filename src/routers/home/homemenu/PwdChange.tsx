@@ -98,6 +98,7 @@ const PwdChange = () => {
               onChange={(value) => setCurrentPwd(value)}
               content={currentPwd}
               newPassword={false}
+              isPassword={true}
             />
             <Col gap={'12'}>
               {isNowPwdError && (
@@ -122,6 +123,7 @@ const PwdChange = () => {
                 onChange={(value) => setNewPwd(value)}
                 newPassword={true}
                 content={newPwd}
+                isPassword={true}
               />
               <ChangeProperty
                 title="새 비밀번호 확인"
@@ -130,6 +132,7 @@ const PwdChange = () => {
                 onChange={(value) => setConfirmNewPwd(value)}
                 newPassword={false}
                 content={confirmNewPwd}
+                isPassword={true}
               />
             </Col>
 

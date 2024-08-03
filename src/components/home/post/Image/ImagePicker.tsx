@@ -9,8 +9,8 @@ interface ImagePickerProps {
 const ImagePicker: React.FC<ImagePickerProps> = (props): JSX.Element => {
   const [pickers, setPickers] = useState<JSX.Element[]>([]);
   const [pickIndex, setPickIndex] = useState<number>(0);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [startX, setStartX] = useState<number | null>(null);
+  const [endX, setEndX] = useState<number | null>(null);
 
   const minSwipeDistance = 50;
 
@@ -24,17 +24,18 @@ const ImagePicker: React.FC<ImagePickerProps> = (props): JSX.Element => {
     [pickIndex]
   );
 
-  const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    setTouchEnd(null); // 터치 끝점 초기화
-    setTouchStart(e.targetTouches[0].clientX);
+  const handleStart = (clientX: number) => {
+    setEndX(null);
+    setStartX(clientX);
   };
 
-  const onTouchMove = (e: React.TouchEvent<HTMLDivElement>) =>
-    setTouchEnd(e.targetTouches[0].clientX);
+  const handleMove = (clientX: number) => {
+    setEndX(clientX);
+  };
 
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
+  const handleEnd = () => {
+    if (!startX || !endX) return;
+    const distance = startX - endX;
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
 
@@ -43,6 +44,41 @@ const ImagePicker: React.FC<ImagePickerProps> = (props): JSX.Element => {
     }
     if (isRightSwipe && pickIndex > 0) {
       setPickIndex((prev) => prev - 1);
+    }
+  };
+
+  // Touch events
+  const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    handleStart(e.touches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    handleMove(e.touches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    handleEnd();
+  };
+
+  // Mouse events
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    handleStart(e.clientX);
+  };
+
+  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (startX === null) return; // Only move if we've started
+    handleMove(e.clientX);
+  };
+
+  const onMouseUp = () => {
+    handleEnd();
+    setStartX(null); // Reset start position
+  };
+
+  const onMouseLeave = () => {
+    if (startX !== null) {
+      handleEnd();
+      setStartX(null);
     }
   };
 
@@ -59,14 +95,22 @@ const ImagePicker: React.FC<ImagePickerProps> = (props): JSX.Element => {
         );
       })
     );
-  }, [onPickIndex, pickIndex]);
+  }, [onPickIndex, pickIndex, props.images]);
 
   return (
-    <Container onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
+    <Container
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove}
+      onMouseUp={onMouseUp}
+      onMouseLeave={onMouseLeave}
+    >
       <ImageContainer translateX={-pickIndex * 100}>
         {props.images?.map((image, index) => (
           <ImageWrapper key={index}>
-            <FillImage src={image} />
+            <FillImage src={image} alt={`Image ${index + 1}`} />
           </ImageWrapper>
         ))}
       </ImageContainer>
@@ -82,6 +126,7 @@ const Container = styled.div`
   height: 100%;
   overflow: hidden;
   position: relative;
+  cursor: pointer;
 `;
 
 const ImageContainer = styled.div<{ translateX: number }>`
@@ -105,7 +150,7 @@ const FillImage = styled.img`
 `;
 
 const PickerWrapper = styled.div`
-  height: 100%;
+  /* height: 100%; */
   align-items: center;
   justify-content: center;
   display: flex;
