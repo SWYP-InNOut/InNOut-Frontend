@@ -1,30 +1,41 @@
 import Layout from '@components/common/layout/Layout';
 import { css } from '@emotion/react';
 import { LogoIcon, MenuIcon } from '@icons/index';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HomeMenuSlider from './HomeMenuSlider';
 import useAuthStore from '@stores/auth';
-import StuffCardList, { StuffCard } from '@components/home/otherHome/StuffCardList';
+import StuffCardList from '@components/home/other/StuffCardList';
 import { Col } from '@components/common/flex/Flex';
+import { useMutation } from 'react-query';
+import { OthersStuffListResponseDTO } from '@interfaces/api/room';
+import { getOthers } from '@apis/others';
+import { AxiosError } from 'axios';
 
-const OthersHomeList = () => {
+const OthersStuffList = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const isPublic = useAuthStore((store) => store.isPublic);
-  const contentList: StuffCard[] = [
-    { profileImgUrl: '', name: '닉네임1', imgUrl: 'imgUrl1' },
-    { profileImgUrl: '', name: '닉네임2', imgUrl: 'imgUrl2' },
-    { profileImgUrl: '', name: '닉네임3', imgUrl: 'imgUrl3' },
-    { profileImgUrl: '', name: '닉네임4', imgUrl: 'imgUrl4' },
-    { profileImgUrl: '', name: '닉네임5', imgUrl: 'imgUrl5' },
-    { profileImgUrl: '', name: '닉네임6', imgUrl: 'imgUrl6' },
-    { profileImgUrl: '', name: '닉네임7', imgUrl: 'imgUrl7' },
-    { profileImgUrl: '', name: '닉네임8', imgUrl: 'imgUrl8' },
-  ];
+  const [contentList, setContentList] = useState<OthersStuffListResponseDTO[]>([]);
+
+  const getOthersStuffListMutation = useMutation(getOthers, {
+    onSuccess: (data) => {
+      console.log('다른사용자 게시물 리스트 성공:', data);
+      setContentList(data.result);
+    },
+    onError: (error: AxiosError) => {
+      console.error('다른사용자 게시물 실패:', error);
+    },
+  });
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  useEffect(() => {
+    getOthersStuffListMutation.mutate();
+  }, []);
+
   return (
     <Layout
       hasHeader={true}
@@ -44,7 +55,9 @@ const OthersHomeList = () => {
         <div
           css={css`
             width: 104px;
+            cursor: pointer;
           `}
+          onClick={() => navigate('/')}
         >
           <LogoIcon />
         </div>
@@ -60,4 +73,4 @@ const OthersHomeList = () => {
   );
 };
 
-export default OthersHomeList;
+export default OthersStuffList;

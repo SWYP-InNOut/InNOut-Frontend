@@ -1,5 +1,6 @@
 import LogoIcon from '@icons/logo.svg?react';
 import ErrorIcon from '@icons/error.svg?react';
+import RedCheckIcon from '@icons/redCheck.svg?react';
 import CheckIcon from '@icons/check.svg?react';
 import CorrectCheckIcon from '@icons/correctCheck.svg?react';
 import Logo from '@icons/logo_32.svg?react'; // 글씨 없는 로고
@@ -32,8 +33,24 @@ import ReplyIcon from '@icons/reply.svg?react';
 import TeamLogo from '@icons/teamLogo.svg?react';
 import Charactor from '@icons/charactor.svg?react';
 import ErrorImg from '@icons/errorImg.svg?react';
+import HomeIcon from '@icons/home.svg?react';
+import YellowIcon from '@icons/yellow.svg?react';
+import GreenIcon from '@icons/green.svg?react';
+import BlueIcon from '@icons/blue.svg?react';
+import PurpleIcon from '@icons/purple.svg?react';
+import BlackIcon from '@icons/black.svg?react';
+import RedIcon from '@icons/red.svg?react';
+import PlusIcon from '@icons/plus.svg?react';
 
 export {
+  PlusIcon,
+  RedCheckIcon,
+  RedIcon,
+  YellowIcon,
+  GreenIcon,
+  BlueIcon,
+  PurpleIcon,
+  BlackIcon,
   LogoIcon,
   ErrorIcon,
   CheckIcon,
@@ -68,4 +85,5 @@ export {
   TeamLogo,
   Charactor,
   ErrorImg,
+  HomeIcon,
 };

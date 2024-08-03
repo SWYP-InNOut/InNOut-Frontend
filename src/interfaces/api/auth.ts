@@ -13,3 +13,9 @@ interface LoginRequestDTO {
 interface PwdSearchRequestDTO {
   email: string;
 }
+
+interface modifyUserRequestDTO {
+  memberId: number;
+  nickname: string;
+  memberImageId: number;
+}

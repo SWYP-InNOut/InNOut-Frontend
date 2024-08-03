@@ -14,6 +14,7 @@ import {
   SquareLogoIcon,
   StoryIcon,
   TalkIcon,
+  HomeIcon,
 } from '@icons/index';
 import Txt from '@components/common/text/Txt';
 import { Col, Row } from '@components/common/flex/Flex';
@@ -28,9 +29,10 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { getMyRoomPost } from '@apis/myroom';
 import { useMutation, useQuery } from 'react-query';
 import useAuthStore from '@stores/auth';
-import { postIn, postOut } from '@apis/stuff';
 import { GetDetailResponseDTO } from '@interfaces/api/room';
 import PreviewChat from '@components/chat/PreviewChat';
+import { iconSVGs } from '@constants/icons';
+import _default from '../../../../vite.config.d';
 
 const Detail = () => {
   const navigate = useNavigate();
@@ -57,11 +59,23 @@ const Detail = () => {
     | GetDetailResponseDTO
     | undefined;
   console.log('postDetail:', postDetail);
-
-  const [heightSize, setHeightSize] = useState<number>(0);
   const handleArrowClick = () => {
     navigate(-1);
   };
+
+  const handleHomeClick = () => {
+    navigate('/');
+  };
+
+  const handleModifyBtnClick = () => {
+    navigate(`/post`, { state: postDetail });
+  };
+
+  const handleProfileClick = () => {
+    navigate(`/other/${postDetail?.ownerId}`);
+    console.log('클릭');
+  };
+
   return (
     <Layout
       HeaderLeft={
@@ -74,16 +88,30 @@ const Detail = () => {
           <LeftArrowIcon />
         </button>
       }
+      HeaderCenter={
+        postDetail?.ownerId !== memberId ? <Txt variant="t20">{postDetail?.ownerName}</Txt> : <></>
+      }
       HeaderRight={
-        <Txt
-          variant="b16"
-          color={colors.yellow700}
-          css={css`
-            cursor: pointer;
-          `}
-        >
-          수정
-        </Txt>
+        postDetail?.ownerId === memberId ? (
+          <button
+            css={css`
+              width: 32px;
+              height: 32px;
+              border-radius: 6px;
+              cursor: pointer;
+              &:active {
+                background: rgba(0, 0, 0, 0.1);
+              }
+            `}
+            onClick={handleModifyBtnClick}
+          >
+            <Txt variant="b16" color={colors.yellow700}>
+              수정
+            </Txt>
+          </button>
+        ) : (
+          <HomeIcon onClick={handleHomeClick} />
+        )
       }
       Footer={true}
     >
@@ -95,21 +123,45 @@ const Detail = () => {
         {postDetail && <ImagePicker images={postDetail.imageUrls} />}
       </div>
 
-      <Col padding={'32px 16px'} gap={'4'}>
+      <Col padding={'18px 16px 8px 16px'}>
         <Txt variant="t22">{postDetail?.title}</Txt>
-        <Row gap={'4'}>
-          <DateIcon />
-          <Txt variant="c14" color={colors.lightGray}>
-            {new Date(postDetail?.createdAt ?? '').toLocaleDateString()}
-          </Txt>
-        </Row>
       </Col>
+      <Row padding={'0 16px 16px 16px'}>
+        <Row padding={'8px 0px'} gap={'12'}>
+          <ProfileImg onClick={handleProfileClick}>
+            {postDetail?.ownerImageId !== undefined && (
+              <SVGWrapper>
+                {iconSVGs[postDetail.ownerImageId as keyof typeof iconSVGs]({
+                  width: 40,
+                  height: 40,
+                })}
+              </SVGWrapper>
+            )}
+          </ProfileImg>
+          <Col>
+            <Txt variant="c14" color={colors.darkGray}>
+              {postDetail?.ownerName}
+            </Txt>
+            <Txt variant="c14" color={colors.lightGray}>
+              {new Date(postDetail?.createdAt ?? '').toLocaleDateString()}(등록일자)
+            </Txt>
+          </Col>
+        </Row>
+        {postDetail?.ownerId !== memberId && (
+          <OtherBtn onClick={handleProfileClick}>
+            <Txt variant="b16" color={colors.red100}>
+              방문
+            </Txt>
+          </OtherBtn>
+        )}
+      </Row>
       <Contour />
       <Col padding={'32px 16px'} gap={'32'} margin={'0 0 12px 0'}>
         <SquareLogoIcon />
         <InOutVoting
-          initialInCount={postDetail?.isCheckedIn ? 1 : 0}
-          initialOutCount={postDetail?.isCheckedOut ? 1 : 0}
+          initialInCount={postDetail?.inCount}
+          initialOutCount={postDetail?.outCount}
+          inOrOut={postDetail?.checkedIn ? 'In' : postDetail?.checkedOut ? 'Out' : 'None'}
           postId={Number(postId)}
         />
       </Col>
@@ -146,4 +198,30 @@ const Contour = styled.div`
   width: 100%;
   height: 8px;
   background-color: ${colors.gray100};
+`;
+const ProfileImg = styled.div`
+  position: relative;
+  width: 40px;
+  height: 40px;
+`;
+
+const SVGWrapper = styled.div`
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+  cursor: pointer;
+`;
+
+const OtherBtn = styled.button`
+  display: flex;
+  margin: 9px 0px;
+  border-radius: 12px;
+  background-color: ${colors.red600};
+  cursor: pointer;
+  min-width: 45px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
 `;

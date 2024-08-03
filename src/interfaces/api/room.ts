@@ -32,12 +32,12 @@ export interface MyRoomResponseDTO {
   public: boolean;
 }
 
-interface OthersRoomResponsetDTO {
+export interface OthersStuffListResponseDTO {
   memberName: string;
-  isCheckedIn: boolean;
-  isCheckedOut: boolean;
-  chats: Chat[];
-  posts: Post[];
+  memberId: number;
+  imageUrl: string;
+  memberImageId: number;
+  postId: number;
 }
 
 export interface Chat {
@@ -61,16 +61,18 @@ export interface IsPublicResponseDTO {
   public: boolean;
 }
 
-///others/room/detail/{postId} 추가 예정
-
 export interface GetDetailResponseDTO {
   ownerName: string;
+  ownerId: number;
+  ownerImageId: number;
   title: string;
   inContent: string;
   outContent: string;
   createdAt: string;
-  isCheckedIn: boolean;
-  isCheckedOut: boolean;
+  inCount: number;
+  outCount: number;
   chats: Chat[];
   imageUrls: string[];
+  checkedIn: boolean;
+  checkedOut: boolean;
 }

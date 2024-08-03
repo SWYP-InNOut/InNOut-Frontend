@@ -10,14 +10,22 @@ interface AlertModalProps {
   content: React.ReactNode;
   button: React.ReactNode;
   isShare?: boolean;
+  isProfile?: boolean;
   close?: () => void;
 }
-const AlertModal: React.FC<AlertModalProps> = ({ isOpen, content, button, isShare, close }) => {
+const AlertModal: React.FC<AlertModalProps> = ({
+  isOpen,
+  content,
+  button,
+  isShare,
+  close,
+  isProfile,
+}) => {
   if (!isOpen) return null;
 
   return (
     <Back>
-      <Alert isShare={isShare}>
+      <Alert isShare={isShare} isProfile={isProfile}>
         <Col gap={'24'}>
           {isShare ? (
             <Close>
@@ -31,6 +39,8 @@ const AlertModal: React.FC<AlertModalProps> = ({ isOpen, content, button, isShar
     </Back>
   );
 };
+
+export default AlertModal;
 
 const Back = styled.div`
   position: fixed;
@@ -47,13 +57,18 @@ const Back = styled.div`
   margin: 0 auto;
 `;
 
-const Alert = styled.div<{ isShare?: boolean }>`
+const Alert = styled.div<{ isShare?: boolean; isProfile?: boolean }>`
   display: flex;
   background-color: ${colors.white};
-  padding: ${(props) => (props.isShare ? '20px 24px 24px 24px' : '40px 24px 20px')};
+  padding: ${(props) =>
+    props.isShare
+      ? '20px 24px 24px 24px'
+      : props.isProfile
+      ? '32px 16px 20px 16px'
+      : '40px 24px 20px'};
   width: 100%;
   max-width: 328px;
-  margin: ${(props) => (props.isShare ? 'auto 16px' : 'auto 40px')};
+  margin: ${(props) => (props.isShare || props.isProfile ? 'auto 16px' : 'auto 40px')};
   border-radius: 32px;
   justify-content: center;
   align-items: center;
@@ -65,5 +80,3 @@ const Close = styled.div`
   flex-direction: row-reverse;
   cursor: pointer;
 `;
-
-export default AlertModal;

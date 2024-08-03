@@ -40,6 +40,10 @@ const HomeMenuSlider = ({
   const isLogin = useAuthStore((store) => store.isLoggedIn);
   const nickName = useAuthStore((store) => store.nickname);
 
+  const currentPath = window.location.pathname;
+  const pathSegments = currentPath.split('/');
+  const lastSegment = pathSegments[pathSegments.length - 1];
+
   const getIsPublicMutation = useMutation(getIsPublic, {
     onSuccess: (data) => {
       console.log('공개 성공:', data.result);
@@ -66,6 +70,14 @@ const HomeMenuSlider = ({
 
   const handleIntroduce = () => {
     navigate('/introduce');
+  };
+
+  const handlePopularFeedOnClick = () => {
+    if (lastSegment === 'others-home') {
+      handleMenu();
+    } else {
+      navigate('/others-home');
+    }
   };
 
   useEffect(() => {
@@ -168,14 +180,14 @@ const HomeMenuSlider = ({
             padding={'0 16px'}
             gap={'8'}
             alignItems="center"
-            onClick={() => navigate('/others-home')}
+            onClick={handlePopularFeedOnClick}
             css={css`
               cursor: pointer;
             `}
           >
             <SearchIcon />
             <Txt variant="t18" lineHeight={32}>
-              다른 홈 구경
+              인기 피드
             </Txt>
           </Row>
           {isLogin && (
@@ -193,7 +205,7 @@ const HomeMenuSlider = ({
                   >
                     <IdCardIcon />
                     <Txt variant="b16" lineHeight={32}>
-                      닉네임 변경
+                      프로필 변경
                     </Txt>
                   </Row>
                   <NextIcon />
