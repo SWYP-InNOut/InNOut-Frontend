@@ -72,7 +72,7 @@ const Detail = () => {
   };
 
   const handleProfileClick = () => {
-    // navigate(`/other/${postDetail?.ownerId}`);
+    navigate(`/other/${postDetail?.ownerId}`);
     console.log('클릭');
   };
 

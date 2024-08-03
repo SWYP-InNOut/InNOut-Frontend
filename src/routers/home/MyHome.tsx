@@ -13,7 +13,7 @@ import PreviewChat from '@components/chat/PreviewChat';
 import AlertModal from '@components/common/alert/AlertModal';
 import PrimaryButton from '@components/common/button/PrimaryButton';
 import ToastBar from '@components/common/alert/ToastBar';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useAuthStore from '@stores/auth';
 import { getMyRoom } from '@apis/myroom';
 import { useMutation } from 'react-query';
@@ -21,6 +21,7 @@ import { AxiosError } from 'axios';
 import { MyRoomResponseDTO } from '@interfaces/api/room';
 
 const MyHome = () => {
+  const { ownerId } = useParams();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const selectList = ['최신순', 'In 많은순', 'Out 많은순', '오래된순'];
@@ -32,7 +33,7 @@ const MyHome = () => {
   const memberId = useAuthStore((store) => store.memberId);
   const [isPublic, setIsPublic] = useState(false);
   const settingIsPublic = useAuthStore((state) => state.settingIsPublic);
-
+  const targetId = ownerId ? Number(ownerId) : memberId;
   const [myRoomResponse, setMyRoomResponse] = useState<MyRoomResponseDTO>();
 
   const getMyRoomListMutation = useMutation(getMyRoom, {
@@ -70,13 +71,21 @@ const MyHome = () => {
     navigate('/post');
   };
 
+  // useEffect(() => {
+  //   isLogin &&
+  //     getMyRoomListMutation.mutate({
+  //       ownerId: memberId ? memberId : 0,
+  //       filterType: selectedFilter,
+  //     });
+  // }, [selectedFilter, isLogin]);
+
   useEffect(() => {
     isLogin &&
       getMyRoomListMutation.mutate({
-        ownerId: memberId ? memberId : 0,
+        ownerId: targetId ? targetId : 0,
         filterType: selectedFilter,
       });
-  }, [selectedFilter, isLogin]);
+  }, [selectedFilter, isLogin, targetId]);
 
   // useEffect(() => {
   //   initKakao();
