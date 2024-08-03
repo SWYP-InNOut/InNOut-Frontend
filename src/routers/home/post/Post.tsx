@@ -25,7 +25,8 @@ const Post = () => {
   const [isCloseAlert, setIsCloseAlert] = useState(false);
   const [alertContent, setAlertContent] = useState<React.ReactNode>(null);
   const [alertBtn, setAlertBtn] = useState<React.ReactNode>(null);
-  const postDetail: GetDetailResponseDTO = location.state;
+  const postDetail: GetDetailResponseDTO = location.state?.postDetail;
+  const postId = location.state?.postId;
   const isModify = postDetail ? true : false;
   const [pictures, setPictures] = useState<PictureType[]>([]);
   const methods = useForm<PostRequestDTO>({
@@ -58,7 +59,7 @@ const Post = () => {
   const postMyRoomModifyStuffMutation = useMutation(postMyRoomModifyStuff, {
     onSuccess: (data) => {
       console.log('게시물 수정 성공:', data.result);
-      navigate('/');
+      navigate(`/detail/${postId}`);
     },
     onError: (error: AxiosError) => {
       console.error('게시물 수정 실패:', error);
@@ -154,12 +155,24 @@ const Post = () => {
       if (outContent === '' || outContent === undefined) {
         setValue('outContent', ' ');
       }
-      const data: Omit<PostRequestDTO, 'fileList'> = {
-        memberId: ownerId as number,
-        title,
-        inContent,
-        outContent,
-      };
+
+      let data = null;
+      if (isModify) {
+        data = {
+          memberId: ownerId,
+          title,
+          inContent,
+          outContent,
+          postId: postId,
+        };
+      } else {
+        data = {
+          memberId: ownerId,
+          title,
+          inContent,
+          outContent,
+        };
+      }
 
       const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
       formData.append('request', blob);
@@ -177,41 +190,39 @@ const Post = () => {
 
   async function downloadImageAsFile(s3Url: string): Promise<File> {
     try {
-      const response = await axios({
-        method: 'get',
-        url: s3Url,
-        responseType: 'blob', // 이미지 데이터를 Blob으로 받기
-      });
-
+      const response = await axios.get(s3Url, { responseType: 'blob' });
       const blob = response.data;
-
-      // Blob을 File 객체로 변환 (이름과 타입 지정)
-      const file = new File([blob], `download_image.jpg`, { type: blob.type });
-
-      return file;
+      return new File([blob], 'downloaded_image.jpg', { type: blob.type });
     } catch (error) {
       console.error('Error downloading image:', error);
       throw error;
     }
   }
 
+  async function processImageUrls(imageUrls: string[]): Promise<File[]> {
+    if (imageUrls.length < 1 || imageUrls.length > 2) {
+      throw new Error('Image URL array length must be between 1 and 2.');
+    }
+
+    try {
+      const files = await Promise.all(imageUrls.map((url) => downloadImageAsFile(url)));
+      return files;
+    } catch (error) {
+      console.error('Error processing image URLs:', error);
+      throw error;
+    }
+  }
+
   useEffect(() => {
     if (postDetail) {
-      console.log('postDetail:', postDetail);
       setValue('title', postDetail.title);
       setValue('inContent', postDetail.inContent);
       setValue('outContent', postDetail.outContent);
-      const uniqueUrls = [...new Set(postDetail.imageUrls)]; // 중복 제거
-      Promise.all(uniqueUrls.map((url) => downloadImageAsFile(url)))
-        .then((files) => {
-          setPictures((prevPictures) => [
-            ...prevPictures,
-            ...files.map((file) => ({ url: URL.createObjectURL(file), file })),
-          ]);
-        })
-        .catch((error) => console.error('Error downloading images:', error));
+      processImageUrls(postDetail.imageUrls).then((files) => {
+        setPictures(files.map((file) => ({ url: URL.createObjectURL(file), file })));
+      });
     }
-  }, [postDetail]);
+  }, [postDetail, setValue]);
 
   return (
     <>
@@ -240,7 +251,7 @@ const Post = () => {
                   maxLength={20}
                 />
               </Col>
-              <Picture images={pictures} />
+              <Picture pictures={pictures} setPictures={setPictures} />
 
               <Col gap={'8'}>
                 <Txt variant="t20">In! 하고 싶은 이유</Txt>
@@ -266,7 +277,7 @@ const Post = () => {
             margin-top: 32px;
           `}
         >
-          <PrimaryButton title="등록" onClick={onFormSubmit} />
+          <PrimaryButton title={isModify ? '완료' : '등록'} onClick={onFormSubmit} />
         </div>
       </Layout>
     </>
