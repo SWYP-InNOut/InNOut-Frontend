@@ -129,6 +129,7 @@ const SecondColumn = styled.div`
 
 const ImageCard = styled.img`
   width: 100%;
+  object-fit: cover;
   aspect-ratio: 1 / 1;
   background-color: lightgray;
   border-radius: 8px;

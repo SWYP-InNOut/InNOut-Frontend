@@ -55,10 +55,6 @@ const usePictureHandlers = () => {
         'fileList',
         updatedPictures.map((picture) => picture.file)
       );
-      console.log(
-        'updatedPictures:',
-        updatedPictures.map((picture) => picture.file)
-      );
       return updatedPictures;
     });
   };

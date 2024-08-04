@@ -60,7 +60,7 @@ const Detail = () => {
     | undefined;
   console.log('postDetail:', postDetail);
   const handleArrowClick = () => {
-    navigate(-1);
+    navigate('/');
   };
 
   const handleHomeClick = () => {
@@ -68,7 +68,7 @@ const Detail = () => {
   };
 
   const handleModifyBtnClick = () => {
-    navigate(`/post`, { state: postDetail });
+    navigate(`/post`, { state: { postDetail: postDetail, postId: postId } });
   };
 
   const handleProfileClick = () => {
@@ -143,7 +143,7 @@ const Detail = () => {
               {postDetail?.ownerName}
             </Txt>
             <Txt variant="c14" color={colors.lightGray}>
-              {new Date(postDetail?.createdAt ?? '').toLocaleDateString()}(등록일자)
+              {new Date(postDetail?.createdAt ?? '').toLocaleDateString()}
             </Txt>
           </Col>
         </Row>

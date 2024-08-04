@@ -49,6 +49,7 @@ const HomeMenuSlider = ({
       console.log('공개 성공:', data.result);
       if (data.result as IsPublicResponseDTO) {
         setIsOn(data.result.public);
+        useAuthStore.setState({ isPublic: isOn });
       }
     },
     onError: (error: AxiosError) => {
