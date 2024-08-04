@@ -35,6 +35,7 @@ const MyHome = () => {
   const settingIsPublic = useAuthStore((state) => state.settingIsPublic);
   const targetId = ownerId ? Number(ownerId) : memberId;
   const [myRoomResponse, setMyRoomResponse] = useState<MyRoomResponseDTO>();
+  const [isOwner, setIsOwner] = useState(false);
 
   const getMyRoomListMutation = useMutation(getMyRoom, {
     onSuccess: (data) => {
@@ -87,6 +88,14 @@ const MyHome = () => {
       });
   }, [selectedFilter, isLogin, targetId]);
 
+  useEffect(() => {
+    if (!ownerId || Number(ownerId) === memberId) {
+      setIsOwner(true);
+    } else {
+      setIsOwner(false);
+    }
+  }, [ownerId, memberId]);
+
   // useEffect(() => {
   //   initKakao();
   // }, []);
@@ -114,6 +123,7 @@ const MyHome = () => {
             css={css`
               width: 104px;
             `}
+            onClick={() => navigate('/')}
           >
             <LogoIcon />
           </div>
@@ -219,7 +229,7 @@ const MyHome = () => {
           <CardList postList={myRoomResponse?.posts} />
         </div>
         <HomeMenuSlider isOpen={isOpen} handleMenu={toggleMenu} isPublic={isPublic} />
-        {!isOpen && (
+        {!isOpen && isOwner && (
           <>
             <StyledPencilIcon />
             <AddButton onClick={handlePencilBtn} />
