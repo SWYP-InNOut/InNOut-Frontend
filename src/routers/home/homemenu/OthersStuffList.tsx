@@ -34,7 +34,7 @@ const OthersStuffList = () => {
 
   useEffect(() => {
     getOthersStuffListMutation.mutate();
-  }, []);
+  }, [isOpen]);
 
   return (
     <Layout
