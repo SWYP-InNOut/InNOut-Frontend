@@ -31,17 +31,24 @@ const TextInput = (props: TextInputProps) => {
     }
   };
 
+  // useEffect(() => {
+  //   if (value) {
+  //     setIsFocused(true);
+  //   } else {
+  //     setIsFocused(false);
+  //   }
+  //   if (id === 'username') {
+  //     setValue(id, content, { shouldDirty: true, shouldTouch: true, shouldValidate: true });
+  //     setIsFocused(true);
+  //   }
+  // }, [content, value]);
+
   useEffect(() => {
-    if (value) {
-      setIsFocused(true);
-    } else {
-      setIsFocused(false);
-    }
-    if (id === 'username') {
+    if (id === 'username' && content) {
       setValue(id, content, { shouldDirty: true, shouldTouch: true, shouldValidate: true });
       setIsFocused(true);
     }
-  }, [content, value]);
+  }, [id, content, setValue]);
 
   return (
     <InputContainer isFocused={isFocused}>
