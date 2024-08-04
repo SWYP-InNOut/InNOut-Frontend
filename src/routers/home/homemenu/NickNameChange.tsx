@@ -183,7 +183,7 @@ const NickNameChange = () => {
           </Col>
         </Col>
         <ToastBar
-          message="닉네임이 변경됐어요"
+          message="프로필이 변경됐어요"
           isVisible={toastVisible}
           onHide={() => setToastVisible(false)}
         />

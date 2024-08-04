@@ -190,7 +190,12 @@ const Post = () => {
 
   async function downloadImageAsFile(s3Url: string): Promise<File> {
     try {
-      const response = await axios.get(s3Url, { responseType: 'blob' });
+      const response = await axios.get(s3Url, {
+        responseType: 'blob',
+        headers: {
+          'Cache-Control': 'no-cache',
+        },
+      });
       const blob = response.data;
       return new File([blob], 'downloaded_image.jpg', { type: blob.type });
     } catch (error) {
