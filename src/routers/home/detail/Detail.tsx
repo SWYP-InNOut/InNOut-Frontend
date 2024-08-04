@@ -76,11 +76,6 @@ const Detail = () => {
     console.log('클릭');
   };
 
-  const handleProfileClick = () => {
-    navigate(`/other/${postDetail?.ownerId}`);
-    console.log('클릭');
-  };
-
   return (
     <Layout
       HeaderLeft={
@@ -148,7 +143,7 @@ const Detail = () => {
               {postDetail?.ownerName}
             </Txt>
             <Txt variant="c14" color={colors.lightGray}>
-              {new Date(postDetail?.createdAt ?? '').toLocaleDateString()}(등록일자)
+              {new Date(postDetail?.createdAt ?? '').toLocaleDateString()}
             </Txt>
           </Col>
         </Row>
