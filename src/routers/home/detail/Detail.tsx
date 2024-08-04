@@ -76,6 +76,11 @@ const Detail = () => {
     console.log('클릭');
   };
 
+  const handleProfileClick = () => {
+    navigate(`/other/${postDetail?.ownerId}`);
+    console.log('클릭');
+  };
+
   return (
     <Layout
       HeaderLeft={

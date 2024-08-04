@@ -29,11 +29,13 @@ const NickNameChange = () => {
   const [selectedProfile, setSelectedProfile] = useState(
     useAuthStore((store) => store.memberImageId)
   );
+  const { updateProfile } = useAuthStore();
 
   const profileMutation = useMutation(postModifyUser, {
     onSuccess: (data) => {
       if (data.code === 1000) {
         setToastVisible(true);
+        updateProfile(nickname, selectedProfile as number);
         setTimeout(() => {
           navigate(-1);
         }, 2000);
@@ -71,6 +73,12 @@ const NickNameChange = () => {
   useEffect(() => {
     setIsDuplicateNickname(false);
   }, [nickname]);
+
+  useEffect(() => {
+    const { nickname: storedNickname, memberImageId } = useAuthStore.getState();
+    setNickname(storedNickname || '');
+    setSelectedProfile(memberImageId);
+  }, []);
 
   const isButtonDisabled =
     !isValidNickname || isDuplicateNickname || profileMutation.isLoading || !nickname!.trim();

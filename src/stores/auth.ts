@@ -45,6 +45,7 @@ interface AuthAction {
   reLogin: () => Promise<boolean>;
   logout: () => Promise<void>;
   settingIsPublic: (isPublic: boolean) => void;
+  updateProfile: (nickname: string, memberImageId: number) => void;
 }
 
 export const useAuthStore = create(
@@ -118,6 +119,13 @@ export const useAuthStore = create(
       },
       settingIsPublic: (isPublic: boolean) => {
         set({ isPublic });
+      },
+      updateProfile: (nickname: string, memberImageId: number) => {
+        set((state) => ({
+          ...state,
+          nickname,
+          memberImageId,
+        }));
       },
     }),
     {
