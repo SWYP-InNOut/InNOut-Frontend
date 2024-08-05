@@ -4,52 +4,50 @@ import { useMutation } from 'react-query';
 import axios from 'axios';
 
 const KakaoRedirect = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const [code, setCode] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const urlCode = new URL(window.location.href).searchParams.get('code');
+    console.log('urlCode:', urlCode);
+    setCode(urlCode);
+  }, []);
+
   const kakaoLogin = async (code: string) => {
     try {
-      const response = await axios.get(`https://stuffinout.site/kakaologin?code=${code}`, {
+      console.log('try:', code);
+      const response = await axios.get(`https://api.stuffinout.site/kakaologin?code=${code}`, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' },
       });
-      return response.data;
+      console.log('Response received:', response.data);
+      return response;
     } catch (error) {
       console.error('카카오 로그인 실패:', error);
-      throw error; // 에러를 throw하여 mutation의 onError가 호출되도록 함
+      throw error;
     }
   };
 
-  const mutation = useMutation(kakaoLogin, {
+  const {
+    mutate: loginMutate,
+    isLoading,
+    isError,
+    data,
+  } = useMutation(kakaoLogin, {
     onSuccess: (data) => {
-      console.log('로그인 성공', data);
-      localStorage.setItem('accessToken', data.result.accessToken);
-      localStorage.setItem('memberId', data.result.memberId);
-      // navigate('/');
+      console.log('Login successful:', data);
     },
     onError: (error) => {
-      console.error('로그인 실패', error);
-      // navigate('/login');
+      console.error('Login failed:', error);
     },
   });
 
   useEffect(() => {
-    const urlCode = new URL(window.location.href).searchParams.get('code');
-    setCode(urlCode);
-  }, []);
+    if (code) {
+      loginMutate(code);
+    }
+  }, [code, loginMutate]);
 
-  useEffect(() => {
-    if (isLoading || !code) return;
-
-    setIsLoading(true);
-    mutation.mutate(code);
-  }, [code]);
-
-  if (isLoading) {
-    return <div>카카오 로그인 처리 중...</div>;
-  }
-
-  return null;
+  return <div>{isLoading ? '로그인 중...' : isError ? '로그인 실패' : '로그인 완료'}</div>;
 };
 
 export default KakaoRedirect;
