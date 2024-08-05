@@ -22,7 +22,6 @@ import { AxiosError, AxiosHeaders, AxiosResponseHeaders } from 'axios';
 const Login = () => {
   const KAKAO_REDIRECT_URI = import.meta.env.VITE_REACT_APP_KAKAO_REDIRECT_URI;
 
-  console.log('KAKAO_REDIRECT_URI:', KAKAO_REDIRECT_URI);
   const navigate = useNavigate();
   const loginStore = useAuthStore((store) => store.login);
   const methods = useForm<LoginRequestDTO>({ mode: 'onChange' });
