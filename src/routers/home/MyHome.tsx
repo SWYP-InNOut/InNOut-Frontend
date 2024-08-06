@@ -47,6 +47,7 @@ const MyHome = () => {
       setIsPublic(data.result.public);
       settingIsPublic(data.result.public);
       setMemberNickName(data.result.memberName);
+      useAuthStore.setState({ nickname: data.result.memberName });
     },
     onError: (error: AxiosError) => {
       console.error('마이룸 리스트 실패:', error);
