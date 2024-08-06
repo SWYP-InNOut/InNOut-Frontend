@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ChangeProperty from '@components/ChangeProperty';
 import Layout from '@components/common/layout/Layout';
 import { Col } from '@components/common/flex/Flex';
@@ -8,13 +8,43 @@ import PrimaryButton from '@components/common/button/PrimaryButton';
 import { css } from '@emotion/react';
 import ErrorMessage from '@components/auth/ErrorMessage';
 import { generateNickname } from '@utils/generateNickname';
-import { INPUT_TYPE } from '@constants/form';
+import { CONFIG, INPUT_TYPE } from '@constants/form';
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { postNickName } from '@apis/user';
 
 const NickNameSetting = () => {
+  const navigate = useNavigate();
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [nickname, setNickname] = useState('');
+  const [isValidNickname, setIsValidNickname] = useState(false);
+
+  const isButtonDisabled = !isValidNickname || isDuplicate || !nickname.trim();
+
+  const nicknameMutation = useMutation(postNickName, {
+    onSuccess: (data) => {
+      if (data.code === 1000) {
+        navigate('/');
+      } else if (data.code === 5005) {
+        console.log('중복된 닉네임');
+        setIsDuplicate(true);
+      }
+    },
+    onError: (error) => {
+      console.error('닉네임 변경 실패:', error);
+    },
+  });
+  const handleNicknameChange = useCallback((value: string) => {
+    setNickname(value);
+    const isValid = CONFIG.NICKNAME.validation?.every((rule) => rule.pattern.test(value)) ?? false;
+    setIsValidNickname(isValid);
+  }, []);
+
   const handleOk = () => {
-    console.log('확인');
+    if (!nickname) {
+      return;
+    }
+    nicknameMutation.mutate({ nickname });
   };
 
   useEffect(() => {
@@ -40,6 +70,7 @@ const NickNameSetting = () => {
             subtitle="톡톡 튀는 닉네임으로 내 모습을 보여줘요"
             content={nickname}
             id={'NICKNAME'}
+            onChange={handleNicknameChange}
           />
           <Col gap={'12'}>
             <div
@@ -53,7 +84,7 @@ const NickNameSetting = () => {
                 justifyContent={'center'}
               />
             </div>
-            <PrimaryButton title="확인" onClick={handleOk} />
+            <PrimaryButton title="확인" onClick={handleOk} disabled={isButtonDisabled} />
           </Col>
         </Col>
       </Col>
