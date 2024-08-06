@@ -27,7 +27,6 @@ const KakaoRedirect = () => {
       const response = await axios.get(`https://api.stuffinout.site/kakaologin?code=${code}`, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' },
       });
-      console.log('Response received:', response.data);
       return response.data;
     } catch (error) {
       throw error;
@@ -41,7 +40,6 @@ const KakaoRedirect = () => {
     data,
   } = useMutation(kakaoLogin, {
     onSuccess: (data: KakaoLoginResponse) => {
-      console.log('Login successful:', data);
       if (data.member) {
         storeProfile(data.memberId, data.memberImageId, data.accessToken);
         settingIsLoggedIn(true);
