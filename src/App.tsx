@@ -2,7 +2,6 @@ import { Global } from '@emotion/react';
 import Router from '@routers/index';
 import { globalStyles } from '@styles/globalStyles';
 import { useEffect, useState } from 'react';
-import Loading from '@components/common/loading/Loading';
 export const App = () => {
   const setScreenHeight = () => {
     const vh = window.innerHeight * 0.01;
