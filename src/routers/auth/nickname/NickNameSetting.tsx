@@ -12,18 +12,20 @@ import { CONFIG, INPUT_TYPE } from '@constants/form';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { postNickName } from '@apis/user';
+import useAuthStore from '@stores/auth';
 
 const NickNameSetting = () => {
   const navigate = useNavigate();
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [nickname, setNickname] = useState('');
   const [isValidNickname, setIsValidNickname] = useState(false);
-
+  const { settingIsLoggedIn } = useAuthStore();
   const isButtonDisabled = !isValidNickname || isDuplicate || !nickname.trim();
 
   const nicknameMutation = useMutation(postNickName, {
     onSuccess: (data) => {
       if (data.code === 1000) {
+        settingIsLoggedIn(true);
         navigate('/');
       } else if (data.code === 5005) {
         console.log('중복된 닉네임');
