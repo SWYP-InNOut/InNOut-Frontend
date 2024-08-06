@@ -38,6 +38,7 @@ const MyHome = () => {
   const targetId = ownerId ? Number(ownerId) : memberId;
   const [myRoomResponse, setMyRoomResponse] = useState<MyRoomResponseDTO>();
   const [isOwner, setIsOwner] = useState(false);
+  const [memberName, setMemberNickName] = useState(useAuthStore((store) => store.nickname));
 
   const getMyRoomListMutation = useMutation(getMyRoom, {
     onSuccess: (data) => {
@@ -45,6 +46,7 @@ const MyHome = () => {
       setMyRoomResponse(data.result);
       setIsPublic(data.result.public);
       settingIsPublic(data.result.public);
+      setMemberNickName(data.result.memberName);
     },
     onError: (error: AxiosError) => {
       console.error('마이룸 리스트 실패:', error);

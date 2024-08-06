@@ -17,8 +17,7 @@ const SocialLogin = () => {
   const navigate = useNavigate();
 
   const handleKakaoLogin = () => {
-    alert('Kakao 로그인 준비중');
-    // window.location.href = link;
+    window.location.href = link;
   };
 
   const handleGoogleLogin = () => {

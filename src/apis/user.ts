@@ -46,3 +46,16 @@ export const postSearchPassword = async (email: string): Promise<BaseResponse<st
     throw error;
   }
 };
+
+export const postNickName = async ({
+  nickname,
+}: {
+  nickname: string;
+}): Promise<BaseResponse<string>> => {
+  try {
+    const response = await apiClient.post('/nickname', { nickname: nickname });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

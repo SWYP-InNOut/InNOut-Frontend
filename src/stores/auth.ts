@@ -20,6 +20,8 @@ interface AuthAction {
   logout: () => Promise<void>;
   settingIsPublic: (isPublic: boolean) => void;
   updateProfile: (nickname: string, memberImageId: number) => void;
+  storeProfile: (memberId: number, memberImageId: number, accessToken: string) => void;
+  settingIsLoggedIn: (isLoggedIn: boolean) => void;
 }
 
 export const useAuthStore = create(
@@ -94,10 +96,21 @@ export const useAuthStore = create(
       settingIsPublic: (isPublic: boolean) => {
         set({ isPublic });
       },
+      settingIsLoggedIn: (isLoggedIn: boolean) => {
+        set({ isLoggedIn });
+      },
       updateProfile: (nickname: string, memberImageId: number) => {
         set((state) => ({
           ...state,
           nickname,
+          memberImageId,
+        }));
+      },
+      storeProfile: (memberId: number, memberImageId: number, accessToken: string) => {
+        apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        set((state) => ({
+          ...state,
+          memberId,
           memberImageId,
         }));
       },
