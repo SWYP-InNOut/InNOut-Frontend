@@ -21,7 +21,7 @@ const SocialLogin = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.open('https://api.stuffinout.site/oauth2/authorization/google');
+    window.open('https://api.stuffinout.site/oauth2/authorization/google', '_self');
   };
   return (
     <Col>
