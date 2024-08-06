@@ -36,7 +36,6 @@ const Router = () => {
     createRoutesFromElements(
       <>
         <Route path="*" element={<ProtectedRoute />}>
-          <Route path="setting" element={<NickNameSetting />} />
           <Route path="pwd" element={<PwdChange />} />
           <Route path="post" element={<Post />} />
           <Route path="nickname" element={<NickNameChange />} />
@@ -46,6 +45,7 @@ const Router = () => {
           <Route path="other/:ownerId" element={<MyHome />} />
         </Route>
         <Route path="signup" element={<Signup />} />
+        <Route path="setting" element={<NickNameSetting />} />
         <Route path="login" element={<Login />} />
         <Route path="pwdsearch" element={<PwdSearch />} />
         <Route path="error" element={<Error />} />

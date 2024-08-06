@@ -46,6 +46,7 @@ interface AuthAction {
   logout: () => Promise<void>;
   settingIsPublic: (isPublic: boolean) => void;
   updateProfile: (nickname: string, memberImageId: number) => void;
+  storeProfile: (memberId: number, memberImageId: number, accessToken: string) => void;
 }
 
 export const useAuthStore = create(
@@ -124,6 +125,14 @@ export const useAuthStore = create(
         set((state) => ({
           ...state,
           nickname,
+          memberImageId,
+        }));
+      },
+      storeProfile: (memberId: number, memberImageId: number, accessToken: string) => {
+        apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        set((state) => ({
+          ...state,
+          memberId,
           memberImageId,
         }));
       },
