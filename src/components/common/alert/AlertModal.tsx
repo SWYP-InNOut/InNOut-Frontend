@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { colors } from '../../../assets/styles/theme';
 import { Col } from '../flex/Flex';
 import { CloseIcon } from '@icons/index';
+import { ButtonContainer } from '@routers/home/MyHome';
 
 interface AlertModalProps {
   isOpen: boolean;
@@ -29,7 +30,9 @@ const AlertModal: React.FC<AlertModalProps> = ({
         <Col gap={'24'}>
           {isShare ? (
             <Close>
-              <CloseIcon onClick={close} />
+              <ButtonContainer onClick={close}>
+                <CloseIcon />
+              </ButtonContainer>
             </Close>
           ) : null}
           {content}

@@ -1,5 +1,5 @@
 import { BaseResponse } from '@interfaces/api/base';
-import { apiClient } from '@stores/auth';
+import { apiClient } from './axios';
 
 // POST
 export const postInOut = async (

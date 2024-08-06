@@ -25,6 +25,7 @@ import { getIsPublic } from '@apis/myroom';
 import { useMutation } from 'react-query';
 import { AxiosError } from 'axios';
 import { IsPublicResponseDTO } from '@interfaces/api/room';
+import { ButtonContainer } from '../MyHome';
 
 const HomeMenuSlider = ({
   isOpen,
@@ -167,14 +168,14 @@ const HomeMenuSlider = ({
           `}
         >
           <Row padding={'0 16px'} gap={'4'} justifyContent="flex-end" alignItems="center">
-            <button
+            <ButtonContainer
               onClick={handleMenu}
               css={css`
                 cursor: pointer;
               `}
             >
               <CloseIcon />
-            </button>
+            </ButtonContainer>
           </Row>
           {renderTitle()}
           <Row
@@ -209,7 +210,9 @@ const HomeMenuSlider = ({
                       프로필 변경
                     </Txt>
                   </Row>
-                  <NextIcon />
+                  <ButtonContainer onClick={handleNickNameChange}>
+                    <NextIcon />
+                  </ButtonContainer>
                 </Row>
                 <Row alignItems="center" justifyContent="space-between">
                   <Row
@@ -224,7 +227,9 @@ const HomeMenuSlider = ({
                       비밀번호 변경
                     </Txt>
                   </Row>
-                  <NextIcon />
+                  <ButtonContainer onClick={handlePwdChange}>
+                    <NextIcon />
+                  </ButtonContainer>
                 </Row>
                 <Row alignItems="center" justifyContent="space-between">
                   <Row
@@ -266,7 +271,13 @@ const HomeMenuSlider = ({
                       로그아웃
                     </Txt>
                   </Row>
-                  <NextIcon />
+                  <ButtonContainer
+                    onClick={() => {
+                      setIsLogoutAlert(true);
+                    }}
+                  >
+                    <NextIcon />
+                  </ButtonContainer>
                 </Row>
               </Col>
             </>

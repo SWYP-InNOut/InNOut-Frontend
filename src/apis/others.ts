@@ -1,6 +1,21 @@
 import { BaseResponse } from '@interfaces/api/base';
-import { OthersStuffListResponseDTO, RoomRequestDTO } from '@interfaces/api/room';
-import { apiClient } from '@stores/auth';
+import {
+  OthersStuffListResponseDTO,
+  RoomRequestDTO,
+  ShareLinkResponseDTO,
+} from '@interfaces/api/room';
+import { apiClient } from './axios';
+
+//타사용자룸 링크공유
+export const getLink = async (ownerId: number): Promise<BaseResponse<ShareLinkResponseDTO>> => {
+  try {
+    const response = await apiClient.get(`/myroom/link?ownerId=${ownerId}`);
+    return response.data;
+  } catch (error) {
+    console.error('타사용자룸 링크공유:', error);
+    throw error;
+  }
+};
 
 //타사용자룸 전체보기(방문자순)
 export const getOthers = async (): Promise<BaseResponse<OthersStuffListResponseDTO[]>> => {
