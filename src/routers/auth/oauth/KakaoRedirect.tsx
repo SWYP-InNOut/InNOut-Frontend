@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import axios from 'axios';
 import useAuthStore from '@stores/auth';
+import Loading from '@components/common/loading/Loading';
 
 interface KakaoLoginResponse {
   accessToken: string;
@@ -14,7 +15,7 @@ interface KakaoLoginResponse {
 const KakaoRedirect = () => {
   const [code, setCode] = useState<string | null>(null);
   const navigate = useNavigate();
-  const { storeProfile } = useAuthStore();
+  const { storeProfile, settingIsLoggedIn } = useAuthStore();
 
   useEffect(() => {
     const urlCode = new URL(window.location.href).searchParams.get('code');
@@ -43,6 +44,7 @@ const KakaoRedirect = () => {
       console.log('Login successful:', data);
       if (data.member) {
         storeProfile(data.memberId, data.memberImageId, data.accessToken);
+        settingIsLoggedIn(true);
         navigate('/');
       } else {
         storeProfile(data.memberId, data.memberImageId, data.accessToken);
@@ -51,6 +53,7 @@ const KakaoRedirect = () => {
     },
     onError: (error) => {
       console.error('Login failed:', error);
+      navigate('/login');
     },
   });
 
@@ -60,7 +63,11 @@ const KakaoRedirect = () => {
     }
   }, [code, loginMutate]);
 
-  return <div>{isLoading ? '로그인 중...' : isError ? '로그인 실패' : '로그인 완료'}</div>;
+  return (
+    <div>
+      <Loading />
+    </div>
+  );
 };
 
 export default KakaoRedirect;

@@ -17,7 +17,7 @@ import Post from '@routers/home/post/Post';
 import useAuthStore from '@stores/auth';
 import Detail from '@routers/home/detail/Detail';
 import Error from '@routers/error/Error';
-import KakaoRedirect from '@components/auth/KakaoRedirect';
+import KakaoRedirect from '@routers/auth/oauth/KakaoRedirect';
 import Introduce from '@routers/home/introduce/Introduce';
 import OthersStuffList from '@routers/home/homemenu/OthersStuffList';
 
