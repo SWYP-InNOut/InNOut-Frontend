@@ -1,7 +1,7 @@
 import { BaseResponse } from '@interfaces/api/base';
 import { HTTP_URL } from '.';
-import { AxiosResponse } from 'axios';
-import { apiClient } from '@stores/auth';
+import axios, { AxiosResponse } from 'axios';
+import { apiClient } from '@apis/axios';
 
 export const signup = async (
   request: Omit<SignUpRequestDTO, 'confirmPassword'>

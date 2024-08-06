@@ -6,6 +6,8 @@ import { colors } from '@styles/theme';
 import styled from '@emotion/styled';
 import Txt from '@components/common/text/Txt';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { AxiosError } from 'axios';
 
 const KAKAO_REST_API_KEY = import.meta.env.VITE_REACT_APP_KAKAO_REST_API;
 const KAKAO_REDIRECT_URI = import.meta.env.VITE_REACT_APP_KAKAO_REDIRECT_URI;
@@ -20,7 +22,7 @@ const SocialLogin = () => {
   };
 
   const handleGoogleLogin = () => {
-    alert('Google 로그인 준비중');
+    window.open('https://api.stuffinout.site/oauth2/authorization/google');
   };
   return (
     <Col>
