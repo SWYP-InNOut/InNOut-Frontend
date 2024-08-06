@@ -4,6 +4,7 @@ import { HTTP_URL } from '@apis/auth';
 import { persist } from 'zustand/middleware';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import { set } from 'react-hook-form';
 
 export const apiClient = axios.create({
   baseURL: HTTP_URL, // API의 기본 URL
@@ -47,6 +48,7 @@ interface AuthAction {
   settingIsPublic: (isPublic: boolean) => void;
   updateProfile: (nickname: string, memberImageId: number) => void;
   storeProfile: (memberId: number, memberImageId: number, accessToken: string) => void;
+  settingIsLoggedIn: (isLoggedIn: boolean) => void;
 }
 
 export const useAuthStore = create(
@@ -120,6 +122,9 @@ export const useAuthStore = create(
       },
       settingIsPublic: (isPublic: boolean) => {
         set({ isPublic });
+      },
+      settingIsLoggedIn: (isLoggedIn: boolean) => {
+        set({ isLoggedIn });
       },
       updateProfile: (nickname: string, memberImageId: number) => {
         set((state) => ({
