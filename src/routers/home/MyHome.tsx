@@ -15,10 +15,12 @@ import PrimaryButton from '@components/common/button/PrimaryButton';
 import ToastBar from '@components/common/alert/ToastBar';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuthStore from '@stores/auth';
-import { getMyRoom } from '@apis/myroom';
+import { getMyRoom, getRoom } from '@apis/myroom';
 import { useMutation } from 'react-query';
 import { AxiosError } from 'axios';
 import { MyRoomResponseDTO } from '@interfaces/api/room';
+import { getLink } from '@apis/others';
+import { apiAnonymousClient, apiClient } from '@apis/axios';
 
 const MyHome = () => {
   const { ownerId } = useParams();
@@ -49,6 +51,30 @@ const MyHome = () => {
     },
   });
 
+  const getAnonymousRoomListMutation = useMutation(getRoom, {
+    onSuccess: (data) => {
+      console.log('익명 사용자 리스트 성공:', data);
+      setMyRoomResponse(data.result);
+      setIsPublic(data.result.public);
+      settingIsPublic(data.result.public);
+    },
+    onError: (error: AxiosError) => {
+      console.error('익명 사용자 리스트 실패:', error);
+    },
+  });
+
+  const getShareLink = useMutation(getLink, {
+    onSuccess: (data) => {
+      console.log('링크 공유 성공:', data);
+      const link = `https://stuffinout.site/other/${targetId}?anonymousToken=${data.result.link}`;
+      navigator.clipboard.writeText(link);
+      setToastVisible(!toastVisible);
+    },
+    onError: (error: AxiosError) => {
+      console.error('링크 공유 실패:', error);
+    },
+  });
+
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
   };
@@ -61,11 +87,8 @@ const MyHome = () => {
     setIsShareModal(!isShareOpenModal);
   };
 
-  const handleToast = async () => {
-    const link = window.location.href;
-    await navigator.clipboard.writeText(link);
-    // onClickShareKakaoTalk();
-    setToastVisible(!toastVisible);
+  const handleToast = () => {
+    getShareLink.mutate(targetId ? targetId : 0);
   };
 
   const handlePencilBtn = () => {
@@ -81,11 +104,32 @@ const MyHome = () => {
   // }, [selectedFilter, isLogin]);
 
   useEffect(() => {
-    isLogin &&
+    if (isLogin) {
       getMyRoomListMutation.mutate({
         ownerId: targetId ? targetId : 0,
         filterType: selectedFilter,
       });
+    } else {
+      // URL의 쿼리 스트링 부분을 가져옵니다.
+      const queryString = window.location.search;
+
+      // URLSearchParams 객체를 생성합니다.
+      const urlParams = new URLSearchParams(queryString);
+
+      // 'anonymousToken'의 값을 가져옵니다.
+      const anonymousToken = urlParams.get('anonymousToken');
+      if (anonymousToken) {
+        localStorage.setItem('anonymousToken', anonymousToken);
+      }
+
+      // 결과를 확인합니다.
+      console.log('Anonymous Token:', anonymousToken);
+      apiAnonymousClient.defaults.headers.common['Authorization'] = `Bearer ${anonymousToken}`;
+      getAnonymousRoomListMutation.mutate({
+        ownerId: targetId ? targetId : 0,
+        filterType: selectedFilter,
+      });
+    }
   }, [selectedFilter, isLogin, targetId]);
 
   useEffect(() => {
@@ -107,16 +151,9 @@ const MyHome = () => {
         overflow={isOpen ? 'hidden' : 'auto'}
         hasHeader={true}
         HeaderLeft={
-          <button
-            css={css`
-              background-color: transparent;
-              border: none;
-              cursor: pointer;
-            `}
-            onClick={toggleMenu}
-          >
+          <ButtonContainer onClick={toggleMenu}>
             <MenuIcon />
-          </button>
+          </ButtonContainer>
         }
         HeaderCenter={
           <div
@@ -136,22 +173,11 @@ const MyHome = () => {
               </Txt>
             </LoginButton>
           ) : (
-            <button
-              css={css`
-                width: 32px;
-                height: 32px;
-                border-radius: 6px;
-                cursor: pointer;
-                &:active {
-                  background: rgba(0, 0, 0, 0.1);
-                }
-              `}
-              onClick={handleShareBtn}
-            >
+            <ButtonContainer onClick={handleShareBtn}>
               <Txt variant="b16" color={colors.yellow700}>
                 공유
               </Txt>
-            </button>
+            </ButtonContainer>
           )
         }
       >
@@ -236,13 +262,30 @@ const MyHome = () => {
           </>
         )}
 
-        <ToastBar message="링크가 복사됐어요" isVisible={toastVisible} onHide={handleToast} />
+        <ToastBar
+          message="링크가 복사됐어요"
+          isVisible={toastVisible}
+          onHide={() => setToastVisible(false)}
+        />
       </Layout>
     </>
   );
 };
 
 export default MyHome;
+
+export const ButtonContainer = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  &:active {
+    background: rgba(0, 0, 0, 0.1);
+  }
+`;
 
 const LoginButton = styled.button`
   padding: 0 9px;

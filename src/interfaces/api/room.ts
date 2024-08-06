@@ -1,22 +1,7 @@
 // OthersResponseDTO[];
-interface OthersResponseDTO {
-  memberName: string;
-  memberId: number;
-  postCount: number;
-  inCount: number;
-  outCount: number;
-  userCount: number;
-  recentPostDate: string;
-}
-
-interface OthersResponseDTO {
-  memberName: string;
-  memberId: number;
-  postCount: number;
-  inCount: number;
-  outCount: number;
-  userCount: number;
-  recentPostDate: string;
+export interface ShareLinkResponseDTO {
+  link: string;
+  anonymous: boolean;
 }
 //0: 최신순, 1: in많은순, 2: out많은순, 3: 오래된순
 // 자신의 룸, 다른 사람 룸 둘다

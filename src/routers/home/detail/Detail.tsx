@@ -26,17 +26,19 @@ import ContentContainer from '@components/home/post/ContentContainer';
 import ImagePicker from '@components/home/post/Image/ImagePicker';
 import InOutVoting from '@components/home/\binout/InOutVoting';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { getMyRoomPost } from '@apis/myroom';
+import { getMyRoomPost, getRoomPost } from '@apis/myroom';
 import { useMutation, useQuery } from 'react-query';
 import useAuthStore from '@stores/auth';
 import { GetDetailResponseDTO } from '@interfaces/api/room';
 import PreviewChat from '@components/chat/PreviewChat';
 import { iconSVGs } from '@constants/icons';
 import _default from '../../../../vite.config.d';
+import { ButtonContainer } from '../MyHome';
 
 const Detail = () => {
   const navigate = useNavigate();
   const { postId } = useParams<{ postId: string }>();
+  const anonymousToken = localStorage.getItem('anonymousToken');
   const memberId = useAuthStore((store) => store.memberId);
   const isLogin = useAuthStore((store) => store.isLoggedIn);
   const myRoomMutation = useMutation(() => getMyRoomPost(memberId!, Number(postId)), {
@@ -50,17 +52,33 @@ const Detail = () => {
     },
   });
 
+  const anonymousRoomMutation = useMutation(() => getRoomPost(memberId!, Number(postId)), {
+    onSuccess: (data) => {
+      if (data.code === 1000) {
+        console.log('익명 상세 조회 성공:', data);
+      }
+    },
+    onError: (error) => {
+      console.error('익명 상세 조회 실패:', error);
+    },
+  });
+
   useEffect(() => {
-    if (memberId && postId) {
-      myRoomMutation.mutate();
+    if (anonymousToken) {
+      anonymousRoomMutation.mutate();
+    } else {
+      if (memberId && postId) {
+        myRoomMutation.mutate();
+      }
     }
   }, [memberId, postId]);
+
   const postDetail: GetDetailResponseDTO | undefined = myRoomMutation.data?.result as
     | GetDetailResponseDTO
     | undefined;
   console.log('postDetail:', postDetail);
   const handleArrowClick = () => {
-    navigate('/');
+    navigate(-1);
   };
 
   const handleHomeClick = () => {
@@ -79,38 +97,29 @@ const Detail = () => {
   return (
     <Layout
       HeaderLeft={
-        <button
+        <ButtonContainer
           onClick={handleArrowClick}
           css={css`
             cursor: pointer;
           `}
         >
           <LeftArrowIcon />
-        </button>
+        </ButtonContainer>
       }
       HeaderCenter={
         postDetail?.ownerId !== memberId ? <Txt variant="t20">{postDetail?.ownerName}</Txt> : <></>
       }
       HeaderRight={
         postDetail?.ownerId === memberId ? (
-          <button
-            css={css`
-              width: 32px;
-              height: 32px;
-              border-radius: 6px;
-              cursor: pointer;
-              &:active {
-                background: rgba(0, 0, 0, 0.1);
-              }
-            `}
-            onClick={handleModifyBtnClick}
-          >
+          <ButtonContainer onClick={handleModifyBtnClick}>
             <Txt variant="b16" color={colors.yellow700}>
               수정
             </Txt>
-          </button>
+          </ButtonContainer>
         ) : (
-          <HomeIcon onClick={handleHomeClick} />
+          <ButtonContainer onClick={handleHomeClick}>
+            <HomeIcon />
+          </ButtonContainer>
         )
       }
       Footer={true}
