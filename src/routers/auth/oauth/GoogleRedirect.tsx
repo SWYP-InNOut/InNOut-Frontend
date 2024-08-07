@@ -1,3 +1,4 @@
+import { apiAnonymousClient, apiClient } from '@apis/axios';
 import useAuthStore from '@stores/auth';
 import { useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';

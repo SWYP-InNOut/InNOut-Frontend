@@ -134,7 +134,7 @@ const HomeMenuSlider = ({
         isOpen={isLogoutAlert}
         content={
           <Col gap={'12'} alignItems="center">
-            <Txt variant="t20">로그아웃이 필요해요</Txt>
+            <Txt variant="t20">로그인이 필요해요</Txt>
             <Txt variant="b16">인기피드는 로그인 후 보실 수 있어요</Txt>
           </Col>
         }
