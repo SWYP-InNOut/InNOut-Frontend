@@ -14,7 +14,14 @@ const Introduce = () => {
   };
   return (
     <Layout
-      HeaderLeft={<LeftArrowIcon onClick={handleBack} />}
+      HeaderLeft={
+        <LeftArrowIcon
+          onClick={handleBack}
+          css={css`
+            cursor: pointer;
+          `}
+        />
+      }
       HeaderCenter={<Txt variant="t20">팀 maximalist 소개</Txt>}
       Footer
     >
