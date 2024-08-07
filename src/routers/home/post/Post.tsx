@@ -122,7 +122,7 @@ const Post = () => {
       setIsCloseAlert(true);
       return false;
     }
-    if (fileList.length < 1) {
+    if (fileList.length < 1 && pictures.length < 1) {
       setAlertContent(
         <Col gap={'12'} alignItems="center">
           <Txt variant="t20">사진은 중요!</Txt>
