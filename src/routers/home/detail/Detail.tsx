@@ -41,10 +41,12 @@ const Detail = () => {
   const anonymousToken = localStorage.getItem('anonymousToken');
   const memberId = useAuthStore((store) => store.memberId);
   const isLogin = useAuthStore((store) => store.isLoggedIn);
+  const [postDetail, setPostDetail] = useState<GetDetailResponseDTO>();
   const myRoomMutation = useMutation(() => getMyRoomPost(memberId!, Number(postId)), {
     onSuccess: (data) => {
       if (data.code === 1000) {
         console.log('마이룸 상세 조회 성공:', data);
+        setPostDetail(data.result);
       }
     },
     onError: (error) => {
@@ -56,6 +58,7 @@ const Detail = () => {
     onSuccess: (data) => {
       if (data.code === 1000) {
         console.log('익명 상세 조회 성공:', data);
+        setPostDetail(data.result);
       }
     },
     onError: (error) => {
@@ -73,10 +76,6 @@ const Detail = () => {
       }
     }
   }, [memberId, postId]);
-
-  const postDetail: GetDetailResponseDTO | undefined = myRoomMutation.data?.result as
-    | GetDetailResponseDTO
-    | undefined;
 
   const handleArrowClick = () => {
     navigate(-1);
