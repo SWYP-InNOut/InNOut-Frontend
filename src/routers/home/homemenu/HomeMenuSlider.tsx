@@ -75,16 +75,80 @@ const HomeMenuSlider = ({
   };
 
   const handlePopularFeedOnClick = () => {
-    if (lastSegment === 'others-home') {
-      handleMenu();
+    if (isLogin) {
+      if (lastSegment === 'others-home') {
+        handleMenu();
+      } else {
+        navigate('/others-home');
+      }
     } else {
-      navigate('/others-home');
+      console.log('first');
+      setIsLogoutAlert(true);
     }
   };
 
   useEffect(() => {
     setIsOn(isPublic);
   }, [isPublic]);
+
+  const renderAlert = () => {
+    return isLogin ? (
+      <AlertModal
+        isOpen={isLogoutAlert}
+        content={
+          <Col gap={'12'} alignItems="center">
+            <Txt variant="t20">로그아웃 하시겠어요?</Txt>
+            <Txt variant="b16">다음에 또 만나요!</Txt>
+          </Col>
+        }
+        button={
+          <Col gap={'8'}>
+            <PrimaryButton
+              title="로그아웃"
+              onClick={async () => {
+                try {
+                  await logout();
+                  setIsLogoutAlert(false);
+                  navigate('/login');
+                } catch (e) {
+                  console.log('로그아웃 실패:', e);
+                }
+              }}
+              color={colors.red600}
+              fontColor={colors.white}
+            />
+            <PrimaryButton
+              title="취소"
+              onClick={() => {
+                console.log('취소');
+                setIsLogoutAlert(false);
+              }}
+              color={colors.lightGray}
+              fontColor={colors.gray100}
+            />
+          </Col>
+        }
+      />
+    ) : (
+      <AlertModal
+        isOpen={isLogoutAlert}
+        content={
+          <Col gap={'12'} alignItems="center">
+            <Txt variant="t20">로그아웃이 필요해요</Txt>
+            <Txt variant="b16">인기피드는 로그인 후 보실 수 있어요</Txt>
+          </Col>
+        }
+        button={
+          <PrimaryButton
+            title="확인"
+            onClick={() => setIsLogoutAlert(false)}
+            color={colors.red600}
+            fontColor={colors.white}
+          />
+        }
+      />
+    );
+  };
 
   const logout = useAuthStore((state) => state.logout);
   const renderTitle = () => {
@@ -123,42 +187,7 @@ const HomeMenuSlider = ({
 
   return (
     <>
-      <AlertModal
-        isOpen={isLogoutAlert}
-        content={
-          <Col gap={'12'} alignItems="center">
-            <Txt variant="t20">로그아웃 하시겠어요?</Txt>
-            <Txt variant="b16">다음에 또 만나요!</Txt>
-          </Col>
-        }
-        button={
-          <Col gap={'8'}>
-            <PrimaryButton
-              title="로그아웃"
-              onClick={async () => {
-                try {
-                  await logout();
-                  setIsLogoutAlert(false);
-                  navigate('/login');
-                } catch (e) {
-                  console.log('로그아웃 실패:', e);
-                }
-              }}
-              color={colors.red600}
-              fontColor={colors.white}
-            />
-            <PrimaryButton
-              title="취소"
-              onClick={() => {
-                console.log('취소');
-                setIsLogoutAlert(false);
-              }}
-              color={colors.lightGray}
-              fontColor={colors.gray100}
-            />
-          </Col>
-        }
-      />
+      {renderAlert()}
       <HomeMenuSliderContainer right={isOpen ? '0%' : '100%'}>
         <Col
           padding={'28px 0 0'}
