@@ -6,9 +6,12 @@ import { colors } from '@styles/theme';
 import styled from '@emotion/styled';
 import Txt from '@components/common/text/Txt';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { AxiosError } from 'axios';
 
 const KAKAO_REST_API_KEY = import.meta.env.VITE_REACT_APP_KAKAO_REST_API;
 const KAKAO_REDIRECT_URI = import.meta.env.VITE_REACT_APP_KAKAO_REDIRECT_URI;
+const GOOGLE_REDIRECT_URI = import.meta.env.VITE_REACT_APP_GOOGLE_REDIRECT_URI;
 const link = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
 
 const SocialLogin = () => {
@@ -19,7 +22,7 @@ const SocialLogin = () => {
   };
 
   const handleGoogleLogin = () => {
-    alert('Google 로그인 준비중');
+    window.open(`${GOOGLE_REDIRECT_URI}`, '_self');
   };
   return (
     <Col>

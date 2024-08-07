@@ -41,6 +41,7 @@ import PurpleIcon from '@icons/purple.svg?react';
 import BlackIcon from '@icons/black.svg?react';
 import RedIcon from '@icons/red.svg?react';
 import PlusIcon from '@icons/plus.svg?react';
+import EyesIcon from '@icons/eyes.svg?react';
 
 export {
   PlusIcon,
@@ -86,4 +87,5 @@ export {
   Charactor,
   ErrorImg,
   HomeIcon,
+  EyesIcon,
 };
