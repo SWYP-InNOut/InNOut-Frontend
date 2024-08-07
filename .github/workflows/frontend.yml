@@ -22,7 +22,7 @@ jobs:
           echo "VITE_REACT_APP_HTTP_URL=${{ secrets.VITE_REACT_APP_HTTP_URL }}" >> .env
           echo "VITE_REACT_APP_KAKAO_REST_API=${{ secrets.VITE_REACT_APP_KAKAO_REST_API }}" >> .env
           echo "VITE_REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.VITE_REACT_APP_KAKAO_REDIRECT_URI }}" >> .env
-          echo "VITE_REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.VITE_REACT_APP_GOOGLE_REDIRECT_URI }}" >> .env
+          echo "VITE_REACT_APP_GOOGLE_REDIRECT_URI=${{ secrets.VITE_REACT_APP_GOOGLE_REDIRECT_URI }}" >> .env
 
       - name: Get npm cache directory
         id: npm-cache-dir
