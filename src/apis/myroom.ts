@@ -111,7 +111,7 @@ export const getRoomPost = async (
   postId: number
 ): Promise<BaseResponse<string>> => {
   try {
-    const response = await apiAnonymousClient.get(`/myroom/post/${postId}`, {
+    const response = await apiAnonymousClient.get(`/myroom/post/postId=${postId}`, {
       params: { memberId: memberId },
     });
     return response.data;
