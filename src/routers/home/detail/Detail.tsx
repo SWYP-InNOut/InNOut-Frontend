@@ -82,7 +82,11 @@ const Detail = () => {
   };
 
   const handleHomeClick = () => {
-    navigate('/');
+    if (anonymousToken) {
+      navigate(`/other/${postDetail?.ownerId}?anonymousToken=${anonymousToken}`);
+    } else {
+      navigate('/');
+    }
   };
 
   const handleModifyBtnClick = () => {
@@ -90,7 +94,11 @@ const Detail = () => {
   };
 
   const handleProfileClick = () => {
-    navigate(`/other/${postDetail?.ownerId}`);
+    if (anonymousToken) {
+      navigate(`/other/${postDetail?.ownerId}?anonymousToken=${anonymousToken}`);
+    } else {
+      navigate(`/other/${postDetail?.ownerId}`);
+    }
   };
 
   return (
