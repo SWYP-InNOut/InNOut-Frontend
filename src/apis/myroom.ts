@@ -24,6 +24,7 @@ export const getMyRoom = async (
   request: RoomRequestDTO
 ): Promise<BaseResponse<MyRoomResponseDTO>> => {
   try {
+    apiClient.defaults.withCredentials = true;
     const response = await apiClient.post('/myroom', request);
     return response.data;
   } catch (error) {
