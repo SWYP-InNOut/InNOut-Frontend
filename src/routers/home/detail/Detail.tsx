@@ -54,7 +54,7 @@ const Detail = () => {
     },
   });
 
-  const anonymousRoomMutation = useMutation(() => getRoomPost(memberId!, Number(postId)), {
+  const anonymousRoomMutation = useMutation(() => getRoomPost(postId || ''), {
     onSuccess: (data) => {
       if (data.code === 1000) {
         console.log('익명 상세 조회 성공:', data);

@@ -111,12 +111,9 @@ export const getMyRoomPost = async (
   }
 };
 
-export const getRoomPost = async (
-  memberId: number,
-  postId: number
-): Promise<BaseResponse<GetDetailResponseDTO>> => {
+export const getRoomPost = async (postId: string): Promise<BaseResponse<GetDetailResponseDTO>> => {
   try {
-    const response = await apiAnonymousClient.get(`/myroom/post/postId=${postId}`);
+    const response = await apiAnonymousClient.get(`/myroom/post?postId=${postId}`);
     return response.data;
   } catch (error) {
     console.error('게시물 상세보기 실패:', error);
