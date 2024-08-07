@@ -25,6 +25,7 @@ const NickNameSetting = () => {
   const nicknameMutation = useMutation(postNickName, {
     onSuccess: (data) => {
       if (data.code === 1000) {
+        console.log(data.result);
         settingIsLoggedIn(true);
         navigate('/');
       } else if (data.code === 5005) {

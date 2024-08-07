@@ -18,6 +18,7 @@ import axios, { AxiosError } from 'axios';
 import useAuthStore from '@stores/auth';
 import { GetDetailResponseDTO } from '@interfaces/api/room';
 import { PictureType } from '@utils/pictureUtils';
+import { ButtonContainer } from '../MyHome';
 
 const Post = () => {
   const navigate = useNavigate();
@@ -236,12 +237,9 @@ const Post = () => {
         hasHeader={true}
         HeaderCenter={<Txt variant="t20">{postDetail ? '게시물 수정' : '새 게시물'}</Txt>}
         HeaderRight={
-          <CloseIcon
-            onClick={handleCloseBtn}
-            css={css`
-              cursor: pointer;
-            `}
-          />
+          <ButtonContainer onClick={handleCloseBtn}>
+            <CloseIcon />
+          </ButtonContainer>
         }
       >
         <FormProvider {...methods}>

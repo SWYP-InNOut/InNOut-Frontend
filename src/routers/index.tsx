@@ -20,9 +20,16 @@ import Error from '@routers/error/Error';
 import KakaoRedirect from '@routers/auth/oauth/KakaoRedirect';
 import Introduce from '@routers/home/introduce/Introduce';
 import OthersStuffList from '@routers/home/homemenu/OthersStuffList';
+import GoogleRedirect from './auth/oauth/GoogleRedirect';
 
 const ProtectedRoute = () => {
   const isLoggedin = useAuthStore((store) => store.isLoggedIn);
+  const isAnonymous = localStorage.getItem('anonymousToken');
+
+  if (window.location.search.includes('anonymousToken') || isAnonymous) {
+    console.log('익명 로그인');
+    return <Outlet />;
+  }
 
   if (!isLoggedin) {
     return <Navigate to={'/login'} replace />;
@@ -50,6 +57,7 @@ const Router = () => {
         <Route path="pwdsearch" element={<PwdSearch />} />
         <Route path="error" element={<Error />} />
         <Route path="kakaologin/callback" element={<KakaoRedirect />} />
+        <Route path="/oauth-callback" element={<GoogleRedirect />} />
         <Route path="introduce" element={<Introduce />} />
       </>
     )

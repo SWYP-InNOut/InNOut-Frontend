@@ -89,7 +89,7 @@ const Selector = styled.div<{ last: boolean; selected: boolean }>`
   background-color: transparent;
   border-radius: 4px;
   cursor: ${({ selected }) => (selected ? 'default' : 'pointer')};
-  z-index: 1;
+  z-index: 100;
 `;
 
 const Blur = styled.div<{ isOpen?: boolean; size: number }>`
@@ -101,6 +101,7 @@ const Blur = styled.div<{ isOpen?: boolean; size: number }>`
   height: ${({ size }) => size}px;
   backdrop-filter: blur(1px);
   background: rgba(0, 0, 0, 0.85);
+  z-index: 99;
 `;
 
 export default Filter;

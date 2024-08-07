@@ -1,7 +1,7 @@
 import { BaseResponse } from '@interfaces/api/base';
 import { IsPublicResponseDTO, MyRoomResponseDTO, RoomRequestDTO } from '@interfaces/api/room';
-import { apiClient } from '@stores/auth';
 import { c } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
+import { apiAnonymousClient, apiClient } from './axios';
 
 // 나의 룸 공개 여부 변경
 export const getIsPublic = async (): Promise<BaseResponse<IsPublicResponseDTO>> => {
@@ -20,6 +20,18 @@ export const getMyRoom = async (
 ): Promise<BaseResponse<MyRoomResponseDTO>> => {
   try {
     const response = await apiClient.post('/myroom', request);
+    return response.data;
+  } catch (error) {
+    console.error('홈화면 / 내 물건 리스트 실패:', error);
+    throw error;
+  }
+};
+
+export const getRoom = async (
+  request: RoomRequestDTO
+): Promise<BaseResponse<MyRoomResponseDTO>> => {
+  try {
+    const response = await apiAnonymousClient.post('/myroom', request);
     return response.data;
   } catch (error) {
     console.error('홈화면 / 내 물건 리스트 실패:', error);
@@ -82,15 +94,26 @@ export const getMyRoomPost = async (
   postId: number
 ): Promise<BaseResponse<string>> => {
   try {
-    console.log('getMyRoomPost 호출됨');
-    console.log('memberId:', memberId);
-    console.log('postId:', postId);
-
     const response = await apiClient.get(`/myroom/post/${postId}`, {
       params: { memberId: memberId },
     });
 
     console.log('응답 데이터:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('게시물 상세보기 실패:', error);
+    throw error;
+  }
+};
+
+export const getRoomPost = async (
+  memberId: number,
+  postId: number
+): Promise<BaseResponse<string>> => {
+  try {
+    const response = await apiAnonymousClient.get(`/myroom/post/${postId}`, {
+      params: { memberId: memberId },
+    });
     return response.data;
   } catch (error) {
     console.error('게시물 상세보기 실패:', error);
