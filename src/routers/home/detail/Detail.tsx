@@ -79,7 +79,7 @@ const Detail = () => {
     | undefined;
 
   const handleArrowClick = () => {
-    navigate(-1);
+    postDetail?.ownerId === memberId ? navigate('/') : navigate(-1);
   };
 
   const handleHomeClick = () => {

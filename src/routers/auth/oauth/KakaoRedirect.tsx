@@ -4,6 +4,7 @@ import { useMutation } from 'react-query';
 import axios from 'axios';
 import useAuthStore from '@stores/auth';
 import Loading from '@components/common/loading/Loading';
+import { apiClient } from '@apis/axios';
 
 interface KakaoLoginResponse {
   accessToken: string;
@@ -24,6 +25,7 @@ const KakaoRedirect = () => {
 
   const kakaoLogin = async (code: string) => {
     try {
+      apiClient.defaults.withCredentials = true;
       const response = await axios.get(`https://api.stuffinout.site/kakaologin?code=${code}`, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' },
       });

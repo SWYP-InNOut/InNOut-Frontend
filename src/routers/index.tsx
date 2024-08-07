@@ -10,17 +10,20 @@ import Signup from '@routers/auth/signup/Signup';
 import Login from '@routers/auth/login/Login';
 import PwdSearch from '@routers/auth/pwdsearch/PwdSearch';
 import NickNameSetting from '@routers/auth/nickname/NickNameSetting';
-import MyHome from '@routers/home/MyHome';
 import NickNameChange from '@routers/home/homemenu/NickNameChange';
 import PwdChange from '@routers/home/homemenu/PwdChange';
-import Post from '@routers/home/post/Post';
 import useAuthStore from '@stores/auth';
-import Detail from '@routers/home/detail/Detail';
 import Error from '@routers/error/Error';
 import KakaoRedirect from '@routers/auth/oauth/KakaoRedirect';
 import Introduce from '@routers/home/introduce/Introduce';
 import OthersStuffList from '@routers/home/homemenu/OthersStuffList';
 import GoogleRedirect from './auth/oauth/GoogleRedirect';
+import { lazy, Suspense } from 'react';
+import LoadingBall from '@components/common/loading/LoadingBall';
+
+const Post = lazy(() => import('@routers/home/post/Post'));
+const MyHome = lazy(() => import('@routers/home/MyHome'));
+const Detail = lazy(() => import('@routers/home/detail/Detail'));
 
 const ProtectedRoute = () => {
   const isLoggedin = useAuthStore((store) => store.isLoggedIn);
@@ -42,14 +45,49 @@ const Router = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route path="*" element={<ProtectedRoute />}>
+        <Route element={<ProtectedRoute />}>
           <Route path="pwd" element={<PwdChange />} />
-          <Route path="post" element={<Post />} />
+          <Route
+            path="post"
+            element={
+              <Suspense fallback={<LoadingBall />}>
+                <Post />
+              </Suspense>
+            }
+          />
           <Route path="nickname" element={<NickNameChange />} />
-          <Route path="others-home" element={<OthersStuffList />} />
-          <Route path="detail/:postId" element={<Detail />} />
-          <Route index element={<MyHome />} />
-          <Route path="other/:ownerId" element={<MyHome />} />
+          <Route
+            path="others-home"
+            element={
+              <Suspense fallback={<LoadingBall />}>
+                <OthersStuffList />
+              </Suspense>
+            }
+          />
+          <Route
+            path="detail/:postId"
+            element={
+              <Suspense fallback={<LoadingBall />}>
+                <Detail />
+              </Suspense>
+            }
+          />
+          <Route
+            index
+            element={
+              <Suspense fallback={<LoadingBall />}>
+                <MyHome />
+              </Suspense>
+            }
+          />
+          <Route
+            path="other/:ownerId"
+            element={
+              <Suspense fallback={<LoadingBall />}>
+                <MyHome />
+              </Suspense>
+            }
+          />
         </Route>
         <Route path="signup" element={<Signup />} />
         <Route path="setting" element={<NickNameSetting />} />
@@ -58,7 +96,14 @@ const Router = () => {
         <Route path="error" element={<Error />} />
         <Route path="kakaologin/callback" element={<KakaoRedirect />} />
         <Route path="/oauth-callback" element={<GoogleRedirect />} />
-        <Route path="introduce" element={<Introduce />} />
+        <Route
+          path="introduce"
+          element={
+            <Suspense fallback={<LoadingBall />}>
+              <Introduce />
+            </Suspense>
+          }
+        />
       </>
     )
   );
