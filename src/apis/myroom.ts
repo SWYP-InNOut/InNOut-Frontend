@@ -1,5 +1,10 @@
 import { BaseResponse } from '@interfaces/api/base';
-import { IsPublicResponseDTO, MyRoomResponseDTO, RoomRequestDTO } from '@interfaces/api/room';
+import {
+  GetDetailResponseDTO,
+  IsPublicResponseDTO,
+  MyRoomResponseDTO,
+  RoomRequestDTO,
+} from '@interfaces/api/room';
 import { c } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 import { apiAnonymousClient, apiClient } from './axios';
 
@@ -92,7 +97,7 @@ export const postMyRoomModifyStuff = async (request: FormData): Promise<BaseResp
 export const getMyRoomPost = async (
   memberId: number,
   postId: number
-): Promise<BaseResponse<string>> => {
+): Promise<BaseResponse<GetDetailResponseDTO>> => {
   try {
     const response = await apiClient.get(`/myroom/post/${postId}`, {
       params: { memberId: memberId },
@@ -106,14 +111,9 @@ export const getMyRoomPost = async (
   }
 };
 
-export const getRoomPost = async (
-  memberId: number,
-  postId: number
-): Promise<BaseResponse<string>> => {
+export const getRoomPost = async (postId: string): Promise<BaseResponse<GetDetailResponseDTO>> => {
   try {
-    const response = await apiAnonymousClient.get(`/myroom/post/postId=${postId}`, {
-      params: { memberId: memberId },
-    });
+    const response = await apiAnonymousClient.get(`/myroom/post?postId=${postId}`);
     return response.data;
   } catch (error) {
     console.error('게시물 상세보기 실패:', error);
