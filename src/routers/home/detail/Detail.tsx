@@ -21,19 +21,19 @@ import { Col, Row } from '@components/common/flex/Flex';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { colors } from '@styles/theme';
-import TextArea from '@components/common/input/TextArea';
 import ContentContainer from '@components/home/post/ContentContainer';
 import ImagePicker from '@components/home/post/Image/ImagePicker';
 import InOutVoting from '@components/home/\binout/InOutVoting';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getMyRoomPost, getRoomPost } from '@apis/myroom';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import useAuthStore from '@stores/auth';
 import { GetDetailResponseDTO } from '@interfaces/api/room';
 import PreviewChat from '@components/chat/PreviewChat';
 import { iconSVGs } from '@constants/icons';
 import _default from '../../../../vite.config.d';
 import { ButtonContainer } from '../MyHome';
+import { apiAnonymousClient } from '@apis/axios';
 
 const Detail = () => {
   const navigate = useNavigate();
@@ -65,6 +65,7 @@ const Detail = () => {
 
   useEffect(() => {
     if (anonymousToken) {
+      apiAnonymousClient.defaults.headers.common['Authorization'] = `Bearer ${anonymousToken}`;
       anonymousRoomMutation.mutate();
     } else {
       if (memberId && postId) {
@@ -76,7 +77,7 @@ const Detail = () => {
   const postDetail: GetDetailResponseDTO | undefined = myRoomMutation.data?.result as
     | GetDetailResponseDTO
     | undefined;
-  console.log('postDetail:', postDetail);
+
   const handleArrowClick = () => {
     navigate(-1);
   };
@@ -91,7 +92,6 @@ const Detail = () => {
 
   const handleProfileClick = () => {
     navigate(`/other/${postDetail?.ownerId}`);
-    console.log('클릭');
   };
 
   return (
